@@ -43,5 +43,24 @@ module.exports = function(environment) {
 
   }
 
+  ENV['ember-simple-auth'] = {
+    authenticationRoute: 'login',
+    routeAfterAuthentication: 'protected',
+    routeIfAlreadyAuthenticated: 'protected'
+  };
+
+  ENV['auth0-ember-simple-auth'] = {
+    clientID: process.env.AUTH0_CLIENT_ID,
+    domain: process.env.AUTH0_DOMAIN
+  };
+
+  ENV['contentSecurityPolicy'] = {
+    'font-src': "'self' data: cdn.auth0.com fonts.gstatic.com",
+    'style-src': "'self' 'unsafe-inline' https://fonts.googleapis.com",
+    'script-src': "'self' 'unsafe-eval' https://cdn.auth0.com https://acaleph.auth0.com",
+    'connect-src': "'self' http://localhost:* https://acaleph.auth0.com",
+    'img-src': "'self' *.gravatar.com"
+  };
+
   return ENV;
 };
