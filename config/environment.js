@@ -43,5 +43,17 @@ module.exports = function(environment) {
 
   }
 
+
+  ENV['torii'] = {
+    sessionServiceName: 'session',
+    providers: {
+      'github-oauth2': {
+        apiKey: process.env.GITHUB_OAUTH_API_KEY,
+        scope: process.env.GITHUB_OAUTH_SCOPE,
+        redirectUri: process.env.GITHUB_OAUTH_REDIRECT_URI
+      }
+    }
+  };
+
   return ENV;
 };
