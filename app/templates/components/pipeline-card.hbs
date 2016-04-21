@@ -1,0 +1,19 @@
+<div class="content">
+  {{#if model.latest_build}}
+    <span class="right floated">#{{model.latest_build.number}}</span>
+  {{/if}}
+  <div class="header">{{model.name}}</div>
+  <div class="description"></div>
+</div>
+
+<div class="extra content">
+  <div class="ui horizontal list">
+  {{#if model.latest_build}}
+    <div class="item">
+      <strong>Commit</strong> {{model.latest_build.commit}}
+    </div>
+  {{else}}
+    <div class="item">No builds yet.</div>
+  {{/if}}
+  </div>
+</div>

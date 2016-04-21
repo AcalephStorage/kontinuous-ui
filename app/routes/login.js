@@ -3,13 +3,15 @@ import UnauthenticatedRouteMixin from 'ember-simple-auth/mixins/unauthenticated-
 
 export default Ember.Route.extend(UnauthenticatedRouteMixin, {
 
-  beforeModel (transition) {
+  beforeModel(transition) {
     if (!this.get('session.isAuthenticated')) {
       transition.abort();
 
       // options: https://auth0.com/docs/libraries/lock/customization
       var lockOptions = {
-        authParams:{scope: 'openid profile email'},
+        authParams: {
+          scope: 'openid profile email'
+        },
         responseType: 'token',
         connections: ['github', 'google-oauth2'],
         socialBigButtons: false,

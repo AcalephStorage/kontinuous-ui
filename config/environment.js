@@ -14,8 +14,10 @@ module.exports = function(environment) {
     },
 
     APP: {
-      // Here you can pass flags/options to your application instance
-      // when it is created
+      kontinuousAPI: {
+        host: process.env.KONTINUOUS_API_URL,
+        version: process.env.KONTINUOUS_API_VERSION || 'v1',
+      }
     }
   };
 
@@ -45,8 +47,6 @@ module.exports = function(environment) {
 
   ENV['ember-simple-auth'] = {
     authenticationRoute: 'login',
-    routeAfterAuthentication: 'protected',
-    routeIfAlreadyAuthenticated: 'protected'
   };
 
   ENV['auth0-ember-simple-auth'] = {

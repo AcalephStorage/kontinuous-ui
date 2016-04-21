@@ -7,7 +7,8 @@ var Router = Ember.Router.extend({
 
 Router.map(function() {
   this.route('login');
-  this.route('protected', {path:''});
+  this.route('pipelines', {path: ''});
+  this.route('pipeline', {path: ':owner/:repo'});
 });
 
 export default Router;
