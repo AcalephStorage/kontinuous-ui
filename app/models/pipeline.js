@@ -7,6 +7,7 @@ export default Model.extend({
   repo: attr('string'),
   login: attr('string'),
   events: attr('array', {defaultValue: ['push', 'pull_request']}),
+  notif: attr('array'),
   latest_build: attr(),
 
   name: Ember.computed('owner', 'repo', function() {

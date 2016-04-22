@@ -1,5 +1,6 @@
 import SemanticModalComponent from 'semantic-ui-ember/components/ui-modal';
 import Ember from 'ember';
+import {task} from 'ember-concurrency';
 
 export default SemanticModalComponent.extend({
 
@@ -35,6 +36,14 @@ export default SemanticModalComponent.extend({
     this.get('pipeline').unload(p);
   },
 
+  // tasks
+  //
+  pipelineCreator: task(function*() {
+    let p = this.get('pipeline.newRecord');
+    yield this.get('pipeline').save(p);
+  }).drop(),
+
+
   // function overrides
   //
   didInsertElement() {
@@ -48,9 +57,7 @@ export default SemanticModalComponent.extend({
   },
 
   onApprove() {
-    let p = this.get('pipeline.newRecord');
-
-    p.save()
+    this.get('pipelineCreator').perform()
       .then(() => {
         this.$().modal('hide');
         this.get('router').transitionTo('pipelines');
@@ -66,6 +73,5 @@ export default SemanticModalComponent.extend({
     this.$().modal('hide');
     this.get('router').transitionTo('pipelines');
   },
-
 
 });

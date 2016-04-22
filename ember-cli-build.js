@@ -5,6 +5,9 @@ module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
     lessOptions: {
       paths: ['bower_components/semantic-ui']
+    },
+    babel: {
+      includePolyfill: true
     }
   });
 

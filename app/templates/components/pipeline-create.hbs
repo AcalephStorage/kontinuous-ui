@@ -27,22 +27,55 @@
 
     <div class="required grouped fields">
       <label>Events</label>
+
       {{#each pipeline.eventOptions as |eventOption|}}
         <div class="field">
           <div class="ui checkbox">
-            {{input type="checkbox" name="events[]" checked=eventOption.isSelected}}
+            {{input type="checkbox" checked=eventOption.isSelected}}
             <label>{{eventOption.label}}</label>
           </div>
         </div>
       {{/each}}
+
+    </div>
+
+    <div class="grouped fields">
+      <label>Notifications</label>
+
+      {{#each pipeline.notifOptions as |notifOption|}}
+
+        <div class="field">
+          <div class="ui checkbox">
+            {{input type="checkbox" checked=notifOption.isSelected}}
+            <label>{{notifOption.label}}</label>
+          </div>
+        </div>
+
+        {{#if notifOption.isSelected}}
+        <div class="inline fields">
+          <label><i class="mini right chevron icon"></i></label>
+
+          {{#each notifOption.metadata as |m|}}
+          <div class="field">
+            <div class="ui input small">
+              {{input type="text" class="form-control" value=m.value placeholder=m.label}}
+            </div>
+          </div>
+          {{/each}}
+
+        </div>
+        {{/if}}
+
+      {{/each}}
+
     </div>
 
   </div>
 </div>
 
 <div class="actions">
-  <button class="ui cancel small button">Cancel</button>
-  <button class="ui positive right labeled icon small button">
-    Create<i class="checkmark icon"></i>
+  <button class="ui cancel small button {{if pipelineCreator.isRunning 'disabled'}}">Cancel</button>
+  <button class="ui positive small right labeled icon button {{if pipeline.repoOptions.isPending 'disabled'}} {{if pipelineCreator.isRunning 'disabled'}}">
+    Create<i class="{{if pipelineCreator.isIdle 'checkmark' 'loading spinner'}} icon"></i>
   </button>
 </div>

@@ -2,12 +2,10 @@
 
 {{#main-content}}
 
-  <div class="ui clearing basic segment">
-    <div class="ui right floated header">
-      {{#ui-link-to routeName='pipelines.create' tagName="button" class="ui button" }}Create Pipeline{{/ui-link-to}}
-    </div>
-    <h1 class="ui left floated header">Pipelines</h1>
+  <div class="ui right floated header">
+    {{#ui-link-to routeName='pipelines.create' tagName="button" class="ui button" }}Create Pipeline{{/ui-link-to}}
   </div>
+  <h1 class="ui left floated header">Pipelines</h1>
 
   <div class="ui cards">
   {{#each model.pipelines as |pipeline|}}

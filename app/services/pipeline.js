@@ -22,6 +22,27 @@ export default Ember.Service.extend({
     'label': 'Deployment',
     'isSelected': false
   }],
+  notifOptions: [{
+    'type': 'slack',
+    'label': 'Slack',
+    'isSelected': false,
+    'metadata': [{
+      'key': 'username',
+      'label': 'Username',
+      'value': ''
+    }, {
+      'key': 'url',
+      'label': 'URL',
+      'value': ''
+    }, {
+      'key': 'channel',
+      'label': 'Channel',
+      'value': ''
+    }]
+  }],
+
+  selectedEvents: Ember.computed.filterBy('eventOptions', 'isSelected', true),
+  selectedNotifs: Ember.computed.filterBy('notifOptions', 'isSelected', true),
 
   new() {
     let user = this.get('session.data.authenticated.profile.user_id');
@@ -47,6 +68,24 @@ export default Ember.Service.extend({
     this.set('repoOptions', repoOptions);
   },
 
+  save(record) {
+    let events = this.get('selectedEvents').getEach('key');
+    record.set('events', events);
+
+    let notifs = this.get('selectedNotifs').map((n) => {
+      let metadata = {};
+      n.metadata.forEach((m) => {
+        metadata[m.key] = m.value;
+      });
+      return {
+        type: n.type,
+        metadata: metadata
+      };
+    });
+    record.set('notif', notifs);
+    return record.save();
+  },
+
   all() {
     if (this.get('store').peekAll('pipeline').get('length') === 0) {
       this.fetchAll();
@@ -61,7 +100,6 @@ export default Ember.Service.extend({
   },
 
   unload(record) {
-    // record.rollbackAttributes();
     record.unloadRecord();
   }
 
