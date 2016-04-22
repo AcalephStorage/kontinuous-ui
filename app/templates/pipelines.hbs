@@ -11,7 +11,9 @@
 
   <div class="ui cards">
   {{#each model.pipelines as |pipeline|}}
-    {{pipeline-card model=pipeline}}
+    {{#unless pipeline.isNew}}
+      {{pipeline-card model=pipeline}}
+    {{/unless}}
   {{/each}}
   </div>
 

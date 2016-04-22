@@ -59,7 +59,7 @@ module.exports = function(environment) {
     'style-src': "'self' 'unsafe-inline' https://fonts.googleapis.com",
     'script-src': "'self' 'unsafe-eval' https://cdn.auth0.com https://acaleph.auth0.com",
     'connect-src': "'self' http://localhost:* https://acaleph.auth0.com",
-    'img-src': "'self' *.gravatar.com"
+    'img-src': "'self' *.gravatar.com https://avatars.githubusercontent.com"
   };
 
   return ENV;

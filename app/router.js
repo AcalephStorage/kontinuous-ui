@@ -7,7 +7,9 @@ var Router = Ember.Router.extend({
 
 Router.map(function() {
   this.route('login');
-  this.route('pipelines', {path: ''});
+  this.route('pipelines', {path: ''}, function() {
+    this.route('create', {path: '/new'});
+  });
   this.route('pipeline', {path: ':owner/:repo'});
 });
 

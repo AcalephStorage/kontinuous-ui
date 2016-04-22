@@ -1,6 +1,6 @@
-import JSONSerializer from 'ember-data/serializers/json';
+import Base from './application';
 
-export default JSONSerializer.extend({
+export default Base.extend({
 
   attrs: {
     latest_build: {embedded: 'always'}
