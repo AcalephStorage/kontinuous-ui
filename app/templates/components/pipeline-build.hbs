@@ -1,0 +1,8 @@
+<ul class="stages">
+{{#each model.stages as |stage|}}
+  <li class="{{stage.status}} stage">
+    <i class="legal icon"></i>
+    <div class="label">{{stage.name}}</div>
+  </li>
+{{/each}}
+</ul>

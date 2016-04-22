@@ -7,39 +7,48 @@ export default Ember.Service.extend({
   session: Ember.inject.service(),
 
   newRecord: null,
-  allRecords: [],
+  selectedRecord: null,
+
+  // options for newRecord
   repoOptions: [],
-  eventOptions: [{
-    'key': 'push',
-    'label': 'Push',
-    'isSelected': true
-  }, {
-    'key': 'pull_request',
-    'label': 'Pull Request',
-    'isSelected': true
-  }, {
-    'key': 'deployment',
-    'label': 'Deployment',
-    'isSelected': false
-  }],
-  notifOptions: [{
-    'type': 'slack',
-    'label': 'Slack',
-    'isSelected': false,
-    'metadata': [{
-      'key': 'username',
-      'label': 'Username',
-      'value': ''
+  eventOptions: [
+    {
+      'key': 'push',
+      'label': 'Push',
+      'isSelected': true
     }, {
-      'key': 'url',
-      'label': 'URL',
-      'value': ''
+      'key': 'pull_request',
+      'label': 'Pull Request',
+      'isSelected': true
     }, {
-      'key': 'channel',
-      'label': 'Channel',
-      'value': ''
-    }]
-  }],
+      'key': 'deployment',
+      'label': 'Deployment',
+      'isSelected': false
+    }
+  ],
+  notifOptions: [
+    {
+      'type': 'slack',
+      'label': 'Slack',
+      'isSelected': false,
+      'metadata': [
+        {
+          'key': 'username',
+          'label': 'Username',
+          'value': ''
+        }, {
+          'key': 'url',
+          'label': 'URL',
+          'value': ''
+        }, {
+          'key': 'channel',
+          'label': 'Channel',
+          'value': ''
+        }
+      ]
+    }
+  ],
+  //
 
   selectedEvents: Ember.computed.filterBy('eventOptions', 'isSelected', true),
   selectedNotifs: Ember.computed.filterBy('notifOptions', 'isSelected', true),
@@ -51,7 +60,7 @@ export default Ember.Service.extend({
 
     let promises = {
       repositories: this.get('store').findAll('repository'),
-      pipelines: this.all(),
+      pipelines: this.fetchAll(),
     };
 
     let promise = Ember.RSVP.hash(promises).then((data) => {
@@ -66,6 +75,18 @@ export default Ember.Service.extend({
     });
 
     this.set('repoOptions', repoOptions);
+  },
+
+  find(params) {
+    return this.get('store').queryRecord('pipeline', params);
+  },
+
+  fetchAll() {
+    return this.get('store').findAll('pipeline');
+  },
+
+  look(record) {
+    this.set('selectedRecord', record);
   },
 
   save(record) {
@@ -86,21 +107,8 @@ export default Ember.Service.extend({
     return record.save();
   },
 
-  all() {
-    if (this.get('store').peekAll('pipeline').get('length') === 0) {
-      this.fetchAll();
-    }
-    return this.get('allRecords');
-  },
-
-  fetchAll() {
-    let ps = this.get('store').findAll('pipeline');
-    this.set('allRecords', ps);
-    return ps;
-  },
-
   unload(record) {
     record.unloadRecord();
-  }
+  },
 
 });

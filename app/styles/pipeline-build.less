@@ -1,0 +1,76 @@
+/* pipeline-build */
+@-webkit-keyframes glow {
+  to {
+    background: #6FB4FA;
+  }
+}
+.pipeline-build ul {
+  display: flex;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  height: 8.9em;
+  margin: 0em 1em 0em 0em;
+  padding: 0em;
+}
+.pipeline-build .stage {
+  /*background: rgb(84, 88, 100);*/
+  border-radius: 50%;
+  border: 1px solid rgba(84, 88, 100, 0.7);
+  display: inline-block;
+  height: 4rem;
+  line-height: 4rem;
+  margin: 1rem 2rem 0em 2rem;
+  position: relative;
+  text-align: center;
+  width: 4.2rem;
+}
+.pipeline-build .stage.RUNNING,
+.pipeline-build .stage.RUNNING::before {
+  -webkit-animation: glow 1.0s infinite alternate;
+  /*background-color: rgb(45, 139, 233);*/
+  border-color: rgba(45, 139, 233, 0.7);
+}
+.pipeline-build .selectable.stage.RUNNING:hover {
+  /*background: #6FB4FA;*/
+}
+.pipeline-build .stage.SUCCESS,
+.pipeline-build .stage.SUCCESS::before {
+  /*background-color: rgb(12, 168, 138);*/
+  border-color: rgba(12, 168, 138, 0.7);
+}
+.pipeline-build .stage.FAIL,
+.pipeline-build .stage.FAIL::before {
+  /*background: rgb(159, 52, 55);*/
+  border-color: rgba(159, 52, 55, 0.7);
+}
+.pipeline-build .stage .icon {
+  margin: 0 !important;
+}
+.pipeline-build .stage::before{
+  background: transparent;
+  border-radius: 3rem;
+  border: 1px solid rgba(84, 88, 100, 0.7);
+  content: '';
+  height: .1rem;
+  left: -3.9rem;
+  position: absolute;
+  top: 1.9rem;
+  width: 3.6rem;
+  /*z-index: -1;*/
+}
+.pipeline-build .stage:first-child::before {
+  display: none;
+}
+.pipeline-build .stage .label {
+  display: inline-block;
+  font-size: 0.8rem;
+  left: -1.5rem;
+  line-height: 2rem;
+  margin: 1em 0;
+  overflow-x: hidden;
+  position: relative;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 7rem;
+}
+
