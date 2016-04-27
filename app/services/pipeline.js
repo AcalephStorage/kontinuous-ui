@@ -6,8 +6,9 @@ export default Ember.Service.extend({
   store: Ember.inject.service(),
   session: Ember.inject.service(),
 
+  all: [],
   newRecord: null,
-  selectedRecord: null,
+  current: null,
 
   // options for newRecord
   repoOptions: [],
@@ -82,11 +83,13 @@ export default Ember.Service.extend({
   },
 
   fetchAll() {
-    return this.get('store').findAll('pipeline');
+    let ps = this.get('store').findAll('pipeline');
+    this.set('all', ps);
+    return ps;
   },
 
   look(record) {
-    this.set('selectedRecord', record);
+    this.set('current', record);
   },
 
   save(record) {

@@ -1,13 +1,1 @@
-{{main-menu}}
-
-{{#main-content}}
-
-  <div class="ui breadcrumb">
-    {{#link-to 'pipelines' class="section"}}<h1 class="ui header">Pipelines</h1>{{/link-to}}
-    <i class="right angle icon divider"></i>
-    <div class="active section">{{model.name}}</div>
-  </div>
-
-  {{pipeline-build model=model.latest_build}}
-
-{{/main-content}}
+{{pipeline-build}}

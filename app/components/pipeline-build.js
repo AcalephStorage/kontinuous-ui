@@ -1,9 +1,20 @@
 import Ember from 'ember';
 
 export default Ember.Component.extend({
-  // TODO: use d3
-  //
 
-  classNames: Ember.String.w('ui segment pipeline-build'),
+  pipeline: Ember.inject.service(),
+  build: Ember.inject.service(),
+
+  actions: {
+    previousBuild() {
+      this.get('build').prev();
+    },
+    nextBuild() {
+      this.get('build').next();
+    },
+    selectStage(stage) {
+      this.set('selectedStage', stage);
+    }
+  }
 
 });

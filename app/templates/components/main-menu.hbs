@@ -1,23 +1,5 @@
 <div class="item"><img src="assets/images/acaleph-logo.svg"></div>
 
 <div class="right menu">
-
-  {{#if appNamespace.all}}
-  {{#ui-dropdown class="top right pointing item"}}
-    <i class="cubes icon"></i>Apps
-    <div class="menu">
-    {{#each appNamespace.all as |namespace|}}
-       <div class="item" data-value={{namespace.name}}>{{namespace.name}}</div>
-    {{/each}}
-    </div>
-  {{/ui-dropdown}}
-  {{/if}}
-
-  {{#ui-dropdown class="top right pointing item"}}
-    <i class="user icon"></i>Account
-    <div class="menu">
-      <a class="ui icon item" {{ action 'logout' }} alt="Logout">Logout</a>
-    </div>
-  {{/ui-dropdown}}
-
+  <a class="item" {{ action 'logout' }} alt="Logout"><i class="sign out icon"></i>Logout</a>
 </div>

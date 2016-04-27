@@ -17,18 +17,4 @@ export default Model.extend({
 
     return `${owner}/${repo}`;
   }),
-  build_numbers: Ember.computed('builds.isFulfilled', function() {
-    if (this.get('builds.isFulfilled')) {
-      return this.get('builds').getEach('number');
-    }
-  }),
-  last_build_number: Ember.computed.max('build_numbers'),
-  latest_build: Ember.computed('last_build_number', function() {
-    let n = this.get('last_build_number');
-    if (n === -Infinity) {
-      return;
-    }
-    return this.get('builds').findBy('number', n);
-  })
-
 });

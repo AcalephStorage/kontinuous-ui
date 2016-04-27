@@ -1,21 +1,22 @@
 <div class="content">
-  {{#if model.latest_build}}
-    <span class="right floated">#{{model.latest_build.number}}</span>
+  {{#if model.builds.isPending}}
+    <div class="ui active mini right floated inline loader"></div>
+  {{else if latestBuild}}
+    <span class="right floated">#{{latestBuild.number}}</span>
   {{/if}}
+
   <div class="header">{{model.name}}</div>
   <div class="description"></div>
 </div>
 
+{{#if model.builds.isFulfilled}}
 <div class="extra content">
   <div class="ui horizontal list">
-  {{#if model.latest_build}}
-    <div class="item">
-      <strong>Commit</strong> {{model.latest_build.commit}}
-    </div>
+  {{#if latestBuild}}
+    <div class="item"><strong>Commit</strong> {{latestBuild.commitSHA}}</div>
   {{else}}
-    {{#if model.builds.isFulfilled}}
-      <div class="item">No builds yet.</div>
-    {{/if}}
+    <div class="item">No builds yet.</div>
   {{/if}}
   </div>
 </div>
+{{/if}}

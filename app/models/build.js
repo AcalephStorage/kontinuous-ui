@@ -14,5 +14,5 @@ export default Model.extend({
   author: attr('string'),
   event: attr('string'),
   clone_url: attr('string'),
-  stages: hasMany('stage'),
+  stages: hasMany('stage', {async: true}),
 });

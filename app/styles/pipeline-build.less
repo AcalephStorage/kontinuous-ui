@@ -1,4 +1,3 @@
-/* pipeline-build */
 @-webkit-keyframes glow {
   to {
     background: #6FB4FA;
@@ -13,9 +12,9 @@
   padding: 0em;
 }
 .pipeline-build .stage {
-  /*background: rgb(84, 88, 100);*/
   border-radius: 50%;
-  border: 1px solid rgba(84, 88, 100, 0.7);
+  border: 2px solid rgba(84, 88, 100, 0.7);
+  cursor: pointer;
   display: inline-block;
   height: 4rem;
   line-height: 4rem;
@@ -27,20 +26,16 @@
 .pipeline-build .stage.RUNNING,
 .pipeline-build .stage.RUNNING::before {
   -webkit-animation: glow 1.0s infinite alternate;
-  /*background-color: rgb(45, 139, 233);*/
   border-color: rgba(45, 139, 233, 0.7);
 }
 .pipeline-build .selectable.stage.RUNNING:hover {
-  /*background: #6FB4FA;*/
 }
 .pipeline-build .stage.SUCCESS,
 .pipeline-build .stage.SUCCESS::before {
-  /*background-color: rgb(12, 168, 138);*/
   border-color: rgba(12, 168, 138, 0.7);
 }
 .pipeline-build .stage.FAIL,
 .pipeline-build .stage.FAIL::before {
-  /*background: rgb(159, 52, 55);*/
   border-color: rgba(159, 52, 55, 0.7);
 }
 .pipeline-build .stage .icon {
@@ -56,7 +51,6 @@
   position: absolute;
   top: 1.9rem;
   width: 3.6rem;
-  /*z-index: -1;*/
 }
 .pipeline-build .stage:first-child::before {
   display: none;
