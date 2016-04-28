@@ -1,38 +1,51 @@
-{{!-- <div class="ui clearing segment">
-  <div class="ui right floated small header">
-    <div class="ui compact icon button"><i class="close icon"></i></div>
+<div class="ui segment">
+  <i class="small close icon" {{action "close"}}></i>
+
+  <div class="ui basic clearing segment">
+    <div class="ui right floated small header">{{stage.current.status}}</div>
+    <div class="ui left floated header">Stage {{stage.current.index}}: {{stage.current.name}}</div>
   </div>
-</div> --}}
 
-<div class="ui clearing segment">
-  <div class="ui right floated small header">{{model.status}}</div>
-  <div class="ui left floated header">Stage {{model.index}}: {{model.name}}</div>
-
-  <div class="ui top attached menu">
-    <a class="active item" data-tab="details">Details</a>
-    {{#if model.logFetcher.isRunning}}
-      <a class="item">
-        <div class="ui active mini inline loader"></div>
-      </a>
-    {{else}}
-      {{#each model.logFiles as |logFile|}}
-        <a class="item" data-tab={{logFile.title}}>{{logFile.title}}</a>
-      {{/each}}
+  <table class="ui small very basic table">
+    <tr><td class="two wide">Type:</td><td>{{stage.current.type}}</td></tr>
+    <tr><td class="two wide">Namespace:</td><td>{{stage.current.pod_namespace}}</td></tr>
+    {{#if stage.current.pod_name}}
+    <tr><td class="two wide">Pod Name:</td><td>{{stage.current.pod_name}}</td></tr>
     {{/if}}
-  </div>
+    {{#if stage.current.job_name}}
+    <tr><td class="two wide">Job Name:</td><td>{{stage.current.job_name}}</td></tr>
+    {{/if}}
+  </table>
 
-  <div class="ui bottom attached segment active tab" data-tab="details">
-    <table class="ui small very basic table">
-      <tr><td class="two wide">Type:</td><td>{{model.type}}</td></tr>
-      <tr><td class="two wide">Namespace:</td><td>{{model.pod_namespace}}</td></tr>
-      <tr><td class="two wide">Pod Name:</td><td>{{model.pod_name}}</td></tr>
-      <tr><td class="two wide">Job Name:</td><td>{{model.job_name}}</td></tr>
-    </table>
-  </div>
+  <div class="ui hidden divider"></div>
 
-  {{#each model.logFiles as |logFile|}}
-  <div class="ui bottom attached segment tab" data-tab={{logFile.title}}>
-    <pre>logs here</pre>
-  </div>
-  {{/each}}
+  {{#if stage.current.logFetcher.isRunning}}
+    <div class="ui active mini inline loader"></div>
+
+  {{else if stage.current.logFiles.length}}
+    <div class="ui top attached stackable menu stage-tabs">
+      {{#each stage.current.logFiles as |logFile|}}
+        <a class="item" data-tab={{logFile.title}} {{action "showLogs" logFile}}>{{logFile.title}}</a>
+      {{/each}}
+    </div>
+    {{#each stage.current.logFiles as |logFile|}}
+    <div class="ui bottom attached segment tab" data-tab={{logFile.title}}>
+      <pre>{{logFile.details}}</pre>
+    </div>
+    {{/each}}
+
+  {{else if stage.current.podLogs.length}}
+    <div class="ui top attached stackable menu stage-tabs">
+      {{#each stage.current.podLogs as |podLog|}}
+        <a class="item" data-tab={{podLog.title}} {{action "showLogs" podLog}}>{{podLog.title}}</a>
+      {{/each}}
+    </div>
+    {{#each stage.current.podLogs as |podLog|}}
+    <div class="ui bottom attached segment tab" data-tab={{podLog.title}}>
+      <pre>{{podLog.details}}</pre>
+    </div>
+    {{/each}}
+
+  {{/if}}
+
 </div>

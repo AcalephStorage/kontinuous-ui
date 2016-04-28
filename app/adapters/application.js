@@ -47,6 +47,7 @@ export default DS.RESTAdapter.extend(DataAdapterMixin, {
       delete query.owner;
       delete query.repo;
     }
+
     return urlParts.join('/');
   },
 

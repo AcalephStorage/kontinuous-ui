@@ -6,9 +6,7 @@ export default Ember.Route.extend(AuthenticatedRouteMixin, {
   pipeline: Ember.inject.service(),
 
   model() {
-    return {
-      pipelines: this.get('pipeline').fetchAll()
-    };
+    return this.get('pipeline').fetchAll();
   }
 
 });

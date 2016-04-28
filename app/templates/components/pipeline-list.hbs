@@ -8,13 +8,19 @@
     {{#ui-link-to routeName='pipelines.create' tagName="button" class="ui button" }}Create Pipeline{{/ui-link-to}}
   </div>
   <div class="ui basic segment">
-    <div class="ui cards">
-    {{#each pipeline.all as |pipeline|}}
-      {{#unless pipeline.isNew}}
-        {{pipeline-card model=pipeline}}
-      {{/unless}}
-    {{/each}}
-    </div>
+  {{#if pipeline.all.isFulfilled}}
+    {{#if pipeline.all.length}}
+      <div class="ui cards">
+      {{#each pipeline.all as |pipeline|}}
+        {{#unless pipeline.isNew}}
+          {{pipeline-card model=pipeline}}
+        {{/unless}}
+      {{/each}}
+      </div>
+    {{else}}
+      No pipelines found.
+    {{/if}}
+  {{/if}}
   </div>
 </div>
 

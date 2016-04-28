@@ -88,7 +88,7 @@ export default Ember.Service.extend({
     return ps;
   },
 
-  look(record) {
+  setCurrent(record) {
     this.set('current', record);
   },
 

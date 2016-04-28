@@ -5,8 +5,12 @@
     {{#link-to 'pipelines' class="section"}}<h1 class="ui header">Pipelines</h1>{{/link-to}}
     <i class="right angle icon divider"></i>
     <div class="active section">{{pipeline.current.name}}</div>
-    <i class="right angle icon divider"></i>
-    <div class="section">{{build.current.number}}</div>
+    {{#if pipeline.current.builds.isFulfilled}}
+      {{#if build.all.length}}
+        <i class="right angle icon divider"></i>
+        <div class="section">{{build.current.number}}</div>
+      {{/if}}
+    {{/if}}
   </div>
 
   <div class="ui right floated header">
@@ -14,28 +18,30 @@
   </div>
 </div>
 
-<div class="ui basic segment">
-  <div class="ui icon buttons">
-    <button class="ui basic button" {{action "previousBuild"}}>
-      <i class="left chevron icon"></i>
-    </button>
-    <button class="ui basic button" {{action "nextBuild"}}>
-      <i class="right chevron icon"></i>
-    </button>
-  </div>
-</div>
-
-<div class="ui basic segment pipeline-build">
-  <ul class="stages">
-  {{#each build.current.stages as |stage|}}
-    <li class="{{stage.status}} stage" {{action "selectStage" stage}}>
-      <i class="legal icon"></i>
-      <div class="label">{{stage.name}}</div>
-    </li>
-  {{/each}}
-  </ul>
-
-  {{#if selectedStage}}
-    {{stage-details model=selectedStage}}
+{{#if pipeline.current.builds.isFulfilled}}
+  {{#if build.all.length}}
+    <div class="ui basic segment pipeline-build">
+      <div class="left floated ui icon buttons">
+        <button class="ui basic button" {{action "previousBuild"}}>
+          <i class="left chevron icon"></i>
+        </button>
+        <button class="ui basic button" {{action "nextBuild"}}>
+          <i class="right chevron icon"></i>
+        </button>
+      </div>
+      <ul class="stages">
+      {{#each build.current.stages as |stage|}}
+        <li class="{{stage.status}} stage" {{action "selectStage" stage}}>
+          <i class="legal icon"></i>
+          <div class="label">{{stage.name}}</div>
+        </li>
+      {{/each}}
+      </ul>
+      {{#if stage.current}}
+        {{stage-details close=(action "unselectStage") }}
+      {{/if}}
+    </div>
+  {{else}}
+    No builds found.
   {{/if}}
-</div>
+{{/if}}

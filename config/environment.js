@@ -17,6 +17,11 @@ module.exports = function(environment) {
       kontinuousAPI: {
         host: process.env.KONTINUOUS_API_URL,
         version: process.env.KONTINUOUS_API_VERSION || 'v1',
+      },
+
+      k8sAPI: {
+        host: process.env.KUBERNETES_API_URL,
+        version: process.env.KUBERNETES_API_VERSION || 'v1',
       }
     }
   };
