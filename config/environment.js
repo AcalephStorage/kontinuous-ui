@@ -14,9 +14,16 @@ module.exports = function(environment) {
     },
 
     APP: {
-      // Here you can pass flags/options to your application instance
-      // when it is created
-    }
+      kontinuousAPI: {
+        host: process.env.KONTINUOUS_API_URL,
+        version: process.env.KONTINUOUS_API_VERSION || 'v1'
+      },
+      githubClient: {
+        id: process.env.GITHUB_CLIENT_ID,
+        secret: process.env.GITHUB_CLIENT_SECRET
+      }
+    },
+
   };
 
   if (environment === 'development') {
@@ -48,11 +55,16 @@ module.exports = function(environment) {
     sessionServiceName: 'session',
     providers: {
       'github-oauth2': {
-        apiKey: process.env.GITHUB_OAUTH_API_KEY,
-        scope: process.env.GITHUB_OAUTH_SCOPE,
-        redirectUri: process.env.GITHUB_OAUTH_REDIRECT_URI
+        apiKey: ENV.APP.githubClient.id,
+        scope: 'user:email,repo',
+        redirectUri: process.env.AUTH_CALLBACK
       }
     }
+  };
+
+  ENV['ember-simple-auth'] = {
+    routeAfterAuthentication: 'pipelines',
+    routeIfAlreadyAuthenticated: 'pipelines'
   };
 
   return ENV;
