@@ -6,6 +6,7 @@ import Ember from 'ember';
 export default DS.RESTAdapter.extend(DataAdapterMixin, {
 
   authorizer: 'authorizer:kontinuous',
+  defaultSerializer: 'kontinuous',
   host: Configuration.APP.kontinuousAPI.host,
   namespace: `api/${Configuration.APP.kontinuousAPI.version}`,
 

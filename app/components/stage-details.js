@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import DS from 'ember-data';
 import {task} from 'ember-concurrency';
 
 export default Ember.Component.extend({
@@ -6,7 +7,6 @@ export default Ember.Component.extend({
   classNames: Ember.String.w('ui right internal attached rail half-size'),
 
   store: Ember.inject.service(),
-  stage: Ember.inject.service(),
 
   willInsertElement() {
     this.get('logFetcher').cancelAll();
@@ -55,13 +55,39 @@ export default Ember.Component.extend({
       podName = stage.get('podName');
 
     namespace="acaleph";
-    podName="acaleph-dashboard-v2-bvw8l";
+    podName="kontinuous-75k21";
 
     return new Ember.RSVP.Promise((resolve) => {
-      let podUrl = `${Configuration.APP.k8sAPI.host}/api/${Configuration.APP.k8sAPI.version}/namespaces/${namespace}/pods/${podName}`;console.log(podUrl);
-      Ember.$.ajax(podUrl)
-        .then((pod) => {
+      Ember.RSVP.hash({
+        pod: this.get('store').queryRecord('k8s-pod', { namespace: namespace, name: podName })
+      })
+      .then((hash) => {
+        let containers = hash.pod.get('spec.containers').getEach('name');
+        let logs = [];
+
+        containers.forEach((name) => {
+          let q = { namespace: namespace, podName: podName, container: name };
+          let store = this.get('store');
+          let log = DS.PromiseObject.create({
+            promise: store.queryRecord('k8s-log', q)
+          });
+
+          log.reopen({
+            title: name,
+            reloader: task(function*() {
+              yield store.queryRecord('log', q)
+                .then((l) => {
+                  log.set('details', l.get('details'));
+                });
+            }).drop()
+          });
+
+          logs.push(log);
         });
+        resolve(logs);
+      }, () => {
+        resolve([]);
+      });
     });
   },
 
