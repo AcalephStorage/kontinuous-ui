@@ -10,17 +10,12 @@ metadata:
 spec:
   ports:
   - name: dashboard
-    port: 8081
+    port: 5000
     protocol: TCP
-    targetPort: 5000
+    targetPort: 8081
   selector:
     app: kontinuous
     type: dashboard
-  sessionAffinity: None
-  type: LoadBalancer
-status:
-  loadBalancer:
-    ingress:
 
 ---
 apiVersion: v1
@@ -46,10 +41,6 @@ spec:
     spec:
       containers:
       - env:
-        - name: KUBERNETES_API_URL
-          value: 
-        - name: KUBERNETES_API_TOKEN_FILE
-          value: /var/run/secrets/kubernetes.io/serviceaccount/token
         - name: AUTH0_CLIENT_ID
           value: 
         - name: AUTH0_DOMAIN
