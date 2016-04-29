@@ -1,0 +1,23 @@
+FROM node:0.12.7
+
+# Install ember, bower, forego, and caddy
+RUN npm install -g ember-cli@1.13.8 && \
+    npm install -g bower@1.5.2 && \
+    wget https://godist.herokuapp.com/projects/ddollar/forego/releases/current/linux-amd64/forego -O /usr/local/bin/forego && \
+    chmod 0744 /usr/local/bin/forego && \
+    wget https://github.com/mholt/caddy/releases/download/v0.7.6/caddy_linux_amd64.tar.gz -O /tmp/caddy.tar.gz && \
+    tar xvz -C /usr/local/bin -f /tmp/caddy.tar.gz && \
+    rm /tmp/caddy.tar.gz
+
+
+ADD . /home/apps/kontinuous-ui
+WORKDIR /home/apps/kontinuous-ui
+
+RUN npm install && \
+    bower install --allow-root
+
+ENV KUBERNETES_API_URL kubernetes.default
+ENV KUBERNETES_API_TOKEN_PATH /run/secrets/kubernetes.io/serviceaccount/token
+ENV KUBERNETES_API_TOKEN token
+
+CMD ["/usr/local/bin/forego", "start", "-f", "config/Procfile", "-p", "5000"]
