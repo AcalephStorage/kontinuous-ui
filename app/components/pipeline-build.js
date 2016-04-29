@@ -2,6 +2,8 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
 
+  classNames: Ember.String.w('ui grid container'),
+
   build: Ember.inject.service(),
 
   willInsertElement() {
@@ -48,6 +50,9 @@ export default Ember.Component.extend({
       let next = this.get('build.all').objectAt(index + 1);
       this.set('model', next);
       this.reselectStage();
+    },
+    confirmCreateBuild() {
+      this.$('.ui.modal.create-build-confirmation').modal('show');
     },
     createBuild() {
       let p = this.get('pipeline');

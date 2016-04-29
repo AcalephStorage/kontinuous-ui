@@ -1,34 +1,22 @@
-{{main-menu}}
-
-<div class="ui basic segment">
-  <div class="ui breadcrumb">
-    {{#link-to 'pipelines' class="section"}}<h1>Pipelines</h1>{{/link-to}}
-    <i class="right angle icon divider"></i>
-    <div class="section"><h2>{{pipeline.name}}</h2></div>
-    {{#if pipeline.builds.isFulfilled}}
-      {{#if pipeline.builds.length}}
-        <i class="right angle icon divider"></i>
-        <div class="active section"><h2>{{model.number}}</h2></div>
-      {{/if}}
-    {{/if}}
+<div class="two column row">
+  <div class="left floated column">
+    <div class="ui breadcrumb">
+      {{#link-to 'pipelines' class="section"}}<h1>Pipelines</h1>{{/link-to}}
+      <i class="right chevron icon divider"></i>
+      <div class="section"><h4>{{pipeline.name}}</h4></div>
+    </div>
   </div>
-
-  <div class="ui right floated header">
-    <a class="ui button" {{action "createBuild"}}>Create Build</a>
+  <div class="right floated column">
+    <div class="ui right floated nowrap teal button" {{action "confirmCreateBuild"}}>Create Build</div>
   </div>
 </div>
 
-{{#if pipeline.builds.isFulfilled}}
-  {{#if pipeline.builds.length}}
-    <div class="ui basic segment pipeline-build">
-      <div class="left floated ui icon buttons">
-        <button class="ui basic button" {{action "previousBuild"}}>
-          <i class="left chevron icon"></i>
-        </button>
-        <button class="ui basic button" {{action "nextBuild"}}>
-          <i class="right chevron icon"></i>
-        </button>
-      </div>
+<div class="sixteen wide column pipeline-build">
+  {{#if pipeline.builds.isFulfilled}}
+    {{#if pipeline.builds.length}}
+      <h3>Build {{model.number}}</h3>
+      <a {{action "previousBuild"}}><i class="tiny left chevron icon"></i><small>Prev</small></a>
+      <a {{action "nextBuild"}}><small>Next</small><i class="tiny right chevron icon"></i></a>
       <ul class="stages">
       {{#each model.stages as |stage|}}
         <li class="{{stage.status}} stage" {{action "selectStage" stage}}>
@@ -37,11 +25,22 @@
         </li>
       {{/each}}
       </ul>
+
       {{#if selectedStage}}
         {{stage-details model=selectedStage build=model close=(action "unselectStage") }}
       {{/if}}
-    </div>
-  {{else}}
-    No builds found.
+
+    {{else}}
+      No builds found.
+    {{/if}}
   {{/if}}
-{{/if}}
+</div>
+
+{{#ui-modal name="create-build-confirmation" class="small create-build-confirmation" closable=false onApprove=(action "createBuild") }}
+  <div class="header">Create Build</div>
+  <div class="content">Are you sure you want to create a build for {{pipeline.name}}?</div>
+  <div class="actions">
+    <div class="ui negative small button">No</div>
+    <div class="ui positive right labeled icon small button">Yes<i class="checkmark icon"></i></div>
+  </div>
+{{/ui-modal}}

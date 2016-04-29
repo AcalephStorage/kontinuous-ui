@@ -7,6 +7,8 @@ export default Ember.Service.extend({
   session: Ember.inject.service(),
 
   all: [],
+  sortKey: ['name'],
+  sorted: Ember.computed.sort('all', 'sortKey'),
   newRecord: null,
 
   // options for newRecord

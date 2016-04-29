@@ -8,7 +8,7 @@
   overflow-x: scroll;
   overflow-y: hidden;
   height: 8.9em;
-  margin: 0em 1em 0em 0em;
+  margin: 3em 1em 3em 0em;
   padding: 0em;
 }
 .pipeline-build .stage {
@@ -22,6 +22,9 @@
   position: relative;
   text-align: center;
   width: 4.2rem;
+}
+.pipeline-build .stage:first-child {
+  margin-left: 0;
 }
 .pipeline-build .stage.RUNNING,
 .pipeline-build .stage.RUNNING::before {

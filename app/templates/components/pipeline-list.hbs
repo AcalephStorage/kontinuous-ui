@@ -1,27 +1,28 @@
-{{main-menu}}
+<div class="two column row">
+  <div class="left floated column">
+    <div class="ui breadcrumb">
+      <div class="active section"><h1>Pipelines</h1></div>
+    </div>
+  </div>
+  <div class="right floated column">
+    {{#ui-link-to routeName='pipelines.create' tagName="button" class="ui right floated nowrap teal button" }}Create Pipeline{{/ui-link-to}}
+  </div>
+</div>
 
-<div class="ui basic segment">
-  <div class="ui breadcrumb">
-    <div class="active section"><h1>Pipelines</h1></div>
-  </div>
-  <div class="ui right floated header">
-    {{#ui-link-to routeName='pipelines.create' tagName="button" class="ui button" }}Create Pipeline{{/ui-link-to}}
-  </div>
-  <div class="ui basic segment">
+<div class="sixteen wide column">
   {{#if pipeline.all.isFulfilled}}
     {{#if pipeline.all.length}}
       <div class="ui cards">
-      {{#each pipeline.all as |pipeline|}}
+      {{#each pipeline.sorted as |pipeline|}}
         {{#unless pipeline.isNew}}
           {{pipeline-card model=pipeline}}
         {{/unless}}
       {{/each}}
       </div>
     {{else}}
-      No pipelines found.
+      <div class="ui center aligned segment">No pipelines found.</div>
     {{/if}}
   {{/if}}
-  </div>
 </div>
 
 {{outlet}}

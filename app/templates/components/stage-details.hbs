@@ -1,13 +1,27 @@
-<div class="ui segment">
-  <div class="ui basic clearing segment">
-    <div class="ui right floated small header"><i class="small close icon" {{action "close"}}></i></div>
-    <div class="ui left floated header">Stage {{model.index}}: {{model.name}}</div>
+<div class="ui clearing segment">
+  <div class="ui mini right floated basic icon button" {{action "close"}}>
+    <i class="small close icon"></i>
   </div>
+  <div class="ui left floated header">Stage {{model.index}}: {{model.name}}</div>
 
-  <table class="ui small very basic table">
+  <table class="ui small very basic compact table">
     <tr><td class="two wide">Status:</td><td>{{model.status}}</td></tr>
     <tr><td class="two wide">Type:</td><td>{{model.type}}</td></tr>
     <tr><td class="two wide">Namespace:</td><td>{{model.pod_namespace}}</td></tr>
+    <tr><td class="two wide">Params:</td>
+      <td>
+      {{#each-in model.params as |key value|}}
+        <div class="ui tiny horizontal basic label">{{key}}={{value}}</div>
+      {{/each-in}}
+      </td>
+    </tr>
+    <tr><td class="two wide">Labels:</td>
+      <td>
+      {{#each-in model.labels as |key value|}}
+        <div class="ui tiny horizontal basic label">{{key}}={{value}}</div>
+      {{/each-in}}
+      </td>
+    </tr>
     {{#if model.pod_name}}
     <tr><td class="two wide">Pod Name:</td><td>{{model.pod_name}}</td></tr>
     {{/if}}
@@ -22,7 +36,7 @@
     <div class="ui active mini inline loader"></div>
 
   {{else if model.logFiles.length}}
-    <div class="ui stackable top attached menu stage-tabs">
+    <div class="ui small stackable top attached menu stage-tabs">
       {{#each model.logFiles as |logFile|}}
         <a class="item" data-tab={{logFile.title}} {{action "showLogs" logFile}}>{{logFile.title}}</a>
       {{/each}}

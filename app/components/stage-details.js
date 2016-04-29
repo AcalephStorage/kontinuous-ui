@@ -4,7 +4,7 @@ import {task} from 'ember-concurrency';
 
 export default Ember.Component.extend({
 
-  classNames: Ember.String.w('ui right internal attached rail half-size'),
+  classNames: Ember.String.w('ui right internal rail stage-details'),
 
   store: Ember.inject.service(),
 

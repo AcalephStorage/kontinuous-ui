@@ -1,1 +1,6 @@
-{{outlet}}
+{{#if session.isAuthenticated}}
+  {{main-menu}}
+  <div id="main">
+    {{outlet}}
+  </div>
+{{/if}}
