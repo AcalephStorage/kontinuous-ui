@@ -1,6 +1,6 @@
 import Model from 'ember-data/model';
 import attr from 'ember-data/attr';
-import {hasMany} from 'ember-data/relationships';
+import {hasMany,belongsTo} from 'ember-data/relationships';
 
 export default Model.extend({
   number: attr('number'),
@@ -15,4 +15,5 @@ export default Model.extend({
   event: attr('string'),
   clone_url: attr('string'),
   stages: hasMany('stage', {async: true}),
+  pipeline: belongsTo('pipeline'),
 });

@@ -2,42 +2,56 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
 
-  pipeline: Ember.inject.service(),
   build: Ember.inject.service(),
-  stage: Ember.inject.service(),
 
-  didInsertElement() {
-    this.set('build.current', null);
-    this.set('stage.current', null);
-    this.get('pipeline.current.builds').then(() => {
+  willInsertElement() {
+    this.set('build._all', this.get('pipeline.builds'));
+    this.get('pipeline.builds').then(() => {
       let latest = this.get('build.latest');
-      this.set('build.current', latest);
+      this.set('model', latest);
     });
+  },
+
+  isLastBuild: Ember.computed('model', function() {
+    return this.get('model') === this.get('build.all.lastObject');
+  }),
+
+  isFirstBuild: Ember.computed('model', function() {
+    return this.get('model') === this.get('build.all.firstObject');
+  }),
+
+  reselectStage() {
+    let currentIndex = this.get('selectedStage.index');
+    let stage = this.get('model.stages').findBy('index', currentIndex);
+    if (stage) {
+      this.send('selectStage', stage);
+    } else {
+      this.send('unselectStage');
+    }
   },
 
   actions: {
     previousBuild() {
-      let n = this.get('selectedStage.index');
-      this.get('build').prev();
-      let stage = this.get('build.current.stages').findBy('index', n);
-      if (stage) {
-        this.send('selectStage', stage);
-      } else {
-        this.send('unselectStage');
+      if (this.get('isFirstBuild')) {
+        return;
       }
+      let index = this.get('build.all').indexOf(this.get('model'));
+      let prev = this.get('build.all').objectAt(index - 1);
+      this.set('model', prev);
+      this.reselectStage();
     },
     nextBuild() {
-      let n = this.get('selectedStage.index');
-      this.get('build').next();
-      let stage = this.get('build.current.stages').findBy('index', n);
-      if (stage) {
-        this.send('selectStage', stage);
-      } else {
-        this.send('unselectStage');
+      if (this.get('isLastBuild')) {
+        return;
       }
+      let index = this.get('build.all').indexOf(this.get('model'));
+      let next = this.get('build.all').objectAt(index + 1);
+      this.set('model', next);
+      this.reselectStage();
     },
     createBuild() {
-      let b = this.get('build').new();
+      let p = this.get('pipeline');
+      let b = this.get('build').new(p);
 
       b.save()
         .then(() => {
@@ -47,12 +61,11 @@ export default Ember.Component.extend({
         });
     },
     selectStage(stage) {
+      this.set('model.pipeline', this.get('pipeline'));
       this.set('selectedStage', stage);
-      this.get('stage').setCurrent(stage);
     },
     unselectStage() {
       this.set('selectedStage', null);
-      this.set('stage.current', null);
     }
   },
 

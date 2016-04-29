@@ -2,13 +2,13 @@
 
 <div class="ui basic segment">
   <div class="ui breadcrumb">
-    {{#link-to 'pipelines' class="section"}}<h1 class="ui header">Pipelines</h1>{{/link-to}}
+    {{#link-to 'pipelines' class="section"}}<h1>Pipelines</h1>{{/link-to}}
     <i class="right angle icon divider"></i>
-    <div class="active section">{{pipeline.current.name}}</div>
-    {{#if pipeline.current.builds.isFulfilled}}
-      {{#if build.all.length}}
+    <div class="section"><h2>{{pipeline.name}}</h2></div>
+    {{#if pipeline.builds.isFulfilled}}
+      {{#if pipeline.builds.length}}
         <i class="right angle icon divider"></i>
-        <div class="section">{{build.current.number}}</div>
+        <div class="active section"><h2>{{model.number}}</h2></div>
       {{/if}}
     {{/if}}
   </div>
@@ -18,8 +18,8 @@
   </div>
 </div>
 
-{{#if pipeline.current.builds.isFulfilled}}
-  {{#if build.all.length}}
+{{#if pipeline.builds.isFulfilled}}
+  {{#if pipeline.builds.length}}
     <div class="ui basic segment pipeline-build">
       <div class="left floated ui icon buttons">
         <button class="ui basic button" {{action "previousBuild"}}>
@@ -30,15 +30,15 @@
         </button>
       </div>
       <ul class="stages">
-      {{#each build.current.stages as |stage|}}
+      {{#each model.stages as |stage|}}
         <li class="{{stage.status}} stage" {{action "selectStage" stage}}>
           <i class="legal icon"></i>
           <div class="label">{{stage.name}}</div>
         </li>
       {{/each}}
       </ul>
-      {{#if stage.current}}
-        {{stage-details close=(action "unselectStage") }}
+      {{#if selectedStage}}
+        {{stage-details model=selectedStage build=model close=(action "unselectStage") }}
       {{/if}}
     </div>
   {{else}}

@@ -8,7 +8,6 @@ export default Ember.Service.extend({
 
   all: [],
   newRecord: null,
-  current: null,
 
   // options for newRecord
   repoOptions: [],
@@ -86,10 +85,6 @@ export default Ember.Service.extend({
     let ps = this.get('store').findAll('pipeline');
     this.set('all', ps);
     return ps;
-  },
-
-  setCurrent(record) {
-    this.set('current', record);
   },
 
   save(record) {
