@@ -1,22 +1,35 @@
 <div class="content">
-  {{#if model.builds.isPending}}
-    <div class="ui active mini right floated inline loader"></div>
-  {{else if latestBuild}}
-    <span class="right floated">#{{latestBuild.number}}</span>
-  {{/if}}
+  <h4>{{!-- <i class="tiny check icon"></i>  --}}{{model.name}}</h4>
 
-  <div class="header">{{model.name}}</div>
-  <div class="description"></div>
-</div>
-
-{{#if model.builds.isFulfilled}}
-<div class="extra content">
-  <div class="ui horizontal list">
-  {{#if latestBuild}}
-    <div class="item"><strong>Commit</strong> {{latestBuild.commitSHA}}</div>
-  {{else}}
-    <div class="item">No builds yet.</div>
-  {{/if}}
+  <div class="description">
+    {{#if model.builds.isPending}}
+    <div class="ui center aligned basic padded segment">
+      <div class="ui tiny text active inline loader">Loading</div>
+    </div>
+    {{else}}
+    <div class="ui basic segment">
+      <p>
+        <strong>Commit</strong> <a href="{{githubCommitLink}}" target="_blank">{{latestBuild.commit}}</a> by <a href="{{githubUserLink}}" target="_blank">{{latestBuild.author}}</a>
+      </p>
+      <p>
+        <strong>Duration</strong> 2m
+      </p>
+    </div>
+    {{/if}}
   </div>
 </div>
+{{#if model.builds.isFulfilled}}
+  {{#if latestBuild}}
+  <div class="extra content {{latestBuild.status}}">
+    <p>
+      <strong># {{latestBuild.number}}</strong>
+    </p>
+  </div>
+  {{else}}
+  <div class="extra content PENDING">
+    <p>
+      <em>No builds yet.</em>
+    </p>
+  </div>
+  {{/if}}
 {{/if}}

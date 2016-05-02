@@ -5,12 +5,6 @@ export default Ember.Service.extend({
   store: Ember.inject.service(),
   session: Ember.inject.service(),
 
-  sortKey: ['number'],
-  // Always bound in pipeline
-  _all: [],
-  all: Ember.computed.sort('_all', 'sortKey'),
-  latest: Ember.computed.reads('all.lastObject'),
-  current: null,
   newRecord: null,
 
   new(pipeline) {

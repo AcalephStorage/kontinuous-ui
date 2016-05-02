@@ -1,7 +1,6 @@
-<div class="ui clearing segment">
-  <div class="ui mini right floated basic icon button" {{action "close"}}>
-    <i class="small close icon"></i>
-  </div>
+<div class="ui segment">
+  <i class="small close icon" {{action "close"}}></i>
+
   <div class="ui left floated header">Stage {{model.index}}: {{model.name}}</div>
 
   <table class="ui small very basic compact table">
@@ -11,14 +10,14 @@
     <tr><td class="two wide">Params:</td>
       <td>
       {{#each-in model.params as |key value|}}
-        <div class="ui tiny horizontal basic label">{{key}}={{value}}</div>
+        <div class="ui tiny horizontal blue label">{{key}}={{value}}</div>
       {{/each-in}}
       </td>
     </tr>
     <tr><td class="two wide">Labels:</td>
       <td>
       {{#each-in model.labels as |key value|}}
-        <div class="ui tiny horizontal basic label">{{key}}={{value}}</div>
+        <div class="ui tiny horizontal blue label">{{key}}={{value}}</div>
       {{/each-in}}
       </td>
     </tr>
@@ -36,13 +35,13 @@
     <div class="ui active mini inline loader"></div>
 
   {{else if model.logFiles.length}}
-    <div class="ui small stackable top attached menu stage-tabs">
+    <div class="ui small stackable secondary pointing menu stage-tabs">
       {{#each model.logFiles as |logFile|}}
         <a class="item" data-tab={{logFile.title}} {{action "showLogs" logFile}}>{{logFile.title}}</a>
       {{/each}}
     </div>
     {{#each model.logFiles as |logFile|}}
-    <div class="ui bottom attached segment tab" data-tab={{logFile.title}}>
+    <div class="ui tab" data-tab={{logFile.title}}>
       <pre>{{logFile.details}}</pre>
     </div>
     {{/each}}

@@ -4,9 +4,13 @@ export default Ember.Component.extend({
 
   router: Ember.inject.service('-routing'),
 
-  click() {
-    let routeName = this.get('routeName');
-    this.get('router').transitionTo(routeName, this.getRouteContext());
+  attributeBindings: ['data-content'],
+
+  click(e) {
+    if (e.target.tagName !== 'A' && e.target.target !== '_blank') {
+      let routeName = this.get('routeName');
+      this.get('router').transitionTo(routeName, this.getRouteContext());
+    }
   },
 
   getRouteContext() {

@@ -7,28 +7,22 @@ export default UILinkToComponent.extend({
   classNameBindings: ['latestBuild.status'],
   routeName: 'pipeline',
 
-  _buildNumbers: Ember.computed('model.builds.isFulfilled', function() {
-    if (this.get('model.builds.isFulfilled')) {
-      return this.get('model.builds').getEach('number');
-    }
+  sortByNumber: ['number:asc'],
+  buildsByNumber: Ember.computed.sort('model.builds', 'sortByNumber'),
+  latestBuild: Ember.computed.reads('buildsByNumber.lastObject'),
+
+  githubRepoLink: Ember.computed('model.name', function() {
+    let name = this.get('model.name');
+    return `https://github.com/${name}`;
   }),
-  _lastBuildNumber: Ember.computed.max('_buildNumbers'),
-
-  latestBuild: Ember.computed('_lastBuildNumber', function() {
-    let n = this.get('_lastBuildNumber');
-    if (n === -Infinity) {
-      return;
-    }
-
-    let b = this.get('model.builds').findBy('number', n);
-
-    if (b.get('commit') === this.get('branch')) {
-      b.set('commitSHA', b.get('commit'));
-    } else {
-      b.set('commitSHA', b.get('commit').slice(0, 7));
-    }
-
-    return b;
+  githubCommitLink: Ember.computed('latestBuild.commit', function() {
+    let repoLink = this.get('githubRepoLink');
+    let commit = this.get('latestBuild.commit');
+    return `${repoLink}/commit/${commit}`;
+  }),
+  githubUserLink: Ember.computed('latestBuild.author', function() {
+    let author = this.get('latestBuild.author');
+    return `https://github.com/${author}`;
   })
 
 });

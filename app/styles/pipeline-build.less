@@ -1,59 +1,49 @@
 @-webkit-keyframes glow {
   to {
-    background: #6FB4FA;
+    background: @colorRunningGlow;
   }
 }
 .pipeline-build ul {
   display: flex;
   overflow-x: scroll;
   overflow-y: hidden;
-  height: 8.9em;
+  height: 10em;
   margin: 3em 1em 3em 0em;
   padding: 0em;
 }
 .pipeline-build .stage {
   border-radius: 50%;
-  border: 2px solid rgba(84, 88, 100, 0.7);
+  border: 3px solid @colorPending;
   cursor: pointer;
   display: inline-block;
-  height: 4rem;
-  line-height: 4rem;
-  margin: 1rem 2rem 0em 2rem;
+  height: 5rem;
+  line-height: 4.6rem;
+  margin: 1rem 3.5rem 0em 3.5rem;
   position: relative;
   text-align: center;
-  width: 4.2rem;
+  width: 5.2rem;
+}
+.pipeline-build .stage.selected,
+.pipeline-build .stage:hover {
+  box-shadow: 0px 1px 3px 0px #BCBDBD;
+  border-width: 2px;
+}
+.pipeline-build .stage.selected {
+  font-weight: bold;
 }
 .pipeline-build .stage:first-child {
   margin-left: 0;
 }
-.pipeline-build .stage.RUNNING,
-.pipeline-build .stage.RUNNING::before {
-  -webkit-animation: glow 1.0s infinite alternate;
-  border-color: rgba(45, 139, 233, 0.7);
-}
-.pipeline-build .selectable.stage.RUNNING:hover {
-}
-.pipeline-build .stage.SUCCESS,
-.pipeline-build .stage.SUCCESS::before {
-  border-color: rgba(12, 168, 138, 0.7);
-}
-.pipeline-build .stage.FAIL,
-.pipeline-build .stage.FAIL::before {
-  border-color: rgba(159, 52, 55, 0.7);
-}
-.pipeline-build .stage .icon {
-  margin: 0 !important;
-}
-.pipeline-build .stage::before{
+.pipeline-build .stage::before {
   background: transparent;
   border-radius: 3rem;
-  border: 1px solid rgba(84, 88, 100, 0.7);
+  border: 1px solid @colorPending;
   content: '';
   height: .1rem;
-  left: -3.9rem;
+  left: -5.4rem;
   position: absolute;
-  top: 1.9rem;
-  width: 3.6rem;
+  top: 2.4rem;
+  width: 3.5rem;
 }
 .pipeline-build .stage:first-child::before {
   display: none;
@@ -68,6 +58,28 @@
   position: relative;
   text-overflow: ellipsis;
   white-space: nowrap;
-  width: 7rem;
+  width: 8rem;
 }
 
+/*************
+** by status
+*************/
+
+.pipeline-build .stage.RUNNING,
+.pipeline-build .stage.RUNNING::before {
+  -webkit-animation: glow 1.0s infinite alternate;
+  border-color: @colorRunning;
+}
+.pipeline-build .selectable.stage.RUNNING:hover {
+}
+.pipeline-build .stage.SUCCESS,
+.pipeline-build .stage.SUCCESS::before {
+  border-color: @colorSuccess;
+}
+.pipeline-build .stage.FAIL,
+.pipeline-build .stage.FAIL::before {
+  border-color: @colorFail;
+}
+.pipeline-build .stage .icon {
+  margin: 0 !important;
+}

@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
 
-  classNames: Ember.String.w('ui attached borderless menu'),
+  classNames: Ember.String.w('ui borderless menu main-menu'),
 
   session: Ember.inject.service(),
   appNamespace: Ember.inject.service(),

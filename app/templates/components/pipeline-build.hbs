@@ -1,26 +1,42 @@
+
 <div class="two column row">
   <div class="left floated column">
-    <div class="ui breadcrumb">
+    <div class="ui large breadcrumb">
       {{#link-to 'pipelines' class="section"}}<h1>Pipelines</h1>{{/link-to}}
       <i class="right chevron icon divider"></i>
-      <div class="section"><h4>{{pipeline.name}}</h4></div>
+      <div class="section">{{pipeline.name}}</div>
+      {{#if pipeline.builds.length}}
+      <i class="right chevron icon divider"></i>
+      <div class="active section">Build #{{model.number}}</div>
+      {{/if}}
     </div>
   </div>
   <div class="right floated column">
-    <div class="ui right floated nowrap teal button" {{action "confirmCreateBuild"}}>Create Build</div>
+    <button class="right floated ui in-header icon button" data-content="Trigger Pipeline" {{action "confirmCreateBuild"}}><i class="plus icon"></i></button>
+    <button class="right floated ui in-header icon button" data-content="Pipeline Details"><i class="unhide icon"></i></button>
+    {{#ui-promise-dropdown class="right floated ui right pointing icon button" waitList=pipeline.builds onChange=(action "selectBuild") }}
+      <i class="history icon"></i>
+      {{input type="hidden"}}
+      <div class="menu">
+      {{#each all as |b|}}
+        <div class="item" data-value={{b.number}}>Build #{{b.number}}</div>
+      {{/each}}
+      </div>
+    {{/ui-promise-dropdown}}
   </div>
 </div>
 
-<div class="sixteen wide column pipeline-build">
-  {{#if pipeline.builds.isFulfilled}}
+<div class="sixteen wide column pipeline-build full-height">
+  {{#if pipeline.builds.isPending}}
+    <div class="ui center aligned very padded basic segment">
+      <div class="ui tiny text active inline loader">Loading</div>
+    </div>
+  {{else}}
     {{#if pipeline.builds.length}}
-      <h3>Build {{model.number}}</h3>
-      <a {{action "previousBuild"}}><i class="tiny left chevron icon"></i><small>Prev</small></a>
-      <a {{action "nextBuild"}}><small>Next</small><i class="tiny right chevron icon"></i></a>
       <ul class="stages">
       {{#each model.stages as |stage|}}
         <li class="{{stage.status}} stage" {{action "selectStage" stage}}>
-          <i class="legal icon"></i>
+          <i class="{{stage.statusIcon}} icon"></i>
           <div class="label">{{stage.name}}</div>
         </li>
       {{/each}}
