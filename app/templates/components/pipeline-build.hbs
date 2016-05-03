@@ -16,7 +16,6 @@
     <button class="right floated ui in-header icon button" data-content="Pipeline Details"><i class="unhide icon"></i></button>
     {{#ui-promise-dropdown class="right floated ui right pointing icon button" waitList=pipeline.builds onChange=(action "selectBuild") }}
       <i class="history icon"></i>
-      {{input type="hidden"}}
       <div class="menu">
       {{#each all as |b|}}
         <div class="item" data-value={{b.number}}>Build #{{b.number}}</div>
@@ -35,15 +34,11 @@
     {{#if pipeline.builds.length}}
       <ul class="stages">
       {{#each model.stages as |stage|}}
-        <li class="{{stage.status}} stage" {{action "selectStage" stage}}>
-          <i class="{{stage.statusIcon}} icon"></i>
-          <div class="label">{{stage.name}}</div>
-        </li>
+        {{build-stage model=stage build=model pipeline=pipeline selectStage=(action 'selectStage')}}
       {{/each}}
       </ul>
-
       {{#if selectedStage}}
-        {{stage-details model=selectedStage build=model close=(action "unselectStage") }}
+        {{stage-details model=selectedStage build=model pipeline=pipeline close=(action 'unselectStage') }}
       {{/if}}
 
     {{else}}

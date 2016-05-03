@@ -1,4 +1,4 @@
-<div class="ui segment">
+<div class="ui raised segment">
   <i class="small close icon" {{action "close"}}></i>
 
   <div class="ui left floated header">Stage {{model.index}}: {{model.name}}</div>
@@ -32,20 +32,29 @@
   <h3 class="ui header">Logs</h3>
 
   {{#if model.logFetcher.isRunning}}
-    <div class="ui active mini inline loader"></div>
-
-  {{else if model.logFiles.length}}
-    <div class="ui small stackable secondary pointing menu stage-tabs">
+    <div class="ui center aligned basic segment">
+      <div class="ui tiny text active inline loader">Loading</div>
+    </div>
+  {{else}}
+    {{#if model.logFiles.length}}
+      <div class="ui small attached pointing menu stage-tabs">
+        {{#each model.logFiles as |logFile|}}
+          <a class="item" data-tab={{logFile.title}} {{action "showLogs" logFile}}>{{logFile.title}}</a>
+        {{/each}}
+      </div>
       {{#each model.logFiles as |logFile|}}
-        <a class="item" data-tab={{logFile.title}} {{action "showLogs" logFile}}>{{logFile.title}}</a>
+      <div class="ui attached segment tab" data-tab={{logFile.title}}>
+        {{#if logFile.details }}
+          <pre>{{logFile.details}}</pre>
+        {{else}}
+          <div class="ui center aligned basic segment">
+            <div class="ui tiny text active inline loader">Loading</div>
+          </div>
+        {{/if}}
+      </div>
       {{/each}}
-    </div>
-    {{#each model.logFiles as |logFile|}}
-    <div class="ui tab" data-tab={{logFile.title}}>
-      <pre>{{logFile.details}}</pre>
-    </div>
-    {{/each}}
 
+    {{/if}}
   {{/if}}
 
 </div>

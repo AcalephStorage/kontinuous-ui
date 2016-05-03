@@ -13,7 +13,6 @@ export default Ember.Component.extend({
     this.get('pipeline.builds').then(() => {
       let model = this.get('all.firstObject');
       this.set('model', model);
-      this.addStageDesigns();
     });
   },
 
@@ -21,20 +20,6 @@ export default Ember.Component.extend({
     this.$(".in-header.icon.button").popup({
       variation: "small inverted",
       position: "top right"
-    });
-  },
-
-  addStageDesigns() {
-    this.get('pipeline.builds').forEach((build) => {
-      build.get('stages').forEach((stage) => {
-        let iconClassMap = {
-          'command': 'terminal',
-          'docker_build': 'legal',
-          'docker_publish': 'upload',
-        };
-        let type = stage.get('type');
-        stage.set('statusIcon', iconClassMap[type] || 'terminal');
-      });
     });
   },
 
@@ -59,7 +44,6 @@ export default Ember.Component.extend({
         });
     },
     selectStage(stage) {
-      this.set('model.pipeline', this.get('pipeline'));
       this.set('selectedStage', stage);
     },
     unselectStage() {
