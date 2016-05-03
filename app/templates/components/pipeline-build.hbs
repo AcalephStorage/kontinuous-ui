@@ -13,7 +13,7 @@
   </div>
   <div class="right floated column">
     <button class="right floated ui in-header icon button" data-content="Trigger Pipeline" {{action "confirmCreateBuild"}}><i class="plus icon"></i></button>
-    <button class="right floated ui in-header icon button" data-content="Pipeline Details"><i class="unhide icon"></i></button>
+    <button class="right floated ui in-header icon button" data-content="Pipeline Details" {{action "viewPipelineDetails"}}><i class="unhide icon"></i></button>
     {{#ui-promise-dropdown class="right floated ui right pointing icon button" waitList=pipeline.builds onChange=(action "selectBuild") }}
       <i class="history icon"></i>
       <div class="menu">
@@ -41,8 +41,12 @@
         {{stage-details model=selectedStage build=model pipeline=pipeline close=(action 'unselectStage') }}
       {{/if}}
 
+      {{#if isViewingPipelineDetails}}
+        {{pipeline-details model=pipeline close=(action 'closePipelineDetails') }}
+      {{/if}}
+
     {{else}}
-      No builds found.
+      <div class="ui center aligned segment">No builds found.</div>
     {{/if}}
   {{/if}}
 </div>

@@ -9,7 +9,12 @@ export function duration(params) {
   }
 
   let diff = end.diff(start, 'seconds');
-  return moment.duration(diff, 's').humanize();
+  let words = moment.duration(diff, 's').humanize().split(' ');
+  if (Ember.String.w('a an').contains(words[0])) {
+    return `${diff} ${words.get('lastObject')}`;
+  } else {
+    return words.join(' ');
+  }
 }
 
 export default Ember.Helper.helper(duration);

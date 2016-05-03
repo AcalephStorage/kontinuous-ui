@@ -44,10 +44,18 @@ export default Ember.Component.extend({
         });
     },
     selectStage(stage) {
+      this.send('closePipelineDetails');
       this.set('selectedStage', stage);
     },
     unselectStage() {
       this.set('selectedStage', null);
+    },
+    viewPipelineDetails() {
+      this.send('unselectStage');
+      this.set('isViewingPipelineDetails', true);
+    },
+    closePipelineDetails() {
+      this.set('isViewingPipelineDetails', false)
     }
   },
 
