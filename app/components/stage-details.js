@@ -54,9 +54,6 @@ export default Ember.Component.extend({
     let namespace = stage.get('pod_namespace'),
       podName = stage.get('podName');
 
-    namespace="acaleph";
-    podName="kontinuous-75k21";
-
     return new Ember.RSVP.Promise((resolve) => {
       Ember.RSVP.hash({
         pod: this.get('store').queryRecord('k8s-pod', { namespace: namespace, name: podName })
