@@ -2,12 +2,28 @@
   color: #000000;
 }
 
-.ui.cards > .card > .extra.SUCCESS, .ui.card > .extra.SUCCESS {
+.PENDING.ui.card > .extra, .ui.card > .extra {
+  background: @colorPending;
+}
+.SUCCESS.ui.card > .extra {
   background: @colorSuccess;
 }
-.ui.cards > .card > .extra.FAIL, .ui.card > .extra.FAIL {
+.FAIL.ui.card > .extra {
   background: @colorFail;
 }
-.ui.cards > .card > .extra.PENDING, .ui.card > .extra.PENDING {
-  background: @colorPending;
+.RUNNING.ui.card > .extra {
+  background: @colorRunning;
+}
+
+.PENDING.ui.card > .content .status.icon, .ui.card > .content .status.icon {
+  color: @colorPending;
+}
+.SUCCESS.ui.card > .content .status.icon {
+  color: @colorSuccess;
+}
+.FAIL.ui.card > .content .status.icon {
+  color: @colorFail;
+}
+.RUNNING.ui.card > .content .status.icon {
+  color: @colorRunning;
 }

@@ -10,6 +10,18 @@ export default UILinkToComponent.extend({
   sortByNumber: ['number:asc'],
   buildsByNumber: Ember.computed.sort('model.builds', 'sortByNumber'),
   latestBuild: Ember.computed.reads('buildsByNumber.lastObject'),
+  statusIcon: Ember.computed('latestBuild.status', function() {
+    switch(this.get('latestBuild.status')) {
+      case 'SUCCESS':
+        return 'check circle';
+      case 'FAIL':
+        return 'remove circle';
+      case 'RUNNING':
+        return 'circle';
+      default:
+        return 'circle notched';
+    }
+  }),
 
   githubRepoLink: Ember.computed('model.name', function() {
     let name = this.get('model.name');

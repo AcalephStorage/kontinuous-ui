@@ -14,7 +14,8 @@
     "auth0-lock": "^7.10.2",
     "jsrsasign": "^5.0.1",
     "semantic-ui": "~2.1.8",
-    "node-uuid": "1.4.1"
+    "node-uuid": "1.4.1",
+    "moment": "momentjs#^2.13.0"
   },
   "resolutions": {
     "ember": "v2.5.0"

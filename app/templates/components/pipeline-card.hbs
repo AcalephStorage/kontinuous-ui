@@ -1,5 +1,5 @@
 <div class="content">
-  <h4>{{!-- <i class="tiny check icon"></i>  --}}{{model.name}}</h4>
+  <h4><i class="{{statusIcon}} status icon"></i> {{model.name}}</h4>
 
   <div class="description">
     {{#if model.builds.isPending}}
@@ -12,7 +12,7 @@
         <strong>Commit</strong> <a href="{{githubCommitLink}}" target="_blank">{{latestBuild.commit}}</a> by <a href="{{githubUserLink}}" target="_blank">{{latestBuild.author}}</a>
       </p>
       <p>
-        <strong>Duration</strong> 2m
+        <strong>Duration</strong> {{duration latestBuild.started latestBuild.finished}}
       </p>
     </div>
     {{/if}}
@@ -20,7 +20,7 @@
 </div>
 {{#if model.builds.isFulfilled}}
   {{#if latestBuild}}
-  <div class="extra content {{latestBuild.status}}">
+  <div class="extra content">
     <p>
       <strong># {{latestBuild.number}}</strong>
     </p>
