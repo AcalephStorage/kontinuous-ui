@@ -55,7 +55,7 @@ export default Ember.Component.extend({
       this.set('isViewingPipelineDetails', true);
     },
     closePipelineDetails() {
-      this.set('isViewingPipelineDetails', false)
+      this.set('isViewingPipelineDetails', false);
     }
   },
 
