@@ -56,7 +56,7 @@ module.exports = function(environment) {
   ENV['torii'] = {
     sessionServiceName: 'session',
     providers: {
-      'github-oauth2': {
+      'github-token': {
         apiKey: ENV.APP.githubClient.id,
         scope: 'user:email,repo',
         redirectUri: process.env.AUTH_CALLBACK
