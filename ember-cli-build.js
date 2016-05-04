@@ -5,8 +5,13 @@ module.exports = function(defaults) {
   var app = new EmberApp(defaults, {
     lessOptions: {
       paths: ['bower_components/semantic-ui']
+    },
+    babel: {
+      includePolyfill: true
     }
   });
+
+  app.import(app.bowerDirectory + '/moment/moment.js');
 
   // Use `app.import` to add additional libraries to the generated
   // output files.

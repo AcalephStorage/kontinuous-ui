@@ -1,0 +1,61 @@
+<div class="ui raised segment">
+  <i class="small close icon" {{action "close"}}></i>
+
+  <div class="ui left floated header">Stage {{model.index}}: {{model.name}}</div>
+
+  <table class="ui small very basic compact table">
+    <tr><td class="two wide">Status:</td><td>{{model.status}}</td></tr>
+    <tr><td class="two wide">Type:</td><td>{{model.type}}</td></tr>
+    <tr><td class="two wide">Namespace:</td><td>{{model.pod_namespace}}</td></tr>
+    <tr><td class="two wide">Params:</td>
+      <td>
+      {{#each-in model.params as |key value|}}
+        <div class="ui tiny horizontal blue label">{{key}}={{value}}</div>
+      {{/each-in}}
+      </td>
+    </tr>
+    <tr><td class="two wide">Labels:</td>
+      <td>
+      {{#each-in model.labels as |key value|}}
+        <div class="ui tiny horizontal blue label">{{key}}={{value}}</div>
+      {{/each-in}}
+      </td>
+    </tr>
+    {{#if model.pod_name}}
+    <tr><td class="two wide">Pod Name:</td><td>{{model.pod_name}}</td></tr>
+    {{/if}}
+    {{#if model.job_name}}
+    <tr><td class="two wide">Job Name:</td><td>{{model.job_name}}</td></tr>
+    {{/if}}
+  </table>
+
+  <h3 class="ui header">Logs</h3>
+
+  {{#if model.logFetcher.isRunning}}
+    <div class="ui center aligned basic segment">
+      <div class="ui tiny text active inline loader">Loading</div>
+    </div>
+  {{else}}
+    {{#if model.logFiles.length}}
+      <div class="ui small attached pointing menu stage-tabs">
+        {{#each model.logFiles as |logFile|}}
+          <a class="item" data-tab={{logFile.title}} {{action "showLogs" logFile}}>{{logFile.title}}</a>
+        {{/each}}
+      </div>
+      {{#each model.logFiles as |logFile|}}
+      <div class="ui attached segment tab" data-tab={{logFile.title}}>
+        {{#if logFile.details }}
+          <pre>{{logFile.details}}</pre>
+        {{else}}
+          <div class="ui center aligned basic segment">
+            <div class="ui tiny text active inline loader">Loading</div>
+          </div>
+        {{/if}}
+      </div>
+      {{/each}}
+    {{else}}
+      <div class="ui center aligned segment">No logs found.</div>
+    {{/if}}
+  {{/if}}
+
+</div>

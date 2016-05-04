@@ -8,4 +8,5 @@ export default Ember.Route.extend(UnauthenticatedRouteMixin, {
       this.get('session').authenticate('authenticator:torii', 'github');
     }
   }
+
 });

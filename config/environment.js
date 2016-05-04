@@ -21,9 +21,12 @@ module.exports = function(environment) {
       githubClient: {
         id: process.env.GITHUB_CLIENT_ID,
         secret: process.env.GITHUB_CLIENT_SECRET
+      },
+      k8sAPI: {
+        host: process.env.KUBERNETES_API_URL,
+        version: process.env.KUBERNETES_API_VERSION || 'v1',
       }
-    },
-
+    }
   };
 
   if (environment === 'development') {
@@ -50,7 +53,6 @@ module.exports = function(environment) {
 
   }
 
-
   ENV['torii'] = {
     sessionServiceName: 'session',
     providers: {
@@ -64,7 +66,16 @@ module.exports = function(environment) {
 
   ENV['ember-simple-auth'] = {
     routeAfterAuthentication: 'pipelines',
-    routeIfAlreadyAuthenticated: 'pipelines'
+    routeIfAlreadyAuthenticated: 'pipelines',
+    authenticationRoute: 'login',
+  };
+
+  ENV['contentSecurityPolicy'] = {
+    'font-src': "'self' data: cdn.auth0.com fonts.gstatic.com",
+    'style-src': "'self' 'unsafe-inline' https://fonts.googleapis.com",
+    'script-src': "'self' 'unsafe-eval' https://cdn.auth0.com https://acaleph.auth0.com",
+    'connect-src': "'self' http://localhost:* https://acaleph.auth0.com",
+    'img-src': "'self' *.gravatar.com https://avatars.githubusercontent.com"
   };
 
   return ENV;

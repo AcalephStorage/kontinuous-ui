@@ -1,1 +1,36 @@
 @import 'src/semantic';
+@import './pipeline-card';
+@import './pipeline-build';
+@import './stage-details';
+
+body > div {
+  height: 95%;
+  padding-bottom: 5%;
+  margin: 0 3rem;
+}
+.full-height {
+  height: inherit !important;
+}
+.main-menu {
+  margin-bottom: 3rem !important;
+}
+
+[data-ember-action] {
+  cursor: pointer;
+}
+
+@media only screen and (min-width: 1200px) {
+  .ui.container {
+    width: 1400px;
+  }
+}
+
+/******************
+** Variables
+******************/
+
+@colorSuccess:      #93C47D;
+@colorFail:         #EA9999;
+@colorPending:      #D9D9D9;
+@colorRunning:      #B4EAFF;
+@colorRunningGlow:  #C3E9F9;

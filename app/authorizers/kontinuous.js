@@ -1,13 +1,15 @@
-import Base from 'ember-simple-auth/authorizers/base';
 import Ember from 'ember';
+import BaseAuthorizer from 'ember-simple-auth/authorizers/base';
 
 const {isEmpty} = Ember;
 
-export default Base.extend({
-  authorize(data, block) {
-    const token = data.jwt;
+export default BaseAuthorizer.extend({
+
+  authorize(sessionData, block) {
+    const token = sessionData.jwt;
     if (!isEmpty(token)) {
       block('Authorization', `Bearer ${token}`);
     }
   }
+
 });

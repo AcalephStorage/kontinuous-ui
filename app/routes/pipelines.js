@@ -3,10 +3,10 @@ import AuthenticatedRouteMixin from 'ember-simple-auth/mixins/authenticated-rout
 
 export default Ember.Route.extend(AuthenticatedRouteMixin, {
 
-  // model() {
-  //   return {
-  //     pipelines: this.store.findAll('pipeline')
-  //   };
-  // }
+  pipeline: Ember.inject.service(),
+
+  model() {
+    return this.get('pipeline').fetchAll();
+  }
 
 });

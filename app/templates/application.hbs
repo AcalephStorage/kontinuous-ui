@@ -1,9 +1,6 @@
 {{#if session.isAuthenticated}}
-  <ul>
-    <li>Provider: {{session.data.authenticated.provider}}</li>
-    <li>GitHub token: {{session.data.authenticated.authorizationCode}}</li>
-  </ul>
-  <button {{action 'logout'}}>logout</button>
+  {{main-menu}}
+  {{outlet}}
+{{else}}
+  {{outlet}}
 {{/if}}
-
-{{outlet}}
