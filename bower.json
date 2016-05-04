@@ -11,8 +11,6 @@
     "jquery": "^1.11.3",
     "loader.js": "ember-cli/loader.js#3.2.1",
     "qunit": "~1.18.0",
-    "auth0-lock": "^7.10.2",
-    "jsrsasign": "^5.0.1",
     "semantic-ui": "~2.1.8",
     "node-uuid": "1.4.1",
     "moment": "momentjs#^2.13.0"

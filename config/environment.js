@@ -55,7 +55,7 @@ module.exports = function(environment) {
   ENV['torii'] = {
     sessionServiceName: 'session',
     providers: {
-      'github-oauth2': {
+      'kontinuous-github-token': {
         apiKey: ENV.APP.githubClient.id,
         scope: 'user:email,repo',
         redirectUri: process.env.AUTH_CALLBACK
@@ -70,10 +70,10 @@ module.exports = function(environment) {
   };
 
   ENV['contentSecurityPolicy'] = {
-    'font-src': "'self' data: cdn.auth0.com fonts.gstatic.com",
+    'font-src': "'self' data: fonts.gstatic.com",
     'style-src': "'self' 'unsafe-inline' https://fonts.googleapis.com",
-    'script-src': "'self' 'unsafe-eval' https://cdn.auth0.com https://acaleph.auth0.com",
-    'connect-src': "'self' http://localhost:* https://acaleph.auth0.com",
+    'script-src': "'self' 'unsafe-eval'",
+    'connect-src': "'self' http://localhost:*",
     'img-src': "'self' *.gravatar.com https://avatars.githubusercontent.com"
   };
 

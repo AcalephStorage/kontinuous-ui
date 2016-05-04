@@ -7,7 +7,7 @@ export default BaseAuthenticator.extend({
   tokenEndpoint: config.APP.k8sAPI.host + '/sessions/create',
 
   restore(data) {
-    return Ember.RSVP.Promise((resolve, reject) => {
+    return new Ember.RSVP.Promise((resolve, reject) => {
       if (Ember.isEmpty(data.token)) {
         resolve(data);
       } else {
