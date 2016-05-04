@@ -12,9 +12,9 @@ spec:
   - name: dashboard
     port: 5000
     protocol: TCP
-    targetPort: 8081
+    targetPort: 5000
   selector:
-    app: kontinuous
+    app: kontinuous-ui
     type: dashboard
 
 ---
@@ -41,12 +41,12 @@ spec:
     spec:
       containers:
       - env:
-        - name: AUTH0_CLIENT_ID
-          value: 
-        - name: AUTH0_DOMAIN
-          value: 
+        - name: GITHUB_CLIENT_CALLBACK
+          value:
+        - name: GITHUB_CLIENT_ID
+          value:
         - name: KONTINUOUS_API_URL
-          value: 
+          value:
         image: quay.io/acaleph/kontinuous-ui:dashboard
         imagePullPolicy: Always
         name: kontinuous-ui

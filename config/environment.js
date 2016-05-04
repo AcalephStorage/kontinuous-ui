@@ -16,10 +16,11 @@ module.exports = function(environment) {
     APP: {
       kontinuousAPI: {
         host: process.env.KONTINUOUS_API_URL,
-        version: process.env.KONTINUOUS_API_VERSION || 'v1'
+        version: process.env.KONTINUOUS_API_VERSION || 'v1',
       },
       githubClient: {
-        id: process.env.GITHUB_CLIENT_ID
+        id: process.env.GITHUB_CLIENT_ID,
+        callback: process.env.GITHUB_CLIENT_CALLBACK
       },
       k8sAPI: {
         host: process.env.KUBERNETES_API_URL,
@@ -58,7 +59,7 @@ module.exports = function(environment) {
       'kontinuous-github-token': {
         apiKey: ENV.APP.githubClient.id,
         scope: 'user:email,repo',
-        redirectUri: process.env.AUTH_CALLBACK
+        redirectUri: ENV.APP.githubClient.callback
       }
     }
   };
