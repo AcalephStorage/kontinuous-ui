@@ -56,7 +56,7 @@ export default Ember.Service.extend({
   selectedNotifs: Ember.computed.filterBy('notifOptions', 'isSelected', true),
 
   new() {
-    let user = this.get('session.data.authenticated.profile.user_id');
+    let user = this.get('session.session.authenticated.user_id');
     let p = this.get('store').createRecord('pipeline', { login: user });
     this.set('newRecord', p);
 

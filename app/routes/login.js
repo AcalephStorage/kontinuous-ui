@@ -13,6 +13,12 @@ export default Ember.Route.extend(UnauthenticatedRouteMixin, {
           this.set('session.errorMessage', resp.Message || "Failed to login.");
         });
     }
-  }
+  },
+
+  renderTemplate: function() {
+    this.render({
+      outlet: 'login'
+    });
+  },
 
 });

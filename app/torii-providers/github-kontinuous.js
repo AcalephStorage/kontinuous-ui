@@ -24,6 +24,7 @@ export default GithubOauth2Provider.extend({
           });
 
           let url = [base, qs.toString()].join('?');
+
           Ember.$.ajax({
             url: url,
             type: 'POST',
@@ -31,7 +32,10 @@ export default GithubOauth2Provider.extend({
           })
           .then((response) => {
             Ember.run(() => {
-              resolve({token: response});
+              resolve({
+                jwt: response.jwt,
+                user_id: response.user_id
+              });
             });
           }, (xhr) => {
             Ember.run(() => {
