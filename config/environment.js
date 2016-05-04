@@ -19,8 +19,7 @@ module.exports = function(environment) {
         version: process.env.KONTINUOUS_API_VERSION || 'v1'
       },
       githubClient: {
-        id: process.env.GITHUB_CLIENT_ID,
-        secret: process.env.GITHUB_CLIENT_SECRET
+        id: process.env.GITHUB_CLIENT_ID
       },
       k8sAPI: {
         host: process.env.KUBERNETES_API_URL,
@@ -56,7 +55,7 @@ module.exports = function(environment) {
   ENV['torii'] = {
     sessionServiceName: 'session',
     providers: {
-      'github-token': {
+      'github-oauth2': {
         apiKey: ENV.APP.githubClient.id,
         scope: 'user:email,repo',
         redirectUri: process.env.AUTH_CALLBACK

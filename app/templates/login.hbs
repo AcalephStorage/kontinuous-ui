@@ -1,1 +1,9 @@
-<button {{action 'login'}}>login</button>
+{{#unless session.isAuthenticated}}
+<div class="ui middle aligned center aligned grid full-height">
+  <div class="column">
+    <button class="ui huge grey circular github icon button" {{action "login"}}>
+      <i class="github icon"></i>
+    </button>
+  </div>
+</div>
+{{/unless}}
