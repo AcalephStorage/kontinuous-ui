@@ -16,6 +16,10 @@ export default Ember.Service.extend({
 
   save(record) {
     return record.save();
+  },
+
+  unload(record) {
+    record.unloadRecord();
   }
 
 });

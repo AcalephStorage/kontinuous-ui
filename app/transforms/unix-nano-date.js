@@ -1,6 +1,7 @@
 import Transform from 'ember-data/transform';
 
 export default Transform.extend({
+  nano: 1000000000,
   deserialize(serialized) {
     if (serialized === 0) {
       return '';
@@ -10,10 +11,10 @@ export default Transform.extend({
   },
 
   serialize(deserialized) {
-    if (deserialized.length) {
+    if (deserialized && deserialized.length) {
       return moment(deserialized).unix() * this.nano;
     } else {
-      return 0;
+      return;
     }
   }
 });

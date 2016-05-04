@@ -9,7 +9,11 @@ export function duration(params) {
   }
 
   let diff = end.diff(start, 'seconds');
-  return moment.duration(diff, 's').humanize();
+  if (diff.length) {
+    return moment.duration(diff, 's').humanize();
+  } else {
+    return '';
+  }
 }
 
 export default Ember.Helper.helper(duration);

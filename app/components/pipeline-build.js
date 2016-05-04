@@ -41,6 +41,9 @@ export default Ember.Component.extend({
           this.set('successMessage', 'Successfully created build for pipeline.');
         }, (res) => {
           this.set('errorMessage', res.errors.Message || 'Failed to create build for pipeline.');
+        })
+        .finally(() => {
+          this.get('build').unload(b);
         });
     },
     selectStage(stage) {
