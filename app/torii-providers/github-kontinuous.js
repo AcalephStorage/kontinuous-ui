@@ -35,7 +35,7 @@ export default GithubOauth2Provider.extend({
             });
           }, (xhr) => {
             Ember.run(() => {
-              reject(xhr.responseText);
+              reject(xhr.responseJSON);
             });
           });
         });
