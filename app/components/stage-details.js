@@ -7,7 +7,7 @@ export default Ember.Component.extend({
   isRunning: Ember.computed.equal('model.status', 'RUNNING'),
   isDone: Ember.computed.match('model.status', /^(SUCCESS|FAIL)$/),
 
-  didUpdate() {
+  didRender() {
     let tabs = this.$(".stage-tabs .item");
     if (tabs.length) {
       let tabName = tabs[0].dataset.tab;
