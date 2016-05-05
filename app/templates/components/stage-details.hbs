@@ -6,7 +6,6 @@
   <table class="ui small very basic compact table">
     <tr><td class="two wide">Status:</td><td>{{model.status}}</td></tr>
     <tr><td class="two wide">Type:</td><td>{{model.type}}</td></tr>
-    <tr><td class="two wide">Namespace:</td><td>{{model.pod_namespace}}</td></tr>
     <tr><td class="two wide">Params:</td>
       <td>
       {{#each-in model.params as |key value|}}
@@ -21,6 +20,9 @@
       {{/each-in}}
       </td>
     </tr>
+    {{#if model.pod_namespace}}
+    <tr><td class="two wide">Namespace:</td><td>{{model.pod_namespace}}</td></tr>
+    {{/if}}
     {{#if model.pod_name}}
     <tr><td class="two wide">Pod Name:</td><td>{{model.pod_name}}</td></tr>
     {{/if}}

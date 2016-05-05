@@ -55,7 +55,7 @@ export default Ember.Component.extend({
 
   getPodLogs(stage) {
     let namespace = stage.get('pod_namespace'),
-      podName = stage.get('podName');
+      podName = stage.get('pod_name');
 
     return new Ember.RSVP.Promise((resolve) => {
       Ember.RSVP.hash({
