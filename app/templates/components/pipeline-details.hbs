@@ -1,0 +1,26 @@
+<div class="ui raised segment">
+  <i class="close icon" {{action "close"}}></i>
+  <div class="ui left floated header">Pipeline: {{model.name}}</div>
+
+  <table class="ui small very basic compact table">
+    <tr>
+      <td class="two wide">Events:</td>
+      <td>
+      {{#each model.events as |event|}}
+        <div class="ui tiny horizontal blue label">{{event}}</div>
+      {{/each}}
+      </td>
+    </tr>
+
+    {{#each model.notif as |notif|}}
+      {{#each-in notif.metadata as |key value|}}
+        {{#if value.length}}
+          <tr>
+            <td class="two wide">{{notif.type}} {{key}}</td>
+            <td>{{value}}</td>
+          </tr>
+        {{/if}}
+      {{/each-in}}
+    {{/each}}
+  </table>
+</div>

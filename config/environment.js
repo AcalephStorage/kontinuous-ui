@@ -14,8 +14,18 @@ module.exports = function(environment) {
     },
 
     APP: {
-      // Here you can pass flags/options to your application instance
-      // when it is created
+      kontinuousAPI: {
+        host: process.env.KONTINUOUS_API_URL,
+        version: process.env.KONTINUOUS_API_VERSION || 'v1',
+      },
+      githubClient: {
+        id: process.env.GITHUB_CLIENT_ID,
+        callback: process.env.GITHUB_CLIENT_CALLBACK
+      },
+      k8sAPI: {
+        host: process.env.KUBERNETES_API_URL,
+        version: process.env.KUBERNETES_API_VERSION || 'v1',
+      }
     }
   };
 
@@ -42,6 +52,31 @@ module.exports = function(environment) {
   if (environment === 'production') {
 
   }
+
+  ENV['torii'] = {
+    sessionServiceName: 'session',
+    providers: {
+      'kontinuous-github-token': {
+        apiKey: ENV.APP.githubClient.id,
+        scope: 'user:email,repo',
+        redirectUri: ENV.APP.githubClient.callback
+      }
+    }
+  };
+
+  ENV['ember-simple-auth'] = {
+    routeAfterAuthentication: 'pipelines',
+    routeIfAlreadyAuthenticated: 'pipelines',
+    authenticationRoute: 'login',
+  };
+
+  ENV['contentSecurityPolicy'] = {
+    'font-src': "'self' data: fonts.gstatic.com",
+    'style-src': "'self' 'unsafe-inline' https://fonts.googleapis.com",
+    'script-src': "'self' 'unsafe-eval'",
+    'connect-src': "'self' http://localhost:*",
+    'img-src': "'self' *.gravatar.com https://avatars.githubusercontent.com"
+  };
 
   return ENV;
 };

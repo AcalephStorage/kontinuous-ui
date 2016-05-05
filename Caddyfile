@@ -1,0 +1,10 @@
+0.0.0.0:5000 {
+  gzip
+  root /home/apps/kontinuous-ui/dist
+  rewrite / {
+    regexp .*
+    ext    /
+    to     /index.html
+}
+  log stdout
+}

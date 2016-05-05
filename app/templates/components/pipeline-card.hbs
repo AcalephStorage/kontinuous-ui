@@ -1,0 +1,35 @@
+<div class="content">
+  <h4><i class="{{statusIcon}} status icon"></i> {{model.name}}</h4>
+
+  <div class="description">
+    {{#if model.builds.isPending}}
+    <div class="ui center aligned basic padded segment">
+      <div class="ui tiny text active inline loader">Loading</div>
+    </div>
+    {{else}}
+    <div class="ui basic segment">
+      <p>
+        <strong>Commit</strong> <a href="{{githubCommitLink}}" target="_blank">{{latestBuild.commit}}</a> by <a href="{{githubUserLink}}" target="_blank">{{latestBuild.author}}</a>
+      </p>
+      <p>
+        <strong>Duration</strong> {{duration latestBuild.started latestBuild.finished}}
+      </p>
+    </div>
+    {{/if}}
+  </div>
+</div>
+{{#if model.builds.isFulfilled}}
+  {{#if latestBuild}}
+  <div class="extra content">
+    <p>
+      <strong># {{latestBuild.number}}</strong>
+    </p>
+  </div>
+  {{else}}
+  <div class="extra content PENDING">
+    <p>
+      <em>No builds yet.</em>
+    </p>
+  </div>
+  {{/if}}
+{{/if}}

@@ -1,0 +1,61 @@
+
+<div class="two column row">
+  <div class="left floated column">
+    <div class="ui large breadcrumb">
+      {{#link-to 'pipelines' class="section"}}<h1>Pipelines</h1>{{/link-to}}
+      <i class="right chevron icon divider"></i>
+      <div class="section">{{pipeline.name}}</div>
+      {{#if pipeline.builds.length}}
+      <i class="right chevron icon divider"></i>
+      <div class="active section">Build #{{model.number}}</div>
+      {{/if}}
+    </div>
+  </div>
+  <div class="right floated column">
+    <button class="right floated ui in-header icon button" data-content="Trigger Pipeline" {{action "confirmCreateBuild"}}><i class="plus icon"></i></button>
+    <button class="right floated ui in-header icon button" data-content="Pipeline Details" {{action "viewPipelineDetails"}}><i class="unhide icon"></i></button>
+    {{#ui-promise-dropdown class="right floated ui right pointing icon button" waitList=pipeline.builds onChange=(action "selectBuild") }}
+      <i class="history icon"></i>
+      <div class="menu">
+      {{#each all as |b|}}
+        <div class="item" data-value={{b.number}}>Build #{{b.number}}</div>
+      {{/each}}
+      </div>
+    {{/ui-promise-dropdown}}
+  </div>
+</div>
+
+<div class="sixteen wide column pipeline-build full-height">
+  {{#if pipeline.builds.isPending}}
+    <div class="ui center aligned very padded basic segment">
+      <div class="ui tiny text active inline loader">Loading</div>
+    </div>
+  {{else}}
+    {{#if pipeline.builds.length}}
+      <ul class="stages">
+      {{#each model.stages as |stage|}}
+        {{build-stage model=stage build=model pipeline=pipeline selectStage=(action 'selectStage')}}
+      {{/each}}
+      </ul>
+      {{#if selectedStage}}
+        {{stage-details model=selectedStage build=model pipeline=pipeline close=(action 'unselectStage') }}
+      {{/if}}
+
+      {{#if isViewingPipelineDetails}}
+        {{pipeline-details model=pipeline close=(action 'closePipelineDetails') }}
+      {{/if}}
+
+    {{else}}
+      <div class="ui center aligned segment">No builds found.</div>
+    {{/if}}
+  {{/if}}
+</div>
+
+{{#ui-modal name="create-build-confirmation" class="small create-build-confirmation" closable=false onApprove=(action "createBuild") }}
+  <div class="header">Create Build</div>
+  <div class="content">Are you sure you want to create a build for {{pipeline.name}}?</div>
+  <div class="actions">
+    <div class="ui negative small button">No</div>
+    <div class="ui positive right labeled icon small button">Yes<i class="checkmark icon"></i></div>
+  </div>
+{{/ui-modal}}

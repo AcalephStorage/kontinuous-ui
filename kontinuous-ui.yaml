@@ -1,0 +1,56 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    service: kontinuous-ui
+    type: dashboard
+  name: kontinuous-ui
+  namespace: acaleph
+spec:
+  ports:
+  - name: dashboard
+    port: 5000
+    protocol: TCP
+    targetPort: 5000
+  selector:
+    app: kontinuous-ui
+    type: dashboard
+
+---
+apiVersion: v1
+kind: ReplicationController
+metadata:
+  labels:
+    app: kontinuous-ui
+    type: dashboard
+  name: kontinuous-ui
+  namespace: acaleph
+spec:
+  replicas: 1
+  selector:
+    app: kontinuous-ui
+    type: dashboard
+  template:
+    metadata:
+      labels:
+        app: kontinuous-ui
+        type: dashboard
+      name: kontinuous-ui
+      namespace: acaleph
+    spec:
+      containers:
+      - env:
+        - name: GITHUB_CLIENT_CALLBACK
+          value:
+        - name: GITHUB_CLIENT_ID
+          value:
+        - name: KONTINUOUS_API_URL
+          value:
+        image: quay.io/acaleph/kontinuous-ui:dashboard
+        imagePullPolicy: Always
+        name: kontinuous-ui
+        ports:
+        - containerPort: 5000
+          name: dashboard
+          protocol: TCP

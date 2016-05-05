@@ -1,0 +1,15 @@
+{{#unless session.isAuthenticated}}
+<div class="ui middle aligned center aligned grid text container full-height">
+  <div class="ten wide column">
+    <div class="ui negative small {{if session.errorMessage 'visible' 'hidden'}} message">
+      <div class="content">
+        <p>{{session.errorMessage}}</p>
+      </div>
+    </div>
+
+    <button class="ui huge grey circular github icon button" {{action "login"}}>
+      <i class="github icon"></i>
+    </button>
+  </div>
+</div>
+{{/unless}}

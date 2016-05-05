@@ -1,0 +1,28 @@
+<div class="two column row">
+  <div class="left floated column">
+    <h1 class="ui header">Pipelines</h1>
+  </div>
+  <div class="right floated column">
+    {{!-- <button class="right floated ui in-header icon button" data-content="Trigger Pipeline" {{action "confirmCreateBuild"}}><i class="plus icon"></i></button> --}}
+
+    {{#ui-link-to routeName='pipelines.create' tagName="button" class="ui right floated in-header icon button" data-content="Create Pipeline"}}<i class="plus icon"></i>{{/ui-link-to}}
+  </div>
+</div>
+
+<div class="sixteen wide column full-height">
+  {{#if pipeline.all.isFulfilled}}
+    {{#if pipeline.all.length}}
+      <div class="ui cards">
+      {{#each pipeline.sorted as |pipeline|}}
+        {{#unless pipeline.isNew}}
+          {{pipeline-card model=pipeline}}
+        {{/unless}}
+      {{/each}}
+      </div>
+    {{else}}
+      <div class="ui center aligned segment">No pipelines found.</div>
+    {{/if}}
+  {{/if}}
+</div>
+
+{{outlet}}
