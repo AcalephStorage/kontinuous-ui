@@ -1,3 +1,11 @@
 /*******************************
     User Variable Overrides
 *******************************/
+
+@largerMonitorBreakpoint: 1440px;
+@largerMonitorMinimumGutter: (@emSize  * 2);
+@largerMonitorWidth: @largerMonitorBreakpoint - (@largerMonitorMinimumGutter * 2) - @scrollbarWidth;
+@largerMonitorGutter: auto;
+@largerMonitorGridWidth: ~"calc("@largerMonitorWidth~" + "@gridGutterWidth~")";
+@largerMonitorRelaxedGridWidth: ~"calc("@largerMonitorWidth~" + "@relaxedGridGutterWidth~")";
+@largerMonitorVeryRelaxedGridWidth: ~"calc("@largerMonitorWidth~" + "@veryRelaxedGridGutterWidth~")";

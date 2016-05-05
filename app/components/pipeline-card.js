@@ -22,6 +22,15 @@ export default UILinkToComponent.extend({
         return 'circle notched';
     }
   }),
+  latestBuildCommit: Ember.computed('latestBuild.commit', 'latestBuild.branch', function() {
+    let commit = this.get('latestBuild.commit');
+    let branch = this.get('latestBuild.branch');
+    if (commit === branch) {
+      return commit;
+    } else {
+      return commit.slice(0, 7);
+    }
+  }),
 
   githubRepoLink: Ember.computed('model.name', function() {
     let name = this.get('model.name');

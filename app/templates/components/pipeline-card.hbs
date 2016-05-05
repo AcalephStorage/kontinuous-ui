@@ -9,7 +9,7 @@
     {{else}}
     <div class="ui basic segment">
       <p>
-        <strong>Commit</strong> <a href="{{githubCommitLink}}" target="_blank">{{latestBuild.commit}}</a> by <a href="{{githubUserLink}}" target="_blank">{{latestBuild.author}}</a>
+        <strong>Commit</strong> <a href="{{githubCommitLink}}" target="_blank">{{latestBuildCommit}}</a> by <a href="{{githubUserLink}}" target="_blank">{{latestBuild.author}}</a>
       </p>
       <p>
         <strong>Duration</strong> {{duration latestBuild.started latestBuild.finished}}
