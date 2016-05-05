@@ -7,9 +7,7 @@ export default UILinkToComponent.extend({
   classNameBindings: ['latestBuild.status'],
   routeName: 'pipeline',
 
-  sortByNumber: ['number:asc'],
-  buildsByNumber: Ember.computed.sort('model.builds', 'sortByNumber'),
-  latestBuild: Ember.computed.reads('buildsByNumber.lastObject'),
+  latestBuild: Ember.computed.reads('model.latest_build'),
   statusIcon: Ember.computed('latestBuild.status', function() {
     switch(this.get('latestBuild.status')) {
       case 'SUCCESS':

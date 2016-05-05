@@ -3,6 +3,10 @@ import Configuration from '../config/environment';
 
 export default JSONSerializer.extend({
 
+  attrs: {
+    latest_build: {embedded: 'always'}
+  },
+
   _namespace: `/api/${Configuration.APP.kontinuousAPI.version}`,
   _path: 'pipelines',
 

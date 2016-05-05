@@ -10,10 +10,7 @@ export default Ember.Component.extend({
   all: Ember.computed.sort('pipeline.builds', 'sortByNumberDesc'),
 
   willInsertElement() {
-    this.get('pipeline.builds').then(() => {
-      let model = this.get('all.firstObject');
-      this.set('model', model);
-    });
+    this.set('model', this.get('pipeline.latest_build'));
   },
 
   didInsertElement() {

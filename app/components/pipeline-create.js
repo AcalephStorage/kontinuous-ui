@@ -62,7 +62,12 @@ export default SemanticModalComponent.extend({
         this.$().modal('hide');
         this.get('router').transitionTo('pipelines');
       }, (res) => {
-        this.set('errorMessage', res.errors.Message);
+        if (res.message && res.message.indexOf("An adapter cannot assign a new id to a record that already has an id") !== -1) {
+          this.$().modal('hide');
+          this.get('router').transitionTo('pipelines');
+        } else {
+          this.set('errorMessage', res.errors.Message);
+        }
       });
 
     return false;
