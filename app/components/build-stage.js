@@ -36,68 +36,21 @@ export default Ember.Component.extend({
   },
 
   logFetcher: task(function*(stage) {
-    var promise;
-    switch(stage.get('status')) {
-      case 'RUNNING':
-        promise = this.getPodLogs(stage);
-        break;
-      case 'SUCCESS':
-      case 'FAIL':
-        promise = this.getDoneLogs(stage);
-        break;
-      default:
-        return;
+    if (stage.get('status') !== 'PENDING') {
+      return yield this.getStageLogs(stage)
+        .then((logFiles) => {
+          stage.set('logFiles', logFiles);
+        });
     }
-    return yield promise.then((logFiles) => {
-      stage.set('logFiles', logFiles);
-    });
   }),
 
-  getPodLogs(stage) {
-    let namespace = stage.get('pod_namespace'),
-      podName = stage.get('pod_name');
-
-    return new Ember.RSVP.Promise((resolve) => {
-      Ember.RSVP.hash({
-        pod: this.get('store').queryRecord('k8s-pod', { namespace: namespace, name: podName })
-      })
-      .then((hash) => {
-        let containers = hash.pod.get('spec.containers').getEach('name');
-        let logs = [];
-
-        containers.forEach((name) => {
-          let q = { namespace: namespace, podName: podName, container: name };
-          let store = this.get('store');
-          let log = DS.PromiseObject.create({
-            promise: store.queryRecord('k8s-log', q)
-          });
-
-          log.reopen({
-            title: name,
-            reloader: task(function*() {
-              yield store.queryRecord('log', q)
-                .then((l) => {
-                  log.set('details', l.get('details'));
-                });
-            }).drop()
-          });
-
-          logs.push(log);
-        });
-        resolve(logs);
-      }, () => {
-        resolve([]);
-      });
-    });
-  },
-
-  getDoneLogs(stage) {
+  getStageLogs(stage) {
     let adapter = this.get('store').adapterFor('stage'),
       query = {
         owner: this.get('pipeline.owner'),
         repo: this.get('pipeline.repo'),
         buildNumber: this.get('build.number'),
-        stageIndex: stage.get('index')
+        stageIndex: stage.get('index'),
       };
 
     return new Ember.RSVP.Promise((resolve) => {
