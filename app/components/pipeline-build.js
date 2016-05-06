@@ -58,7 +58,8 @@ export default Ember.Component.extend({
   }).drop(),
 
   buildCreator: task(function * () {
-    let note = this.get('notify').info('Sending request to create build for pipeline.', {closeAfter: null});
+    let notify = this.get('notify');
+    let note = notify.info('Sending request to create build for pipeline.', {closeAfter: null});
 
     let p = this.get('pipeline');
     let b = this.get('build').new(p);
@@ -66,14 +67,19 @@ export default Ember.Component.extend({
     yield b.save()
       .then(() => {
         note.set('visible', false);
-        this.get('notify').success('Successfully created build for pipeline.');
+        notify.success('Successfully created build for pipeline.');
       }, (res) => {
         note.set('visible', false);
-        this.get('notify').error(res.errors.Message || 'Failed to create build for pipeline.');
+        notify.error(res.errors.Message || 'Failed to create build for pipeline.');
       })
       .finally(() => {
-        this.get('pipeline').reload();
-        this.setLatestBuild();
+        this.get('build').unload(b);
+        this.get('pipeline').reload()
+          .then((p) => {
+            p.get('builds').reload();
+            this.set('pipeline', p);
+            this.setLatestBuild();
+          });
       });
   }).drop(),
 
