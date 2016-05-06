@@ -14,7 +14,7 @@ RUN wget https://bin.equinox.io/c/ekMN3bCZFUn/forego-stable-linux-amd64.tgz -O /
     rm /tmp/caddy.tar.gz
 
 # Install ember and bower
-RUN npm install -g ember-cli@1.13.8 && \
+RUN npm install -g ember-cli@2.5.0 && \
     npm install -g bower@1.7.9
 
 ADD . /home/apps/kontinuous-ui
@@ -22,6 +22,8 @@ WORKDIR /home/apps/kontinuous-ui
 
 RUN npm install && \
     bower install --allow-root
+
+ENV EMBER_ENV production
 
 ENV KUBERNETES_API_URL kubernetes.default
 ENV KUBERNETES_API_TOKEN_PATH /run/secrets/kubernetes.io/serviceaccount/token
