@@ -10,7 +10,7 @@ export function duration(params) {
   }
 
   let diff = end.diff(start, 'seconds');
-  if (diff.length) {
+  if (diff) {
     return moment.duration(diff, 's').humanize();
   } else {
     return '';
