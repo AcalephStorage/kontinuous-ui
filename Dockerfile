@@ -1,5 +1,9 @@
 FROM mhart/alpine-node:0.12
 
+RUN apk update && \
+    apk add ca-certificates && \
+    rm -rf /var/cache/apk/*
+
 # Install ember, bower, forego, and caddy
 RUN npm install -g ember-cli@1.13.8 && \
     npm install -g bower@1.7.9  && \
