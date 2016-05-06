@@ -5,9 +5,9 @@ import {hasMany,belongsTo} from 'ember-data/relationships';
 export default Model.extend({
   number: attr('number'),
   status: attr('string'),
-  created: attr('unix-nano-date'),
-  started: attr('unix-nano-date'),
-  finished: attr('unix-nano-date'),
+  created: attr('number'),
+  started: attr('number'),
+  finished: attr('number'),
   current_stage: attr('number'),
   branch: attr('string'),
   commit: attr('string'),

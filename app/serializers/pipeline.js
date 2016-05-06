@@ -11,8 +11,14 @@ export default JSONSerializer.extend({
   _path: 'pipelines',
 
   normalize(modelClass, resourceHash) {
-    this._addLinks(resourceHash);
+    if (resourceHash) {
+      this._addLinks(resourceHash);
+    }
     return this._super(modelClass, resourceHash);
+  },
+
+ normalizeCreateRecordResponse(store, primaryModelClass, payload, id, requestType) {
+    return this.normalizeSaveResponse(store, primaryModelClass, null, id, requestType);
   },
 
   _addLinks(res) {

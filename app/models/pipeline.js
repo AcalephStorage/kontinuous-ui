@@ -18,4 +18,10 @@ export default Model.extend({
 
     return `${owner}/${repo}`;
   }),
+
+  reload: function() {
+    let owner = this.get('owner'),
+      repo = this.get('repo');
+    return this.store.queryRecord('pipeline', { owner: owner, repo: repo });
+  },
 });

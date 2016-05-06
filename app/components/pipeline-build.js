@@ -6,6 +6,7 @@ export default Ember.Component.extend({
   classNames: Ember.String.w('ui grid full-height'),
 
   build: Ember.inject.service(),
+  notify: Ember.inject.service(),
 
   buildNumber: "",
   sortByNumberDesc: ['number:desc'],
@@ -20,10 +21,7 @@ export default Ember.Component.extend({
 
   willInsertElement() {
     this.addObserver('buildNumber', this, this.getBuildDetails);
-    let buildnum = this.get('pipeline.latest_build.number');
-    if (buildnum) {
-      this.set('buildNumber', buildnum.toString());
-    }
+    this.setLatestBuild();
   },
 
   willDestroyElement() {
@@ -43,6 +41,13 @@ export default Ember.Component.extend({
     this.get('buildFetcher').perform();
   },
 
+  setLatestBuild() {
+    let buildnum = this.get('pipeline.latest_build.number');
+    if (buildnum) {
+      this.set('buildNumber', buildnum.toString());
+    }
+  },
+
   buildFetcher: task(function * () {
     if (this.get('buildNumber')) {
       yield this.get('build').find(this.get('buildQuery'))
@@ -50,6 +55,26 @@ export default Ember.Component.extend({
           this.set('model', build);
         });
     }
+  }).drop(),
+
+  buildCreator: task(function * () {
+    let note = this.get('notify').info('Sending request to create build for pipeline.', {closeAfter: null});
+
+    let p = this.get('pipeline');
+    let b = this.get('build').new(p);
+
+    yield b.save()
+      .then(() => {
+        note.set('visible', false);
+        this.get('notify').success('Successfully created build for pipeline.');
+      }, (res) => {
+        note.set('visible', false);
+        this.get('notify').error(res.errors.Message || 'Failed to create build for pipeline.');
+      })
+      .finally(() => {
+        this.get('pipeline').reload();
+        this.setLatestBuild();
+      });
   }).drop(),
 
   actions: {
@@ -60,18 +85,7 @@ export default Ember.Component.extend({
       this.$('.ui.modal.create-build-confirmation').modal('show');
     },
     createBuild() {
-      let p = this.get('pipeline');
-      let b = this.get('build').new(p);
-
-      b.save()
-        .then(() => {
-          this.set('successMessage', 'Successfully created build for pipeline.');
-        }, (res) => {
-          this.set('errorMessage', res.errors.Message || 'Failed to create build for pipeline.');
-        })
-        .finally(() => {
-          this.get('build').unload(b);
-        });
+      this.get('buildCreator').perform();
     },
     selectStage(stage) {
       this.send('closePipelineDetails');
