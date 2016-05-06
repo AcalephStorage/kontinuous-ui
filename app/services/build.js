@@ -20,6 +20,10 @@ export default Ember.Service.extend({
 
   unload(record) {
     record.unloadRecord();
+  },
+
+  find(query) {
+    return this.get('store').queryRecord('build', query);
   }
 
 });

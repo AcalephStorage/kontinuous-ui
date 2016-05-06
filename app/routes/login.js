@@ -10,7 +10,7 @@ export default Ember.Route.extend(UnauthenticatedRouteMixin, {
       this.set('session.errorMessage', null);
       this.get('session').authenticate('authenticator:kontinuous', 'github-kontinuous')
         .catch((resp) => {
-          this.set('session.errorMessage', resp.Message || "Failed to login.");
+          this.set('session.errorMessage', resp || "Failed to login.");
         });
     }
   },

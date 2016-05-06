@@ -1,4 +1,5 @@
 import Ember from 'ember';
+import {task} from 'ember-concurrency';
 
 export default Ember.Component.extend({
 
@@ -6,11 +7,27 @@ export default Ember.Component.extend({
 
   build: Ember.inject.service(),
 
+  buildNumber: "",
   sortByNumberDesc: ['number:desc'],
   all: Ember.computed.sort('pipeline.builds', 'sortByNumberDesc'),
+  buildQuery: Ember.computed('buildNumber', function() {
+    return {
+      owner: this.get('pipeline.owner'),
+      repo: this.get('pipeline.repo'),
+      build_number: this.get('buildNumber'),
+    };
+  }),
 
   willInsertElement() {
-    this.set('model', this.get('pipeline.latest_build'));
+    this.addObserver('buildNumber', this, this.getBuildDetails);
+    let buildnum = this.get('pipeline.latest_build.number');
+    if (buildnum) {
+      this.set('buildNumber', buildnum.toString());
+    }
+  },
+
+  willDestroyElement() {
+    this.removeObserver('buildNumber', this, this.getBuildDetails);
   },
 
   didInsertElement() {
@@ -22,11 +39,22 @@ export default Ember.Component.extend({
     });
   },
 
+  getBuildDetails() {
+    this.get('buildFetcher').perform();
+  },
+
+  buildFetcher: task(function * () {
+    if (this.get('buildNumber')) {
+      yield this.get('build').find(this.get('buildQuery'))
+        .then((build) => {
+          this.set('model', build);
+        });
+    }
+  }).drop(),
+
   actions: {
-    selectBuild(component, value) {
+    selectBuild() {
       this.send('unselectStage');
-      let model = this.get('all').findBy('number', parseInt(value));
-      this.set('model', model);
     },
     confirmCreateBuild() {
       this.$('.ui.modal.create-build-confirmation').modal('show');
