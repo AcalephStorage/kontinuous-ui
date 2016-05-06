@@ -1,4 +1,4 @@
-FROM node:0.12.7
+FROM mhart/alpine-node:0.12
 
 # Install ember, bower, forego, and caddy
 RUN npm install -g ember-cli@1.13.8 && \
