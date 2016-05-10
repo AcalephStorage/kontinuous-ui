@@ -1,2 +1,0 @@
-caddy: /usr/local/bin/caddy -conf=/home/apps/kontinuous-ui/Caddyfile
-dashboard: /home/apps/kontinuous-ui/start.sh
