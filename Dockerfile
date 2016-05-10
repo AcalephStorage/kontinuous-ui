@@ -10,7 +10,10 @@ RUN wget https://bin.equinox.io/c/ekMN3bCZFUn/forego-stable-linux-amd64.tgz -O /
     rm /tmp/forego.tar.gz && \
     chmod 0744 /usr/local/bin/forego && \
     wget https://github.com/mholt/caddy/releases/download/v0.8.3/caddy_linux_amd64.tar.gz -O /tmp/caddy.tar.gz && \
-    tar xvz -C /usr/local/bin -f /tmp/caddy.tar.gz && \
+    mkdir -pv /tmp/caddy && \
+    tar xvz -C /tmp/caddy -f /tmp/caddy.tar.gz && \
+    mv /tmp/caddy/caddy_linux_amd64 /usr/local/bin/caddy && \
+    rm -r /tmp/caddy && \
     rm /tmp/caddy.tar.gz
 
 # Install ember and bower
