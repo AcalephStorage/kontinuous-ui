@@ -30,4 +30,4 @@ ENV KUBERNETES_API_TOKEN token
 
 EXPOSE 5000
 
-CMD ["start.sh"]
+CMD ["/home/apps/kontinuous-ui/start.sh"]
