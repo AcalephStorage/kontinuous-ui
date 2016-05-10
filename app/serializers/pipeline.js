@@ -3,12 +3,22 @@ import Configuration from '../config/environment';
 
 export default JSONSerializer.extend({
 
+  attrs: {
+    latest_build: {embedded: 'always'}
+  },
+
   _namespace: `/api/${Configuration.APP.kontinuousAPI.version}`,
   _path: 'pipelines',
 
   normalize(modelClass, resourceHash) {
-    this._addLinks(resourceHash);
+    if (resourceHash) {
+      this._addLinks(resourceHash);
+    }
     return this._super(modelClass, resourceHash);
+  },
+
+ normalizeCreateRecordResponse(store, primaryModelClass, payload, id, requestType) {
+    return this.normalizeSaveResponse(store, primaryModelClass, null, id, requestType);
   },
 
   _addLinks(res) {

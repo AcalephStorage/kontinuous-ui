@@ -21,10 +21,6 @@ module.exports = function(environment) {
       githubClient: {
         id: process.env.GITHUB_CLIENT_ID,
         callback: process.env.GITHUB_CLIENT_CALLBACK
-      },
-      k8sAPI: {
-        host: process.env.KUBERNETES_API_URL,
-        version: process.env.KUBERNETES_API_VERSION || 'v1',
       }
     }
   };

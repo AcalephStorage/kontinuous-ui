@@ -36,5 +36,20 @@ export default ApplicationAdapter.extend({
 
     urlParts.push(this.pathForType(modelName));
     return urlParts.join('/');
-  }
+  },
+
+  urlForQueryRecord: function(query, modelName) {
+    var urlParts = this._buildURL(modelName).split('/');
+    urlParts.removeObject(this.pathForType(modelName));
+
+    if (Ember.isPresent(query.owner) && Ember.isPresent(query.repo) && Ember.isPresent(query.build_number)) {
+      urlParts.push("pipelines", query.owner, query.repo);
+      delete query.owner;
+      delete query.repo;
+      urlParts.push(this.pathForType(modelName), query.build_number);
+      delete query.build_number;
+    }
+
+    return urlParts.join('/');
+  },
 });

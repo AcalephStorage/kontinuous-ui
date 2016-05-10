@@ -10,6 +10,7 @@ export default Model.extend({
   events: attr('array', {defaultValue: ['push', 'pull_request']}),
   notif: attr('array'),
   builds: hasMany('build', {async: true}),
+  latest_build: attr(''),
 
   name: Ember.computed('owner', 'repo', function() {
     let owner = this.get('owner'),
@@ -17,4 +18,10 @@ export default Model.extend({
 
     return `${owner}/${repo}`;
   }),
+
+  reload: function() {
+    let owner = this.get('owner'),
+      repo = this.get('repo');
+    return this.store.queryRecord('pipeline', { owner: owner, repo: repo });
+  },
 });

@@ -7,9 +7,7 @@ export default UILinkToComponent.extend({
   classNameBindings: ['latestBuild.status'],
   routeName: 'pipeline',
 
-  sortByNumber: ['number:asc'],
-  buildsByNumber: Ember.computed.sort('model.builds', 'sortByNumber'),
-  latestBuild: Ember.computed.reads('buildsByNumber.lastObject'),
+  latestBuild: Ember.computed.reads('model.latest_build'),
   statusIcon: Ember.computed('latestBuild.status', function() {
     switch(this.get('latestBuild.status')) {
       case 'SUCCESS':
@@ -20,6 +18,15 @@ export default UILinkToComponent.extend({
         return 'circle';
       default:
         return 'circle notched';
+    }
+  }),
+  latestBuildCommit: Ember.computed('latestBuild.commit', 'latestBuild.branch', function() {
+    let commit = this.get('latestBuild.commit');
+    let branch = this.get('latestBuild.branch');
+    if (commit === branch) {
+      return commit;
+    } else {
+      return commit.slice(0, 7);
     }
   }),
 

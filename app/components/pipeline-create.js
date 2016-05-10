@@ -11,6 +11,7 @@ export default SemanticModalComponent.extend({
 
   router: Ember.inject.service('-routing'),
   pipeline: Ember.inject.service(),
+  notify: Ember.inject.service(),
 
   errorMessage: null,
 
@@ -36,16 +37,17 @@ export default SemanticModalComponent.extend({
     this.get('pipeline').unload(p);
   },
 
-  // tasks
-  //
+  closeModal() {
+    this.$().modal('hide');
+    this.get('router').transitionTo('pipelines');
+  },
+
   pipelineCreator: task(function*() {
     let p = this.get('pipeline.newRecord');
     yield this.get('pipeline').save(p);
   }).drop(),
 
 
-  // function overrides
-  //
   didInsertElement() {
     this._super();
     this.$().modal('show');
@@ -57,12 +59,19 @@ export default SemanticModalComponent.extend({
   },
 
   onApprove() {
+    this.set('errorMessage', null);
     this.get('pipelineCreator').perform()
       .then(() => {
-        this.$().modal('hide');
-        this.get('router').transitionTo('pipelines');
+        this.unloadPipeline();
+        this.get('pipeline').fetchAll();
+        this.get('notify').success("Successfully created pipeline.");
+        this.closeModal();
       }, (res) => {
-        this.set('errorMessage', res.errors.Message);
+        if (res.message && res.message.indexOf("An adapter cannot assign a new id to a record that already has an id") !== -1) {
+          this.closeModal();
+        } else {
+          this.set('errorMessage', res.errors.Message || "There was an error creating the pipeline.");
+        }
       });
 
     return false;
@@ -70,8 +79,7 @@ export default SemanticModalComponent.extend({
 
   onDeny() {
     this.unloadPipeline();
-    this.$().modal('hide');
-    this.get('router').transitionTo('pipelines');
+    this.closeModal();
   },
 
 });

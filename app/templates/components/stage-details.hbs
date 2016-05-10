@@ -29,6 +29,12 @@
     {{#if model.job_name}}
     <tr><td class="two wide">Job Name:</td><td>{{model.job_name}}</td></tr>
     {{/if}}
+    {{#if model.started}}
+    <tr><td class="two wide">Started:</td><td>{{unix-nano-time model.started}}</td></tr>
+    {{/if}}
+    {{#if model.finished}}
+    <tr><td class="two wide">Finished:</td><td>{{unix-nano-time model.finished}}</td></tr>
+    {{/if}}
   </table>
 
   <h3 class="ui header">Logs</h3>

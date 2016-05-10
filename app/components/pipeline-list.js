@@ -9,7 +9,9 @@ export default Ember.Component.extend({
   didInsertElement() {
     this.$(".in-header.icon.button").popup({
       variation: "small inverted",
-      position: "top right"
+      position: "top right",
+      inline: true,
+      exclusive: true,
     });
   },
 
