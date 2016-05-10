@@ -5,5 +5,3 @@ if [ -f $KUBERNETES_API_TOKEN_PATH ]; then
 fi
 
 ember build -prod
-
-caddy -conf=/home/apps/kontinuous-ui/Caddyfile
