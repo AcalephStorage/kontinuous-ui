@@ -28,32 +28,9 @@ export default Ember.Service.extend({
       'isSelected': false
     }
   ],
-  notifOptions: [
-    {
-      'type': 'slack',
-      'label': 'Slack',
-      'isSelected': false,
-      'metadata': [
-        {
-          'key': 'username',
-          'label': 'Username',
-          'value': ''
-        }, {
-          'key': 'url',
-          'label': 'URL',
-          'value': ''
-        }, {
-          'key': 'channel',
-          'label': 'Channel',
-          'value': ''
-        }
-      ]
-    }
-  ],
   //
 
   selectedEvents: Ember.computed.filterBy('eventOptions', 'isSelected', true),
-  selectedNotifs: Ember.computed.filterBy('notifOptions', 'isSelected', true),
 
   new() {
     let user = this.get('session.session.authenticated.user_id');
@@ -92,18 +69,6 @@ export default Ember.Service.extend({
   save(record) {
     let events = this.get('selectedEvents').getEach('key');
     record.set('events', events);
-
-    let notifs = this.get('selectedNotifs').map((n) => {
-      let metadata = {};
-      n.metadata.forEach((m) => {
-        metadata[m.key] = m.value;
-      });
-      return {
-        type: n.type,
-        metadata: metadata
-      };
-    });
-    record.set('notif', notifs);
     return record.save();
   },
 
