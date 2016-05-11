@@ -1,5 +1,5 @@
 <div class="ui raised segment">
-  <i class="close icon" {{action "close"}}></i>
+  <i class="large close icon" {{action "close"}} style="position:absolute;right:1em;top:1em;"></i>
 
   <div class="ui left floated header">Stage {{model.index}}: {{model.name}}</div>
 
@@ -38,29 +38,28 @@
   </table>
 
   <h3 class="ui header">Logs</h3>
-
-  {{#if model.logFetcher.isRunning}}
-    <div class="ui center aligned basic segment">
-      <div class="ui tiny text active inline loader">Loading</div>
-    </div>
-  {{else}}
-    {{#if model.logFiles.length}}
-      <div class="ui small attached pointing menu stage-tabs">
-        {{#each model.logFiles as |logFile|}}
-          <a class="item" data-tab={{logFile.title}} {{action "showLogs" logFile}}>{{logFile.title}}</a>
-        {{/each}}
-      </div>
+  {{#if model.logFiles.length}}
+    <div class="ui small attached pointing menu stage-tabs">
       {{#each model.logFiles as |logFile|}}
-      <div class="ui attached segment tab" data-tab={{logFile.title}}>
-        {{#if logFile.details }}
-          <pre>{{logFile.details}}</pre>
-        {{else}}
-          <div class="ui center aligned basic segment">
-            <div class="ui tiny text active inline loader">Loading</div>
-          </div>
-        {{/if}}
-      </div>
+        <a class="item" data-tab={{logFile.title}} {{action "showLogs" logFile}}>{{logFile.title}}</a>
       {{/each}}
+    </div>
+    {{#each model.logFiles as |logFile|}}
+    <div class="ui attached segment tab" data-tab={{logFile.title}}>
+      {{#if logFile.content }}
+        <pre>{{logFile.content}}</pre>
+      {{else}}
+        <div class="ui center aligned basic segment">
+          <div class="ui tiny text active inline loader">Loading</div>
+        </div>
+      {{/if}}
+    </div>
+    {{/each}}
+  {{else}}
+    {{#if model.logFetcher.isRunning}}
+      <div class="ui center aligned basic segment">
+        <div class="ui tiny text active inline loader">Loading</div>
+      </div>
     {{else}}
       <div class="ui center aligned segment">No logs found.</div>
     {{/if}}

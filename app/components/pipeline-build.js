@@ -1,9 +1,9 @@
 import Ember from 'ember';
-import {task} from 'ember-concurrency';
+import {task,timeout} from 'ember-concurrency';
 
 export default Ember.Component.extend({
 
-  classNames: Ember.String.w('ui grid full-height'),
+  classNames: Ember.String.w('ui grid main-content'),
 
   build: Ember.inject.service(),
   notify: Ember.inject.service(),
@@ -38,7 +38,8 @@ export default Ember.Component.extend({
   },
 
   getBuildDetails() {
-    this.get('buildFetcher').perform();
+    this.get('stagesPoller').cancelAll();
+    this.get('stagesPoller').perform();
   },
 
   setLatestBuild() {
@@ -81,6 +82,20 @@ export default Ember.Component.extend({
             this.setLatestBuild();
           });
       });
+  }).drop(),
+
+  buildsPoller: task(function*() {
+    while(true) {
+      yield this.get('pipeline.builds').reload();
+      yield timeout(10000); // 10-second interval
+    }
+  }).on('init').drop(),
+
+  stagesPoller: task(function*() {
+    while(true) {
+      this.get('buildFetcher').perform();
+      yield timeout(5000); // 5-second interval
+    }
   }).drop(),
 
   actions: {

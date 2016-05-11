@@ -27,29 +27,29 @@
 </div>
 
 <div class="sixteen wide column pipeline-build full-height">
-  {{#if buildFetcher.isRunning}}
-    <div class="ui center aligned very padded basic segment">
-      <div class="ui tiny text active inline loader">Loading</div>
-    </div>
+  {{#if model}}
+    {{#if model.stages}}
+      <ul class="stages">
+      {{#each model.stages as |stage|}}
+        {{build-stage model=stage build=model pipeline=pipeline selectStage=(action 'selectStage')}}
+      {{/each}}
+      </ul>
+      {{#if selectedStage}}
+        {{stage-details model=selectedStage build=model pipeline=pipeline close=(action 'unselectStage') }}
+      {{/if}}
+    {{else}}
+      <div class="ui center aligned segment">No stages found for build.</div>
+    {{/if}}
+
+    {{#if isViewingPipelineDetails}}
+      {{pipeline-details model=pipeline close=(action 'closePipelineDetails') }}
+    {{/if}}
+
   {{else}}
-    {{#if model}}
-      {{#if model.stages}}
-        <ul class="stages">
-        {{#each model.stages as |stage|}}
-          {{build-stage model=stage build=model pipeline=pipeline selectStage=(action 'selectStage')}}
-        {{/each}}
-        </ul>
-        {{#if selectedStage}}
-          {{stage-details model=selectedStage build=model pipeline=pipeline close=(action 'unselectStage') }}
-        {{/if}}
-      {{else}}
-        <div class="ui center aligned segment">No stages found for build.</div>
-      {{/if}}
-
-      {{#if isViewingPipelineDetails}}
-        {{pipeline-details model=pipeline close=(action 'closePipelineDetails') }}
-      {{/if}}
-
+    {{#if buildFetcher.isRunning}}
+      <div class="ui center aligned very padded basic segment">
+        <div class="ui tiny text active inline loader">Loading</div>
+      </div>
     {{else}}
       <div class="ui center aligned segment">No builds yet.</div>
     {{/if}}
