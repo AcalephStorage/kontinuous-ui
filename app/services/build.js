@@ -8,7 +8,8 @@ export default Ember.Service.extend({
   newRecord: null,
 
   new(pipeline) {
-    let author = this.get('session.session.content.authenticated.profile.nickname');
+    // TODO: use profile.nickname, file request for kontinuous
+    let author = this.get('session.session.content.authenticated.user_name');
     let build = this.get('store').createRecord('build', {author: author, pipeline: pipeline});
     this.set('newRecord', build);
     return build;

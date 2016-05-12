@@ -19,6 +19,7 @@ export default Ember.Component.extend({
     let type = this.get('model.type');
     return this.iconClassMap[type] || this.defaultStatusIcon;
   }),
+  isRunning: Ember.computed.equal('model.status', 'RUNNING'),
 
   click() {
     this.fetchLogs();
