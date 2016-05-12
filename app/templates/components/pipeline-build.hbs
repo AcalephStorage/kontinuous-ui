@@ -51,7 +51,7 @@
   {{/if}}
 
   {{#if isViewingPipelineDetails}}
-    {{pipeline-details model=pipeline close=(action 'closePipelineDetails') }}
+    {{pipeline-details model=pipeline build=model close=(action 'closePipelineDetails') }}
   {{/if}}
 </div>
 
