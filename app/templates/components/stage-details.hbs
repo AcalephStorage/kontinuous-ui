@@ -48,7 +48,7 @@
     <div class="ui attached segment tab" data-tab={{logFile.title}}>
       {{#if logFile.content }}
         <pre>{{logFile.content}}</pre>
-      {{else}}
+      {{else if model.logFetcher.isRunning}}
         <div class="ui center aligned basic segment">
           <div class="ui tiny text active inline loader">Loading</div>
         </div>
