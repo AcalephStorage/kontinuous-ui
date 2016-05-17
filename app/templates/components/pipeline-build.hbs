@@ -12,6 +12,7 @@
   </div>
   <div class="right floated column">
     <button class="right floated ui in-header icon button" data-content="Trigger Pipeline" {{action "confirmCreateBuild"}}><i class="plus icon"></i></button>
+    <button class="right floated ui in-header icon button" data-content="Edit Pipeline" {{action "editPipeline"}}><i class="edit icon"></i></button>
     <button class="right floated ui in-header icon button" data-content="Pipeline Details" {{action "viewPipelineDetails"}}><i class="unhide icon"></i></button>
     {{#if model}}
       {{#ui-promise-dropdown class="right floated ui right pointing icon button" waitList=pipeline.builds onChange=(action "selectBuild") selected=buildNumber}}
@@ -52,6 +53,8 @@
 
   {{#if isViewingPipelineDetails}}
     {{pipeline-details model=pipeline build=model close=(action 'closePipelineDetails') }}
+  {{else if isEditingPipeline}}
+    {{pipeline-editor model=pipeline close=(action 'closePipelineEditor') }}
   {{/if}}
 </div>
 

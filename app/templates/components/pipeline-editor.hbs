@@ -1,0 +1,24 @@
+<div class="ui raised segment">
+  <i class="large close icon" {{action "close"}}></i>
+
+  <div class="ui left floated header">Edit Pipeline: {{model.name}}</div>
+
+  <div class="ui hidden clearing divider"></div>
+
+  {{#if definitionFetcher.isRunning}}
+    <div class="ui center aligned basic segment">
+      <div class="ui tiny text active inline loader">Loading</div>
+    </div>
+  {{else}}
+    <div class="ui form">
+      <div class="field">
+        {{textarea value=definition.content rows="15" class="pre"}}
+      </div>
+
+      <button class="ui positive small right labeled icon button" {{action 'updateDefinition'}}>
+        Update<i class="checkmark icon"></i>
+      </button>
+    </div>
+  {{/if}}
+
+</div>

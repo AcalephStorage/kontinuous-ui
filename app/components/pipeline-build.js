@@ -121,6 +121,14 @@ export default Ember.Component.extend({
     },
     closePipelineDetails() {
       this.set('isViewingPipelineDetails', false);
+    },
+    editPipeline() {
+      this.send('unselectStage');
+      this.send('closePipelineDetails');
+      this.set('isEditingPipeline', true);
+    },
+    closePipelineEditor() {
+      this.set('isEditingPipeline', false);
     }
   },
 

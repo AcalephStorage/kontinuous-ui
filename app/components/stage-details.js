@@ -48,7 +48,7 @@ export default Ember.Component.extend({
       });
   },
 
-  changeTab: function(tab) {
+  changeTab(tab) {
     this.$(".stage-tabs .item").tab("change tab", tab);
   },
 
