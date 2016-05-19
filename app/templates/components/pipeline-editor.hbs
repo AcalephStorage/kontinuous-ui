@@ -10,15 +10,45 @@
       <div class="ui tiny text active inline loader">Loading</div>
     </div>
   {{else}}
-    <div class="ui form">
-      <div class="field">
-        {{textarea value=definition.content rows="15" class="pre"}}
-      </div>
+    {{#if definition}}
+      <div class="ui form">
+        <div class="grouped fields">
+          {{#each-in commitOptions as |value label|}}
+            <div class="field">
+              <div class="ui  radio checkbox">
+                <input type="radio" name="commitOption" value={{value}} {{action "selectCommitOption" value preventDefault=false}}>
+                <label>{{label}}</label>
+              </div>
+            </div>
+          {{/each-in}}
 
-      <button class="ui positive small right labeled icon button" {{action 'updateDefinition'}}>
-        Update<i class="checkmark icon"></i>
-      </button>
-    </div>
+          {{#if willPullRequest}}
+            <div class="field">
+              <label>Branch Name</label>
+              {{input placeholder="New Branch Name" value=commitOption.branch_name}}
+            </div>
+          {{/if}}
+
+          <div class="field">
+              <label>Commit Message</label>
+            {{input placeholder="Commit Message" value=commitOption.message}}
+          </div>
+        </div>
+        <div class="field">
+          <label>Definition</label>
+          {{textarea value=definition.decodedContent rows="15" class="pre"}}
+        </div>
+
+        <button class="ui positive small right labeled icon button {{if definitionUpdater.isRunning 'disabled'}}" {{action 'updateDefinition'}}>
+          Update<i class="{{if definitionUpdater.isIdle 'checkmark' 'loading spinner'}} icon"></i>
+        </button>
+      </div>
+    {{else}}
+      <div class="ui center aligned basic segment">
+        <em>Definition file not yet created.</em>
+        {{!-- <button class="ui small button" {{action 'createDefinition'}}>Create Definition</button> --}}
+      </div>
+    {{/if}}
   {{/if}}
 
 </div>
