@@ -1,7 +1,7 @@
 <div class="ui raised segment">
   <i class="large close icon" {{action "close"}}></i>
 
-  <div class="ui left floated header">Edit Pipeline: {{model.name}}</div>
+  <div class="ui left floated header">{{editorAction}} Pipeline: {{model.name}}</div>
 
   <div class="ui hidden clearing divider"></div>
 
@@ -36,17 +36,16 @@
         </div>
         <div class="field">
           <label>Definition</label>
-          {{textarea value=definition.decodedContent rows="15" class="pre"}}
+          {{textarea value=definition.content rows="15" class="pre"}}
         </div>
 
         <button class="ui positive small right labeled icon button {{if definitionUpdater.isRunning 'disabled'}}" {{action 'updateDefinition'}}>
-          Update<i class="{{if definitionUpdater.isIdle 'checkmark' 'loading spinner'}} icon"></i>
+          {{editorAction}}<i class="{{if definitionUpdater.isIdle 'checkmark' 'loading spinner'}} icon"></i>
         </button>
       </div>
     {{else}}
       <div class="ui center aligned basic segment">
-        <em>Definition file not yet created.</em>
-        {{!-- <button class="ui small button" {{action 'createDefinition'}}>Create Definition</button> --}}
+        <button class="ui small button" {{action 'createDefinition'}}>Create Definition</button>
       </div>
     {{/if}}
   {{/if}}

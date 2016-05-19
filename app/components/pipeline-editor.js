@@ -12,6 +12,13 @@ export default Ember.Component.extend({
   notify: Ember.inject.service(),
 
   willPullRequest: Ember.computed.equal('commitOption.option', 'pull_request'),
+  editorAction: Ember.computed('definition', function() {
+    let definition = this.get('definition');
+    if (definition) {
+      return definition.sha ? 'Update' : 'Create';
+    }
+    return '';
+  }),
 
   init() {
     this._super(...arguments);
@@ -35,6 +42,9 @@ export default Ember.Component.extend({
       if (key !== 'pull_request') {
         this.set("commitOption.branch_name", "");
       }
+    },
+    createDefinition() {
+      this.set('definition', {content: ''});
     },
     updateDefinition() {
       this.performTask(this.get('definitionUpdater'));
@@ -64,21 +74,14 @@ export default Ember.Component.extend({
     });
   },
 
-  serializeDefinition(definition) {
+  serializeDefinition(res) {
     let currentDefinition = this.get('definition') || {};
-    if (definition && definition.content) {
-      definition.decodedContent = atob(definition.content);
+    if (res && res.content) {
+      res.content = atob(res.content);
     }
-    Ember.assign(currentDefinition, definition);
+    Ember.assign(currentDefinition, res);
     this.set('definition', currentDefinition);
-  },
-
-  normalizeDefinition() {
-    let definition = this.get('definition');
-    return {
-      content: btoa(this.get('definition.decodedContent')),
-      sha: this.get('definition.sha')
-    }
+    this.notifyPropertyChange('definition');
   },
 
   definitionFetcher: task(function*(ajaxOptions) {
@@ -89,23 +92,25 @@ export default Ember.Component.extend({
   }).drop(),
 
   definitionUpdater: task(function*(ajaxOptions) {
-    let definition = this.normalizeDefinition();
-
     Ember.assign(ajaxOptions, {
-      type: 'PUT',
+      type: 'POST',
       data: JSON.stringify({
-        definition: definition,
+        definition: {
+          content: btoa(this.get('definition.content')),
+          sha: this.get('definition.sha')
+        },
         commit: this.get('commitOption')
       }),
       contentType: 'application/json;chartset=UTF-8'
     });
 
+    let action = this.get('editorAction').toLowerCase();
     yield Ember.$.ajax(ajaxOptions)
       .then((definition) => {
-        this.get('notify').success("Successfully updated the definition file for the pipeline");
+        this.get('notify').success(`Successfully ${action}d the definition file for the pipeline`);
         this.serializeDefinition(definition);
       }, (res) => {
-        this.get('notify').error(res.responseJSON.Message || "Failed to update the definition file for the pipeline");
+        this.get('notify').error(res.responseJSON.Message || `Failed to ${action} the definition file for the pipeline`);
       });
   }).drop(),
 
