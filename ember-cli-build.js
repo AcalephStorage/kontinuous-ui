@@ -11,7 +11,7 @@ module.exports = function(defaults) {
     }
   });
 
-  app.import(app.bowerDirectory + '/moment/moment.js');
+  app.import('vendor/moment.min.js');
 
   // Use `app.import` to add additional libraries to the generated
   // output files.

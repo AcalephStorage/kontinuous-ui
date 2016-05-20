@@ -1,5 +1,4 @@
 import Ember from 'ember';
-import DS from 'ember-data';
 import {task} from 'ember-concurrency';
 
 export default Ember.Component.extend({
@@ -20,6 +19,7 @@ export default Ember.Component.extend({
     let type = this.get('model.type');
     return this.iconClassMap[type] || this.defaultStatusIcon;
   }),
+  isRunning: Ember.computed.equal('model.status', 'RUNNING'),
 
   click() {
     this.fetchLogs();
@@ -30,42 +30,30 @@ export default Ember.Component.extend({
     let stage = this.get('model');
 
     if (Ember.isEmpty(stage.get('logFiles'))) {
-      let l = this.get('logFetcher').perform(stage);
-      stage.set('logFetcher', l);
+      let logFetcher = this.get('logFetcher').perform(stage);
+      stage.set('logFetcher', logFetcher);
+      logFetcher.then((logFiles) => {
+        stage.set('logFiles', logFiles);
+      });
     }
   },
 
   logFetcher: task(function*(stage) {
     if (stage.get('status') !== 'PENDING') {
-      return yield this.getStageLogs(stage)
-        .then((logFiles) => {
-          stage.set('logFiles', logFiles);
-        });
+      let logFiles = yield this.getStageLogs(stage);
+      return logFiles;
     }
   }),
 
   getStageLogs(stage) {
-    let adapter = this.get('store').adapterFor('stage'),
-      query = {
-        owner: this.get('pipeline.owner'),
-        repo: this.get('pipeline.repo'),
-        buildNumber: this.get('build.number'),
-        stageIndex: stage.get('index'),
-      };
+    let query = {
+      owner: this.get('pipeline.owner'),
+      repo: this.get('pipeline.repo'),
+      buildNumber: this.get('build.number'),
+      stageIndex: stage.get('index'),
+    };
 
-    return new Ember.RSVP.Promise((resolve) => {
-      adapter._getLogs(query)
-        .then((logFiles) => {
-          logFiles.forEach((logFile) => {
-            let filename = logFile.filename.split('/');
-            logFile.title = filename.objectAt(filename.length - 1);
-            logFile.details = atob(logFile.content);
-          });
-          resolve(logFiles);
-        }, () => {
-          resolve([]);
-        });
-    });
+    return this.get('store').query('log', query);
   },
 
 });

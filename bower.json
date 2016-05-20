@@ -12,8 +12,7 @@
     "loader.js": "ember-cli/loader.js#3.2.1",
     "qunit": "~1.18.0",
     "semantic-ui": "~2.1.8",
-    "node-uuid": "1.4.1",
-    "moment": "momentjs#^2.13.0"
+    "node-uuid": "1.4.1"
   },
   "resolutions": {
     "ember": "v2.5.0"

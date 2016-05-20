@@ -1,0 +1,146 @@
+/*******************
+** pipeline-build
+*******************/
+
+@stagesHeight: 10em;
+@stageBorder: 0.2em;
+@stageHeight: @stagesHeight/2;
+@stageWidth: @stageHeight + @stageBorder;
+@stageSideGutter: 3.5em;
+@stageLabelWidth: @stageWidth + (@stageSideGutter * 2);
+@stageLineMargin: 1em;
+
+.pipeline-build ul {
+  display: flex;
+  overflow-x: scroll;
+  overflow-y: hidden;
+  height: @stagesHeight;
+  margin: 3em 0em;
+  padding: 0.5em 0;
+}
+.pipeline-build ul .stage {
+  border: @stageBorder solid @colorPending;
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-block;
+  height: @stageHeight;
+  line-height: @stageHeight;
+  margin: 0 @stageSideGutter;
+  position: relative;
+  text-align: center;
+  width: @stageWidth;
+}
+.pipeline-build ul .stage::before {
+  border: (@stageBorder/2) solid @colorPending;
+  border-radius: @stageBorder;
+  content: '';
+  left: -(@stageSideGutter * 2);
+  margin: 0 @stageLineMargin;
+  position: absolute;
+  top: @stageHeight/2;
+  width: (@stageSideGutter * 2) - (@stageLineMargin * 2);
+}
+.pipeline-build ul .stage:first-child::before {
+  display: none;
+}
+.pipeline-build ul .stage.selected,
+.pipeline-build .stage:hover {
+  box-shadow: 1px 2px 2px 0px #BCBCBC;
+  color: #5D5D5D;
+}
+.pipeline-build ul .stage > .label {
+  font-size: 0.8em;
+  left: -(@stageLabelWidth/4);
+  margin-top: 1em;
+  position: relative;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: @stageLabelWidth;
+}
+.pipeline-build ul .stage > .icon {
+  margin: 0 !important;
+}
+.pipeline-build ul .stage.RUNNING::before,
+.pipeline-build ul .stage.RUNNING {
+  border-color: @colorRunningDark;
+  background-color: @colorRunningDark;
+}
+.pipeline-build ul .stage.SUCCESS::before,
+.pipeline-build ul .stage.SUCCESS {
+  border-color: @colorSuccess;
+}
+.pipeline-build ul .stage.FAIL::before,
+.pipeline-build ul .stage.FAIL {
+  border-color: @colorFail;
+}
+@-webkit-keyframes sk-scaleout {
+  0% {
+    -webkit-transform: scale(0);
+  }
+  100% {
+    -webkit-transform: scale(1.2);
+    opacity: 0;
+  }
+}
+@keyframes sk-scaleout {
+  0% {
+    -webkit-transform: scale(0);
+    transform: scale(0);
+  } 100% {
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+    opacity: 0;
+  }
+}
+@-webkit-keyframes glow {
+  0%   {border-color: #EEF4F6; background: #EEF4F6;}
+  25%  {border-color: #DAF1F8; background: #DAF1F8;}
+  50%  {border-color: #C0E7F4; background: #C0E7F4;}
+  75%  {border-color: #AFDEEE; background: #AFDEEE;}
+  100% {border-color: @colorRunning; background: @colorRunning;}
+}
+.pipeline-build ul .stage > .pulse {
+  -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
+  animation: sk-scaleout 1.0s infinite ease-in-out;
+  background-color: @colorRunningGlow;
+  border-radius: 50%;
+  float: left;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  width: 100%;
+}
+
+/*******************
+** stage-details
+*******************/
+
+.stage-details.ui.right.internal.rail {
+  width: 60%;
+  height: inherit;
+  padding: 0em 0.5em 0em 0em;
+  margin: 0em 0.5em 0em 0em;
+  z-index: 10000;
+}
+.stage-details > .segment {
+  height: inherit;
+  overflow-y: scroll;
+}
+.stage-details .segment >.close.icon {
+  cursor: pointer;
+  position: absolute;
+  margin: 0;
+  top: 1em;
+  right: 1em;
+  opacity: .7;
+  -webkit-transition: opacity .1s ease;
+  transition: opacity .1s ease;
+}
+.stage-details > .segment  > .menu {
+  border-radius: 0;
+  border-width: 1px 0 1px 0;
+  box-shadow: none;
+}
+.stage-details > .segment > .segment.tab {
+  border-width: 0;
+}

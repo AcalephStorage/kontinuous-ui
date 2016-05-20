@@ -1,29 +1,31 @@
+/*******************
+** pipeline-card
+*******************/
+
 .ui.cards > .card > .extra, .ui.card > .extra {
   color: #000000;
 }
-
 .PENDING.ui.card > .extra, .ui.card > .extra {
   background: @colorPending;
 }
-.SUCCESS.ui.card > .extra {
-  background: @colorSuccess;
-}
-.FAIL.ui.card > .extra {
-  background: @colorFail;
+.PENDING.ui.card > .content .status.icon, .ui.card > .content .status.icon {
+  color: @colorPending;
 }
 .RUNNING.ui.card > .extra {
   background: @colorRunning;
 }
-
-.PENDING.ui.card > .content .status.icon, .ui.card > .content .status.icon {
-  color: @colorPending;
+.RUNNING.ui.card > .content .status.icon {
+  color: @colorRunning;
+}
+.SUCCESS.ui.card > .extra {
+  background: @colorSuccess;
 }
 .SUCCESS.ui.card > .content .status.icon {
   color: @colorSuccess;
 }
+.FAIL.ui.card > .extra {
+  background: @colorFail;
+}
 .FAIL.ui.card > .content .status.icon {
   color: @colorFail;
-}
-.RUNNING.ui.card > .content .status.icon {
-  color: @colorRunning;
 }
