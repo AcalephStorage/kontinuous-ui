@@ -1,5 +1,5 @@
 <div class="ui raised segment">
-  <i class="close icon" {{action "close"}}></i>
+  <i class="large close icon" {{action "close"}}></i>
 
   <div class="ui left floated header">Stage {{model.index}}: {{model.name}}</div>
 
@@ -29,32 +29,37 @@
     {{#if model.job_name}}
     <tr><td class="two wide">Job Name:</td><td>{{model.job_name}}</td></tr>
     {{/if}}
+    {{#if model.started}}
+    <tr><td class="two wide">Started:</td><td>{{unix-nano-time model.started}}</td></tr>
+    {{/if}}
+    {{#if model.finished}}
+    <tr><td class="two wide">Finished:</td><td>{{unix-nano-time model.finished}}</td></tr>
+    {{/if}}
   </table>
 
   <h3 class="ui header">Logs</h3>
-
-  {{#if model.logFetcher.isRunning}}
-    <div class="ui center aligned basic segment">
-      <div class="ui tiny text active inline loader">Loading</div>
-    </div>
-  {{else}}
-    {{#if model.logFiles.length}}
-      <div class="ui small attached pointing menu stage-tabs">
-        {{#each model.logFiles as |logFile|}}
-          <a class="item" data-tab={{logFile.title}} {{action "showLogs" logFile}}>{{logFile.title}}</a>
-        {{/each}}
-      </div>
+  {{#if model.logFiles.length}}
+    <div class="ui small attached pointing menu stage-tabs">
       {{#each model.logFiles as |logFile|}}
-      <div class="ui attached segment tab" data-tab={{logFile.title}}>
-        {{#if logFile.details }}
-          <pre>{{logFile.details}}</pre>
-        {{else}}
-          <div class="ui center aligned basic segment">
-            <div class="ui tiny text active inline loader">Loading</div>
-          </div>
-        {{/if}}
-      </div>
+        <a class="item" data-tab={{logFile.title}} {{action "showLogs" logFile}}>{{logFile.title}}</a>
       {{/each}}
+    </div>
+    {{#each model.logFiles as |logFile|}}
+    <div class="ui attached segment tab" data-tab={{logFile.title}}>
+      {{#if logFile.content }}
+        <pre>{{logFile.content}}</pre>
+      {{else if model.logFetcher.isRunning}}
+        <div class="ui center aligned basic segment">
+          <div class="ui tiny text active inline loader">Loading</div>
+        </div>
+      {{/if}}
+    </div>
+    {{/each}}
+  {{else}}
+    {{#if model.logFetcher.isRunning}}
+      <div class="ui center aligned basic segment">
+        <div class="ui tiny text active inline loader">Loading</div>
+      </div>
     {{else}}
       <div class="ui center aligned segment">No logs found.</div>
     {{/if}}

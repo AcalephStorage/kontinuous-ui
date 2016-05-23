@@ -1,5 +1,6 @@
 <div class="ui raised segment">
-  <i class="close icon" {{action "close"}}></i>
+  <i class="large close icon" {{action "close"}}></i>
+
   <div class="ui left floated header">Pipeline: {{model.name}}</div>
 
   <table class="ui small very basic compact table">
@@ -22,5 +23,45 @@
         {{/if}}
       {{/each-in}}
     {{/each}}
+
+    {{#if build}}
+      <tr>
+        <td class="two wide">Build:</td>
+        <td>{{build.number}}</td>
+      </tr>
+      <tr>
+        <td class="two wide">Status:</td>
+        <td>{{build.status}}</td>
+      </tr>
+      <tr>
+        <td class="two wide">Branch:</td>
+        <td>{{build.branch}}</td>
+      </tr>
+      <tr>
+        <td class="two wide">Commit:</td>
+        <td>{{build.commit}}</td>
+      </tr>
+      <tr>
+        <td class="two wide">Author:</td>
+        <td>{{build.author}}</td>
+      </tr>
+      <tr>
+        <td class="two wide">Event:</td>
+        <td>{{build.event}}</td>
+      </tr>
+      <tr>
+        <td class="two wide">Clone URL:</td>
+        <td><a href={{build.clone_url}} target="_blank">{{build.clone_url}}</a></td>
+      </tr>
+      <tr>
+        <td class="two wide">Created:</td>
+        <td>{{unix-nano-time build.created}}</td>
+      </tr>
+      <tr>
+        <td class="two wide">Finished:</td>
+        <td>{{unix-nano-time build.finished}}</td>
+      </tr>
+    {{/if}}
+
   </table>
 </div>

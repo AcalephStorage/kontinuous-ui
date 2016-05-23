@@ -1,10 +1,10 @@
 <div class="two column row">
   <div class="left floated column">
-    <h1 class="ui header">Pipelines</h1>
+    <div class="ui large header breadcrumb">
+      <h1>Pipelines</h1>
+    </div>
   </div>
   <div class="right floated column">
-    {{!-- <button class="right floated ui in-header icon button" data-content="Trigger Pipeline" {{action "confirmCreateBuild"}}><i class="plus icon"></i></button> --}}
-
     {{#ui-link-to routeName='pipelines.create' tagName="button" class="ui right floated in-header icon button" data-content="Create Pipeline"}}<i class="plus icon"></i>{{/ui-link-to}}
   </div>
 </div>
@@ -22,6 +22,10 @@
     {{else}}
       <div class="ui center aligned segment">No pipelines found.</div>
     {{/if}}
+  {{else}}
+    <div class="ui center aligned very padded basic segment">
+      <div class="ui tiny text active inline loader">Loading</div>
+    </div>
   {{/if}}
 </div>
 

@@ -11,7 +11,7 @@ export default SemanticDropdown.extend({
 
   onShow() {
     if (this.get('firstShow') && !this.get('waitList.isPending')) {
-      this.$().dropdown('set selected', this.get('value'));
+      this.$().dropdown('set selected', this.get('selected'));
       this.set('firstShow', false);
     }
   },

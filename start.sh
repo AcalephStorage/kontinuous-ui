@@ -6,4 +6,4 @@ fi
 
 ember build -prod
 
-caddy -conf=/home/apps/kontinuous-ui/Caddyfile
+/usr/local/bin/caddy -conf=/home/apps/kontinuous-ui/Caddyfile

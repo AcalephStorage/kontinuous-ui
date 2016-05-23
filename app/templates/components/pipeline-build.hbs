@@ -1,11 +1,10 @@
-
 <div class="two column row">
   <div class="left floated column">
-    <div class="ui large breadcrumb">
+    <div class="ui large header breadcrumb">
       {{#link-to 'pipelines' class="section"}}<h1>Pipelines</h1>{{/link-to}}
       <i class="right chevron icon divider"></i>
       <div class="section">{{pipeline.name}}</div>
-      {{#if pipeline.builds.length}}
+      {{#if model}}
       <i class="right chevron icon divider"></i>
       <div class="active section">Build #{{model.number}}</div>
       {{/if}}
@@ -13,25 +12,24 @@
   </div>
   <div class="right floated column">
     <button class="right floated ui in-header icon button" data-content="Trigger Pipeline" {{action "confirmCreateBuild"}}><i class="plus icon"></i></button>
-    <button class="right floated ui in-header icon button" data-content="Pipeline Details" {{action "viewPipelineDetails"}}><i class="unhide icon"></i></button>
-    {{#ui-promise-dropdown class="right floated ui right pointing icon button" waitList=pipeline.builds onChange=(action "selectBuild") }}
-      <i class="history icon"></i>
-      <div class="menu">
-      {{#each all as |b|}}
-        <div class="item" data-value={{b.number}}>Build #{{b.number}}</div>
-      {{/each}}
-      </div>
-    {{/ui-promise-dropdown}}
+    <button class="right floated ui in-header {{if isEditingPipeline 'disabled grey'}} icon button" data-content="Edit Pipeline" {{action "editPipeline"}}><i class="edit icon"></i></button>
+    <button class="right floated ui in-header {{if isViewingPipelineDetails 'disabled grey'}} icon button" data-content="Pipeline Details" {{action "viewPipelineDetails"}}><i class="unhide icon"></i></button>
+    {{#if model}}
+      {{#ui-promise-dropdown class="right floated ui right pointing icon button" waitList=pipeline.builds onChange=(action "selectBuild") selected=buildNumber}}
+        <i class="history icon"></i>
+        <div class="menu">
+        {{#each all as |b|}}
+          <div class="item" data-value={{b.number}}>Build #{{b.number}}</div>
+        {{/each}}
+        </div>
+      {{/ui-promise-dropdown}}
+    {{/if}}
   </div>
 </div>
 
 <div class="sixteen wide column pipeline-build full-height">
-  {{#if pipeline.builds.isPending}}
-    <div class="ui center aligned very padded basic segment">
-      <div class="ui tiny text active inline loader">Loading</div>
-    </div>
-  {{else}}
-    {{#if pipeline.builds.length}}
+  {{#if model}}
+    {{#if model.stages}}
       <ul class="stages">
       {{#each model.stages as |stage|}}
         {{build-stage model=stage build=model pipeline=pipeline selectStage=(action 'selectStage')}}
@@ -40,14 +38,23 @@
       {{#if selectedStage}}
         {{stage-details model=selectedStage build=model pipeline=pipeline close=(action 'unselectStage') }}
       {{/if}}
-
-      {{#if isViewingPipelineDetails}}
-        {{pipeline-details model=pipeline close=(action 'closePipelineDetails') }}
-      {{/if}}
-
     {{else}}
-      <div class="ui center aligned segment">No builds found.</div>
+      <div class="ui center aligned segment">No stages found for build.</div>
     {{/if}}
+  {{else}}
+    {{#if buildFetcher.isRunning}}
+      <div class="ui center aligned very padded basic segment">
+        <div class="ui tiny text active inline loader">Loading</div>
+      </div>
+    {{else}}
+      <div class="ui center aligned segment">No builds yet.</div>
+    {{/if}}
+  {{/if}}
+
+  {{#if isViewingPipelineDetails}}
+    {{pipeline-details model=pipeline build=model close=(action 'closePipelineDetails') }}
+  {{else if isEditingPipeline}}
+    {{pipeline-editor model=pipeline close=(action 'closePipelineEditor') }}
   {{/if}}
 </div>
 

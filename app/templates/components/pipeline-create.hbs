@@ -39,37 +39,6 @@
 
     </div>
 
-    <div class="grouped fields">
-      <label>Notifications</label>
-
-      {{#each pipeline.notifOptions as |notifOption|}}
-
-        <div class="field">
-          <div class="ui checkbox">
-            {{input type="checkbox" checked=notifOption.isSelected}}
-            <label>{{notifOption.label}}</label>
-          </div>
-        </div>
-
-        {{#if notifOption.isSelected}}
-        <div class="inline fields">
-          <label><i class="mini right chevron icon"></i></label>
-
-          {{#each notifOption.metadata as |m|}}
-          <div class="field">
-            <div class="ui input small">
-              {{input type="text" class="form-control" value=m.value placeholder=m.label}}
-            </div>
-          </div>
-          {{/each}}
-
-        </div>
-        {{/if}}
-
-      {{/each}}
-
-    </div>
-
   </div>
 </div>
 
