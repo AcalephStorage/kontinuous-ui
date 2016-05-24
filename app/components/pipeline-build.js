@@ -46,6 +46,7 @@ export default Ember.Component.extend({
   },
 
   getBuildDetails() {
+    this.set('model', undefined);
     this.get('stagesPoller').cancelAll();
     this.get('stagesPoller').perform();
   },
@@ -59,10 +60,8 @@ export default Ember.Component.extend({
 
   buildFetcher: task(function * () {
     if (this.get('buildNumber')) {
-      yield this.get('build').find(this.get('buildQuery'))
-        .then((build) => {
-          this.set('model', build);
-        });
+      let build = yield this.get('build').find(this.get('buildQuery'));
+      this.set('model', build);
     }
   }).drop(),
 
@@ -107,6 +106,9 @@ export default Ember.Component.extend({
   }).drop(),
 
   actions: {
+    historyHide() {
+      return Ember.isPresent(this.get('model'));
+    },
     selectBuild() {
       this.send('unselectStage');
       this.send('closePipelineDetails');
