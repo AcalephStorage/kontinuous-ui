@@ -49,17 +49,13 @@
       {{#if logFile.content }}
         <pre>{{logFile.content}}</pre>
       {{else if model.logFetcher.isRunning}}
-        <div class="ui center aligned basic segment">
-          <div class="ui tiny text active inline loader">Loading</div>
-        </div>
+        {{ui-spinkit-3}}
       {{/if}}
     </div>
     {{/each}}
   {{else}}
     {{#if model.logFetcher.isRunning}}
-      <div class="ui center aligned basic segment">
-        <div class="ui tiny text active inline loader">Loading</div>
-      </div>
+      {{ui-spinkit-3}}
     {{else}}
       <div class="ui center aligned segment">No logs found.</div>
     {{/if}}

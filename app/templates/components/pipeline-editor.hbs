@@ -6,9 +6,7 @@
   <div class="ui hidden clearing divider"></div>
 
   {{#if definitionFetcher.isRunning}}
-    <div class="ui center aligned basic segment">
-      <div class="ui tiny text active inline loader">Loading</div>
-    </div>
+    {{ui-spinkit-3}}
   {{else}}
     {{#if definition}}
       <div class="ui form">
