@@ -16,7 +16,7 @@
           {{#each-in commitOptions as |value label|}}
             <div class="field">
               <div class="ui  radio checkbox">
-                <input type="radio" name="commitOption" value={{value}} {{action "selectCommitOption" value preventDefault=false}}>
+                <input type="radio" name="commit-option" value={{value}} {{action "selectCommitOption" value preventDefault=false}}>
                 <label>{{label}}</label>
               </div>
             </div>
@@ -36,7 +36,7 @@
         </div>
         <div class="field">
           <label>Definition</label>
-          {{textarea value=definition.content rows="15" class="pre"}}
+          <div id="definition-content" class="editor"></div>
         </div>
 
         <button class="ui positive small right labeled icon button {{if definitionUpdater.isRunning 'disabled'}}" {{action 'updateDefinition'}}>
