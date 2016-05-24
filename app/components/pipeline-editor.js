@@ -54,6 +54,7 @@ export default Ember.Component.extend({
       this.aceEditor.on('change', () => {
         this.set('definition.content', this.aceEditor.getSession().getValue());
       });
+      this.aceEditor.$blockScrolling = Infinity;
       this.addObserver('definition.content', this, this.aceEditorContentChange);
       this.notifyPropertyChange('definition.content');
     }
