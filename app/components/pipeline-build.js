@@ -18,6 +18,14 @@ export default Ember.Component.extend({
       build_number: this.get('buildNumber'),
     };
   }),
+  isViewingStage: Ember.computed.bool('selectedStage'),
+  infoBoxVisible: Ember.computed.or('isViewingPipelineDetails', 'isEditingPipeline', 'isViewingStage'),
+
+  init() {
+    this._super(...arguments);
+    this.set('isViewingPipelineDetails', false);
+    this.set('isEditingPipeline', false);
+  },
 
   willInsertElement() {
     this.addObserver('buildNumber', this, this.getBuildDetails);
@@ -101,8 +109,13 @@ export default Ember.Component.extend({
   actions: {
     selectBuild() {
       this.send('unselectStage');
+      this.send('closePipelineDetails');
+      this.send('closePipelineEditor');
     },
     confirmCreateBuild() {
+      this.send('unselectStage');
+      this.send('closePipelineDetails');
+      this.send('closePipelineEditor');
       this.$('.ui.modal.create-build-confirmation').modal('show');
     },
     createBuild() {
@@ -110,6 +123,7 @@ export default Ember.Component.extend({
     },
     selectStage(stage) {
       this.send('closePipelineDetails');
+      this.send('closePipelineEditor');
       this.set('selectedStage', stage);
     },
     unselectStage() {
@@ -117,6 +131,7 @@ export default Ember.Component.extend({
     },
     viewPipelineDetails() {
       this.send('unselectStage');
+      this.send('closePipelineEditor');
       this.set('isViewingPipelineDetails', true);
     },
     closePipelineDetails() {

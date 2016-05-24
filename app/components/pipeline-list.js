@@ -9,10 +9,14 @@ export default Ember.Component.extend({
 
   pipelinesPoller: task(function*() {
     while (true) {
-      yield this.get('pipeline').fetchAll();
+      this.get('pipelinesFetcher').perform();
       yield timeout(60000); // 1-minute interval
     }
   }).on('init').drop(),
+
+  pipelinesFetcher: task(function*() {
+    yield this.get('pipeline').fetchAll();
+  }),
 
   didInsertElement() {
     this.$(".in-header.icon.button").popup({

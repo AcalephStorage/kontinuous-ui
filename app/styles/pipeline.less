@@ -111,6 +111,23 @@
   width: 100%;
 }
 
+.ui.FAIL.label {
+  background-color: @colorFail;
+  border-color: @colorFail;
+}
+.ui.SUCCESS.label {
+  background-color: @colorSuccess;
+  border-color: @colorSuccess;
+}
+.ui.PENDING.label {
+  background-color: @colorPending;
+  border-color: @colorPending;
+}
+.ui.RUNNING.label {
+  background-color: @colorRunning;
+  border-color: @colorRunning;
+}
+
 /*******************
 ** stage-details
 *******************/
@@ -143,4 +160,15 @@
 }
 .stage-details > .segment > .segment.tab {
   border-width: 0;
+}
+
+
+/*******************
+** pipeline-editor
+*******************/
+
+.editor {
+  position: relative;
+  height: 250px;
+  width: 100%;
 }

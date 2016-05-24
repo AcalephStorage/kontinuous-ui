@@ -12,14 +12,17 @@
   </div>
   <div class="right floated column">
     <button class="right floated ui in-header icon button" data-content="Trigger Pipeline" {{action "confirmCreateBuild"}}><i class="plus icon"></i></button>
-    <button class="right floated ui in-header {{if isEditingPipeline 'disabled grey'}} icon button" data-content="Edit Pipeline" {{action "editPipeline"}}><i class="edit icon"></i></button>
-    <button class="right floated ui in-header {{if isViewingPipelineDetails 'disabled grey'}} icon button" data-content="Pipeline Details" {{action "viewPipelineDetails"}}><i class="unhide icon"></i></button>
+    <button class="right floated ui in-header {{if isEditingPipeline 'lightgrey'}} icon button" data-content="Edit Pipeline" {{action "editPipeline"}}><i class="edit icon"></i></button>
+    <button class="right floated ui in-header {{if isViewingPipelineDetails 'lightgrey'}} icon button" data-content="Pipeline Details" {{action "viewPipelineDetails"}}><i class="unhide icon"></i></button>
     {{#if model}}
-      {{#ui-promise-dropdown class="right floated ui right pointing icon button" waitList=pipeline.builds onChange=(action "selectBuild") selected=buildNumber}}
+      {{#ui-promise-dropdown class="right floated ui right pointing icon button" disabled=infoBoxVisible waitList=pipeline.builds onChange=(action "selectBuild") selected=buildNumber}}
         <i class="history icon"></i>
         <div class="menu">
         {{#each all as |b|}}
-          <div class="item" data-value={{b.number}}>Build #{{b.number}}</div>
+          <div class="item" data-value={{b.number}}>
+            <div class="ui {{b.status}} empty circular label"></div>
+            Build #{{b.number}}
+          </div>
         {{/each}}
         </div>
       {{/ui-promise-dropdown}}
@@ -53,7 +56,8 @@
 
   {{#if isViewingPipelineDetails}}
     {{pipeline-details model=pipeline build=model close=(action 'closePipelineDetails') }}
-  {{else if isEditingPipeline}}
+  {{/if}}
+  {{#if isEditingPipeline}}
     {{pipeline-editor model=pipeline close=(action 'closePipelineEditor') }}
   {{/if}}
 </div>

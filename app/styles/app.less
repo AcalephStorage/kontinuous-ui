@@ -46,17 +46,16 @@ body > div {
   height: inherit;
 }
 
-.notifier{
+.notifier {
   position: fixed;
   z-index: 5000;
   top: 7em;
-  right: 0px;
+  right: 2em;
 }
 
-.editor {
-  position: relative;
-  height: 250px;
-  width: 100%;
+.notifier > .message > a.close {
+  float: right;
+  margin-left: 1rem;
 }
 
 [data-ember-action] {

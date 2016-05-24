@@ -120,10 +120,8 @@ export default Ember.Component.extend({
   },
 
   definitionFetcher: task(function*(ajaxOptions) {
-    yield Ember.$.ajax(ajaxOptions)
-      .then((definition) => {
-        this.serializeDefinition(definition);
-      });
+    let definition = yield Ember.$.ajax(ajaxOptions)
+    this.serializeDefinition(definition);
   }).drop(),
 
   definitionUpdater: task(function*(ajaxOptions) {
