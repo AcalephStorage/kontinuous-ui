@@ -10,7 +10,7 @@
 </div>
 
 <div class="sixteen wide column full-height">
-  {{#if pipeline.all.isFulfilled}}
+  {{#if isLoaded}}
     {{#if pipeline.all.length}}
       <div class="ui cards">
       {{#each pipeline.sorted as |pipeline|}}

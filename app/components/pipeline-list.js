@@ -7,6 +7,11 @@ export default Ember.Component.extend({
 
   pipeline: Ember.inject.service(),
 
+  init() {
+    this._super(...arguments);
+    this.set('isLoaded', false);
+  },
+
   pipelinesPoller: task(function*() {
     while (true) {
       this.get('pipelinesFetcher').perform();
@@ -16,6 +21,7 @@ export default Ember.Component.extend({
 
   pipelinesFetcher: task(function*() {
     yield this.get('pipeline').fetchAll();
+    this.set('isLoaded', true);
   }),
 
   didInsertElement() {
