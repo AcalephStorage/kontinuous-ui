@@ -1,6 +1,10 @@
 {{#if session.isAuthenticated}}
-  {{main-menu}}
-  {{outlet}}
+  <div id="main" class="ui one column columned grid">
+    <div id="main-header" class="flex-fit column">
+      <div class="row">{{main-menu}}</div>
+    </div>
+    <div id="main-content" class="flex-full stretched column">{{outlet}}</div>
+  </div>
   {{ember-notify messageStyle='semantic-ui' closeAfter=3000 classPrefix="notifier"}}
 {{else}}
   {{outlet 'login'}}

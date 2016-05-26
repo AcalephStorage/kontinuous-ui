@@ -4,7 +4,7 @@ import Configuration from '../config/environment';
 
 export default Ember.Component.extend({
 
-  classNames: Ember.String.w('ui right internal rail stage-details'),
+  classNames: Ember.String.w('ui right internal rail info-box'),
 
   pipeline: Ember.inject.service(),
   store: Ember.inject.service(),
@@ -121,7 +121,7 @@ export default Ember.Component.extend({
   },
 
   definitionFetcher: task(function*(ajaxOptions) {
-    let definition = yield Ember.$.ajax(ajaxOptions)
+    let definition = yield Ember.$.ajax(ajaxOptions);
     this.serializeDefinition(definition);
   }).drop(),
 
@@ -141,6 +141,7 @@ export default Ember.Component.extend({
     let action = this.get('editorAction').toLowerCase();
     yield Ember.$.ajax(ajaxOptions)
       .then((definition) => {
+        this.get('model').reload();
         this.get('notify').success(`Successfully ${action}d the definition file for the pipeline`);
         this.serializeDefinition(definition);
       }, (res) => {

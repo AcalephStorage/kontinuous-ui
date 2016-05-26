@@ -129,21 +129,20 @@
 }
 
 /*******************
-** stage-details
+** info-box
 *******************/
 
-.stage-details.ui.right.internal.rail {
+.info-box.ui.right.internal.rail {
   width: 60%;
-  height: inherit;
   padding: 0em 0.5em 0em 0em;
   margin: 0em 0.5em 0em 0em;
   z-index: 10000;
 }
-.stage-details > .segment {
+.info-box > .segment {
   height: inherit;
   overflow-y: scroll;
 }
-.stage-details .segment >.close.icon {
+.info-box .segment >.close.icon {
   cursor: pointer;
   position: absolute;
   margin: 0;
@@ -153,12 +152,12 @@
   -webkit-transition: opacity .1s ease;
   transition: opacity .1s ease;
 }
-.stage-details > .segment  > .menu {
+.info-box > .segment  > .menu {
   border-radius: 0;
   border-width: 1px 0 1px 0;
   box-shadow: none;
 }
-.stage-details > .segment > .segment.tab {
+.info-box > .segment > .segment.tab {
   border-width: 0;
 }
 

@@ -9,22 +9,24 @@
   </div>
 </div>
 
-<div class="sixteen wide column full-height">
-  {{#if isLoaded}}
-    {{#if pipeline.all.length}}
-      <div class="ui cards">
-      {{#each pipeline.sorted as |pipeline|}}
-        {{#unless pipeline.isNew}}
-          {{pipeline-card model=pipeline}}
-        {{/unless}}
-      {{/each}}
-      </div>
+<div class="one column row">
+  <div class="column">
+    {{#if isLoaded}}
+      {{#if pipeline.all.length}}
+        <div class="ui cards">
+        {{#each pipeline.sorted as |pipeline|}}
+          {{#unless pipeline.isNew}}
+            {{pipeline-card model=pipeline}}
+          {{/unless}}
+        {{/each}}
+        </div>
+      {{else}}
+        <div class="ui center aligned segment">No pipelines found.</div>
+      {{/if}}
     {{else}}
-      <div class="ui center aligned segment">No pipelines found.</div>
+      {{ui-spinkit-3}}
     {{/if}}
-  {{else}}
-    {{ui-spinkit-3}}
-  {{/if}}
+  </div>
 </div>
 
 {{outlet}}

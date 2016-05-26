@@ -14,36 +14,49 @@
 @colorRunningDark : #AAE3F7;
 @colorRunningGlow : #D8F5FF;
 
-@menuMaxHeight: 5em;
-@menuBottomMargin: 2em;
-@mainBoxHeight: (@menuMaxHeight + @menuBottomMargin) * 2;
-
+@lrMargin: 2em;
 
 /******************
 ** Definitions
 ******************/
 
 body > div {
-  height: 95%;
-  padding-bottom: 5%;
+  height: 100%;
 }
 
-.main-menu.ui {
+.columned.grid {
+ flex-direction: column;
+ height: 100%;
+}
+
+.flex-fit {
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.flex-full {
+  flex-grow: 1;
+  flex-shrink: 1;
+}
+
+#main-header .menu {
   background: #EFEFEF;
   border: none !important;
   box-shadow: none;
-  height: @menuMaxHeight;
-  max-height: @menuMaxHeight;
-  margin-bottom: @menuBottomMargin !important;
+  padding: 0 1em 0 0;
 }
 
-.main-content.ui {
-  padding: 0 2rem;
-  height: inherit;
+#main-header .menu .item {
+  padding: 0.5em;
 }
 
-.full-height {
-  height: inherit;
+#brand {
+  height: 4em;
+  width: auto;
+}
+
+#main-content > .grid {
+  padding: 0 @lrMargin;
 }
 
 .notifier {
@@ -55,6 +68,8 @@ body > div {
 
 .notifier > .message > a.close {
   float: right;
+  font-size: 1.2rem;
+  font-weight: bolder;
   margin-left: 1rem;
 }
 

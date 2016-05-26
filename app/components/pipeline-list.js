@@ -3,7 +3,7 @@ import {task,timeout} from 'ember-concurrency';
 
 export default Ember.Component.extend({
 
-  classNames: Ember.String.w('ui grid main-content'),
+  classNames: Ember.String.w('ui columned grid'),
 
   pipeline: Ember.inject.service(),
 

@@ -30,34 +30,36 @@
   </div>
 </div>
 
-<div class="sixteen wide column pipeline-build full-height">
-  {{#if model}}
-    {{#if model.stages}}
-      <ul class="stages">
-      {{#each model.stages as |stage|}}
-        {{build-stage model=stage build=model pipeline=pipeline selectStage=(action 'selectStage')}}
-      {{/each}}
-      </ul>
-      {{#if selectedStage}}
-        {{stage-details model=selectedStage build=model pipeline=pipeline close=(action 'unselectStage') }}
+<div class="flex-full one column row">
+  <div class="column pipeline-build">
+    {{#if model}}
+      {{#if model.stages}}
+        <ul class="stages">
+        {{#each model.stages as |stage|}}
+          {{build-stage model=stage build=model pipeline=pipeline selectStage=(action 'selectStage')}}
+        {{/each}}
+        </ul>
+        {{#if selectedStage}}
+          {{stage-details model=selectedStage build=model pipeline=pipeline close=(action 'unselectStage') }}
+        {{/if}}
+      {{else}}
+        <div class="ui center aligned segment">No stages found for build.</div>
       {{/if}}
     {{else}}
-      <div class="ui center aligned segment">No stages found for build.</div>
+      {{#if buildFetcher.isRunning}}
+        {{ui-spinkit-3}}
+      {{else}}
+        <div class="ui center aligned segment">No builds yet.</div>
+      {{/if}}
     {{/if}}
-  {{else}}
-    {{#if buildFetcher.isRunning}}
-      {{ui-spinkit-3}}
-    {{else}}
-      <div class="ui center aligned segment">No builds yet.</div>
-    {{/if}}
-  {{/if}}
 
-  {{#if isViewingPipelineDetails}}
-    {{pipeline-details model=pipeline build=model close=(action 'closePipelineDetails') }}
-  {{/if}}
-  {{#if isEditingPipeline}}
-    {{pipeline-editor model=pipeline close=(action 'closePipelineEditor') }}
-  {{/if}}
+    {{#if isViewingPipelineDetails}}
+      {{pipeline-details model=pipeline build=model close=(action 'closePipelineDetails') }}
+    {{/if}}
+    {{#if isEditingPipeline}}
+      {{pipeline-editor model=pipeline close=(action 'closePipelineEditor') }}
+    {{/if}}
+  </div>
 </div>
 
 {{#ui-modal name="create-build-confirmation" class="small create-build-confirmation" closable=false onApprove=(action "createBuild") }}
