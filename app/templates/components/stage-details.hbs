@@ -45,9 +45,9 @@
       {{/each}}
     </div>
     {{#each model.logFiles as |logFile|}}
-    <div class="ui attached segment tab" data-tab={{logFile.title}}>
+    <div class="ui attached inverted segment tab" data-tab={{logFile.title}}>
       {{#if logFile.content }}
-        <pre>{{logFile.content}}</pre>
+        <pre>{{ansi logFile.content}}</pre>
       {{else if model.logFetcher.isRunning}}
         {{ui-spinkit-3}}
       {{/if}}
