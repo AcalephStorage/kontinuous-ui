@@ -1,5 +1,23 @@
-<div class="two column row">
-  <div class="left floated column">
+<div class="head row">
+  <div class="column">
+    <div class="actions">
+      <button class="right floated ui in-header icon button" data-content="Trigger Pipeline" {{action "confirmCreateBuild"}}><i class="plus icon"></i></button>
+      <button class="right floated ui in-header {{if isEditingPipeline 'lightgrey'}} icon button" data-content="Edit Pipeline" {{action "editPipeline"}}><i class="edit icon"></i></button>
+      <button class="right floated ui in-header {{if isViewingPipelineDetails 'lightgrey'}} icon button" data-content="View Details" {{action "viewPipelineDetails"}}><i class="unhide icon"></i></button>
+      {{#if model}}
+        {{#ui-promise-dropdown class="right floated ui right pointing scrolling icon button" onHide=(action "historyHide") disabled=infoBoxVisible waitList=pipeline.builds onChange=(action "selectBuild") selected=buildNumber forceSelection=false}}
+          <i class="history icon"></i>
+          <div class="menu">
+          {{#each all as |b|}}
+            <div class="item" data-value={{b.number}}>
+              <div class="ui {{b.status}} empty circular label"></div>
+              Build #{{b.number}}
+            </div>
+          {{/each}}
+          </div>
+        {{/ui-promise-dropdown}}
+      {{/if}}
+    </div>
     <div class="ui large header breadcrumb">
       {{#link-to 'pipelines' class="section"}}<h1>Pipelines</h1>{{/link-to}}
       <i class="right chevron icon divider"></i>
@@ -10,27 +28,9 @@
       {{/if}}
     </div>
   </div>
-  <div class="right floated column">
-    <button class="right floated ui in-header icon button" data-content="Trigger Pipeline" {{action "confirmCreateBuild"}}><i class="plus icon"></i></button>
-    <button class="right floated ui in-header {{if isEditingPipeline 'lightgrey'}} icon button" data-content="Edit Pipeline" {{action "editPipeline"}}><i class="edit icon"></i></button>
-    <button class="right floated ui in-header {{if isViewingPipelineDetails 'lightgrey'}} icon button" data-content="View Details" {{action "viewPipelineDetails"}}><i class="unhide icon"></i></button>
-    {{#if model}}
-      {{#ui-promise-dropdown class="right floated ui right pointing scrolling icon button" onHide=(action "historyHide") disabled=infoBoxVisible waitList=pipeline.builds onChange=(action "selectBuild") selected=buildNumber forceSelection=false}}
-        <i class="history icon"></i>
-        <div class="menu">
-        {{#each all as |b|}}
-          <div class="item" data-value={{b.number}}>
-            <div class="ui {{b.status}} empty circular label"></div>
-            Build #{{b.number}}
-          </div>
-        {{/each}}
-        </div>
-      {{/ui-promise-dropdown}}
-    {{/if}}
-  </div>
 </div>
 
-<div class="flex-full one column row">
+<div class="body row">
   <div class="column pipeline-build">
     {{#if model}}
       {{#if model.stages}}

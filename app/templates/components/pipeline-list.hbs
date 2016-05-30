@@ -1,15 +1,15 @@
-<div class="two column row">
-  <div class="left floated column">
+<div class="row">
+  <div class="column">
+    <div class="actions">
+      {{#ui-link-to routeName='pipelines.create' tagName="button" class="ui right floated in-header icon button" data-content="Create Pipeline"}}<i class="plus icon"></i>{{/ui-link-to}}
+    </div>
     <div class="ui large header breadcrumb">
       <div class="active section"><h1>Pipelines</h1></div>
     </div>
   </div>
-  <div class="right floated column">
-    {{#ui-link-to routeName='pipelines.create' tagName="button" class="ui right floated in-header icon button" data-content="Create Pipeline"}}<i class="plus icon"></i>{{/ui-link-to}}
-  </div>
 </div>
 
-<div class="one column row">
+<div class="row">
   <div class="column">
     {{#if isLoaded}}
       {{#if pipeline.all.length}}

@@ -24,19 +24,8 @@ body > div {
   height: 100%;
 }
 
-.columned.grid {
- flex-direction: column;
- height: 100%;
-}
-
-.flex-fit {
-  flex-grow: 0;
-  flex-shrink: 0;
-}
-
-.flex-full {
-  flex-grow: 1;
-  flex-shrink: 1;
+.full.grid {
+  min-height: 100%;
 }
 
 #login {
@@ -51,15 +40,22 @@ body > div {
   background: #A5A5A5;
 }
 
+.columned.ui.grid {
+  flex-direction: column;
+}
+
+.columned.ui.grid > .head.row {
+  flex: 0 1 5%;
+}
+
+.columned.ui.grid > .body.row {
+  flex: 4 0 95%;
+}
+
 #main-header .menu {
   background: #EFEFEF;
   border: none !important;
   box-shadow: none;
-  padding: 0 1em 0 0;
-}
-
-#main-header .menu .item {
-  padding: 0.5em;
 }
 
 #brand {
@@ -67,8 +63,12 @@ body > div {
   width: auto;
 }
 
-#main-content > .grid {
+#main-content {
   padding: 0 @lrMargin;
+}
+
+#main-content .actions > .ui.button {
+  margin-bottom: 1em;
 }
 
 .notifier {
