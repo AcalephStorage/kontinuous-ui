@@ -15,6 +15,7 @@ module.exports = function(defaults) {
   app.import(app.bowerDirectory + '/ace-builds/src-min-noconflict/mode-yaml.js');
   app.import('vendor/moment.min.js');
   app.import('vendor/ansi_up.js');
+  app.import('vendor/base64.min.js');
 
   // Use `app.import` to add additional libraries to the generated
   // output files.
