@@ -12,11 +12,9 @@ export default Ember.Component.extend({
     let tabs = this.$(".stage-tabs .item");
     let activeTab = this.$(".stage-tabs .active.item");
     if (tabs.length && !activeTab.length) {
-      let log = this.get('model.logFiles.firstObject');
-      this.send('showLogs', log);
+      this.changeTab('details');
     }
   },
-
   actions: {
     showLogs(log) {
       this.get('logsPoller').cancelAll();

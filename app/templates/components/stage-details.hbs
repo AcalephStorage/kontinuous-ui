@@ -1,64 +1,68 @@
 <div class="ui raised segment">
-  <i class="large close icon" {{action "close"}}></i>
-
-  <div class="ui left floated header">Stage {{model.index}}: {{model.name}}</div>
-
-  <table class="ui small very basic compact table">
-    <tr><td class="two wide">Status:</td><td>{{model.status}}</td></tr>
-    <tr><td class="two wide">Type:</td><td>{{model.type}}</td></tr>
-    <tr><td class="two wide">Params:</td>
-      <td>
-      {{#each-in model.params as |key value|}}
-        <div class="ui tiny horizontal blue label">{{key}}={{value}}</div>
-      {{/each-in}}
-      </td>
-    </tr>
-    <tr><td class="two wide">Labels:</td>
-      <td>
-      {{#each-in model.labels as |key value|}}
-        <div class="ui tiny horizontal blue label">{{key}}={{value}}</div>
-      {{/each-in}}
-      </td>
-    </tr>
-    {{#if model.pod_namespace}}
-    <tr><td class="two wide">Namespace:</td><td>{{model.pod_namespace}}</td></tr>
-    {{/if}}
-    {{#if model.pod_name}}
-    <tr><td class="two wide">Pod Name:</td><td>{{model.pod_name}}</td></tr>
-    {{/if}}
-    {{#if model.job_name}}
-    <tr><td class="two wide">Job Name:</td><td>{{model.job_name}}</td></tr>
-    {{/if}}
-    {{#if model.started}}
-    <tr><td class="two wide">Started:</td><td>{{unix-nano-time model.started}}</td></tr>
-    {{/if}}
-    {{#if model.finished}}
-    <tr><td class="two wide">Finished:</td><td>{{unix-nano-time model.finished}}</td></tr>
-    {{/if}}
-  </table>
-
-  <h3 class="ui header">Logs</h3>
-  {{#if model.logFiles.length}}
-    <div class="ui small attached pointing menu stage-tabs">
-      {{#each model.logFiles as |logFile|}}
-        <a class="item" data-tab={{logFile.title}} {{action "showLogs" logFile}}>{{logFile.title}}</a>
-      {{/each}}
-    </div>
-    {{#each model.logFiles as |logFile|}}
-    <div class="ui attached inverted segment tab" data-tab={{logFile.title}}>
-      {{#if logFile.content }}
-        <pre>{{ansi logFile.content}}</pre>
-      {{else if model.logFetcher.isRunning}}
-        {{ui-spinkit-3}}
+  <div class="head with-menu">
+    <h3>Stage {{model.index}}: {{model.name}}<i class="close icon" {{action "close"}}></i></h3>
+    <div class="ui attached secondary menu stage-tabs">
+      <a class="active item" data-tab="details">Details</a>
+      {{#if model.logFiles.length}}
+        {{#each model.logFiles as |logFile|}}
+          <a class="item" data-tab={{logFile.title}} {{action "showLogs" logFile}}>{{logFile.title}}</a>
+        {{/each}}
+      {{else}}
+        {{#if model.logFetcher.isRunning}}
+          <a class="disabled item">
+            <div class="ui active mini inline loader"></div>
+          </a>
+        {{/if}}
       {{/if}}
     </div>
-    {{/each}}
-  {{else}}
-    {{#if model.logFetcher.isRunning}}
-      {{ui-spinkit-3}}
-    {{else}}
-      <div class="ui center aligned segment">No logs found.</div>
+  </div>
+
+  <div class="body with-menu">
+    <div class="ui attached basic segment active tab" data-tab="details">
+      <table class="ui small very basic compact table">
+        <tr><td class="two wide">Status:</td><td>{{model.status}}</td></tr>
+        <tr><td class="two wide">Type:</td><td>{{model.type}}</td></tr>
+        <tr><td class="two wide">Params:</td>
+          <td>
+          {{#each-in model.params as |key value|}}
+            <div class="ui tiny horizontal blue label">{{key}}={{value}}</div>
+          {{/each-in}}
+          </td>
+        </tr>
+        <tr><td class="two wide">Labels:</td>
+          <td>
+          {{#each-in model.labels as |key value|}}
+            <div class="ui tiny horizontal blue label">{{key}}={{value}}</div>
+          {{/each-in}}
+          </td>
+        </tr>
+        {{#if model.pod_namespace}}
+        <tr><td class="two wide">Namespace:</td><td>{{model.pod_namespace}}</td></tr>
+        {{/if}}
+        {{#if model.pod_name}}
+        <tr><td class="two wide">Pod Name:</td><td>{{model.pod_name}}</td></tr>
+        {{/if}}
+        {{#if model.job_name}}
+        <tr><td class="two wide">Job Name:</td><td>{{model.job_name}}</td></tr>
+        {{/if}}
+        {{#if model.started}}
+        <tr><td class="two wide">Started:</td><td>{{unix-nano-time model.started}}</td></tr>
+        {{/if}}
+        {{#if model.finished}}
+        <tr><td class="two wide">Finished:</td><td>{{unix-nano-time model.finished}}</td></tr>
+        {{/if}}
+      </table>
+    </div>
+
+    {{#if model.logFiles.length}}
+      {{#each model.logFiles as |logFile|}}
+      <div class="ui attached inverted segment tab" data-tab={{logFile.title}}>
+        {{#if logFile.content }}
+          <pre>{{ansi logFile.content}}</pre>
+        {{/if}}
+      </div>
+      {{/each}}
     {{/if}}
-  {{/if}}
+  </div>
 
 </div>

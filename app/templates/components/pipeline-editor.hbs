@@ -1,51 +1,52 @@
 <div class="ui raised segment">
-  <i class="large close icon" {{action "close"}}></i>
+  <div class="head">
+    <h3>{{editorAction}} Pipeline: {{model.name}}<i class="close icon" {{action "close"}}></i></h3>
+  </div>
 
-  <div class="ui left floated header">{{editorAction}} Pipeline: {{model.name}}</div>
+  <div class="body">
+    <div class="ui basic segment">
+      {{#if definitionFetcher.isRunning}}
+        {{ui-spinkit-3}}
+      {{else}}
+        {{#if definition}}
+          <div class="ui form">
+            <div class="grouped fields">
+              {{#each-in commitOptions as |value label|}}
+                <div class="field">
+                  <div class="ui  radio checkbox">
+                    <input type="radio" name="commit-option" value={{value}} {{action "selectCommitOption" value preventDefault=false}}>
+                    <label>{{label}}</label>
+                  </div>
+                </div>
+              {{/each-in}}
 
-  <div class="ui hidden clearing divider"></div>
+              {{#if willPullRequest}}
+                <div class="field">
+                  <label>Branch Name</label>
+                  {{input placeholder="New Branch Name" value=commitOption.branch_name}}
+                </div>
+              {{/if}}
 
-  {{#if definitionFetcher.isRunning}}
-    {{ui-spinkit-3}}
-  {{else}}
-    {{#if definition}}
-      <div class="ui form">
-        <div class="grouped fields">
-          {{#each-in commitOptions as |value label|}}
-            <div class="field">
-              <div class="ui  radio checkbox">
-                <input type="radio" name="commit-option" value={{value}} {{action "selectCommitOption" value preventDefault=false}}>
-                <label>{{label}}</label>
+              <div class="field">
+                  <label>Commit Message</label>
+                {{input placeholder="Commit Message" value=commitOption.message}}
               </div>
             </div>
-          {{/each-in}}
-
-          {{#if willPullRequest}}
             <div class="field">
-              <label>Branch Name</label>
-              {{input placeholder="New Branch Name" value=commitOption.branch_name}}
+              <label>Definition</label>
+              <div id="definition-content" class="editor"></div>
             </div>
-          {{/if}}
 
-          <div class="field">
-              <label>Commit Message</label>
-            {{input placeholder="Commit Message" value=commitOption.message}}
+            <button class="ui positive small right labeled icon button {{if definitionUpdater.isRunning 'disabled'}}" {{action 'updateDefinition'}}>
+              {{editorAction}}<i class="{{if definitionUpdater.isIdle 'checkmark' 'loading spinner'}} icon"></i>
+            </button>
           </div>
-        </div>
-        <div class="field">
-          <label>Definition</label>
-          <div id="definition-content" class="editor"></div>
-        </div>
-
-        <button class="ui positive small right labeled icon button {{if definitionUpdater.isRunning 'disabled'}}" {{action 'updateDefinition'}}>
-          {{editorAction}}<i class="{{if definitionUpdater.isIdle 'checkmark' 'loading spinner'}} icon"></i>
-        </button>
-      </div>
-    {{else}}
-      <div class="ui center aligned basic segment">
-        <button class="ui small button" {{action 'createDefinition'}}>Create Definition</button>
-      </div>
-    {{/if}}
-  {{/if}}
-
+        {{else}}
+          <div class="ui center aligned basic segment">
+            <button class="ui small button" {{action 'createDefinition'}}>Create Definition</button>
+          </div>
+        {{/if}}
+      {{/if}}
+    </div>
+  </div>
 </div>

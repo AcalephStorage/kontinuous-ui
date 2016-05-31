@@ -7,7 +7,8 @@ export default JSONSerializer.extend({
   normalize(modelClass, resourceHash) {
     if (resourceHash && resourceHash.filename) {
       var filename = resourceHash.filename.split('/');
-      resourceHash.title = filename.objectAt(filename.length - 1).replace(/\.log$/, '');
+      let title = filename.objectAt(filename.length - 1);
+      resourceHash.title = title.endsWith('.log') ? title : title.concat('.log');
     }
     return this._super(modelClass, resourceHash);
   },

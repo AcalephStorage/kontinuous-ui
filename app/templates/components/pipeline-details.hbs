@@ -1,67 +1,70 @@
 <div class="ui raised segment">
-  <i class="large close icon" {{action "close"}}></i>
+  <div class="head">
+    <h3>Pipeline: {{model.name}}<i class="close icon" {{action "close"}}></i></h3>
+  </div>
 
-  <div class="ui left floated header">Pipeline: {{model.name}}</div>
+  <div class="body">
+    <div class="ui basic segment">
+      <table class="ui small very basic compact table">
+        <tr>
+          <td class="two wide">Events:</td>
+          <td>
+          {{#each model.events as |event|}}
+            <div class="ui tiny horizontal blue label">{{event}}</div>
+          {{/each}}
+          </td>
+        </tr>
 
-  <table class="ui small very basic compact table">
-    <tr>
-      <td class="two wide">Events:</td>
-      <td>
-      {{#each model.events as |event|}}
-        <div class="ui tiny horizontal blue label">{{event}}</div>
-      {{/each}}
-      </td>
-    </tr>
+        {{#each model.notif as |notif|}}
+          {{#each-in notif.metadata as |key value|}}
+            {{#if value.length}}
+              <tr>
+                <td class="two wide">{{notif.type}} {{key}}</td>
+                <td>{{value}}</td>
+              </tr>
+            {{/if}}
+          {{/each-in}}
+        {{/each}}
 
-    {{#each model.notif as |notif|}}
-      {{#each-in notif.metadata as |key value|}}
-        {{#if value.length}}
+        {{#if build}}
           <tr>
-            <td class="two wide">{{notif.type}} {{key}}</td>
-            <td>{{value}}</td>
+            <td class="two wide">Build:</td>
+            <td>{{build.number}}</td>
+          </tr>
+          <tr>
+            <td class="two wide">Status:</td>
+            <td>{{build.status}}</td>
+          </tr>
+          <tr>
+            <td class="two wide">Branch:</td>
+            <td>{{build.branch}}</td>
+          </tr>
+          <tr>
+            <td class="two wide">Commit:</td>
+            <td>{{build.commit}}</td>
+          </tr>
+          <tr>
+            <td class="two wide">Author:</td>
+            <td>{{build.author}}</td>
+          </tr>
+          <tr>
+            <td class="two wide">Event:</td>
+            <td>{{build.event}}</td>
+          </tr>
+          <tr>
+            <td class="two wide">Clone URL:</td>
+            <td><a href={{build.clone_url}} target="_blank">{{build.clone_url}}</a></td>
+          </tr>
+          <tr>
+            <td class="two wide">Created:</td>
+            <td>{{unix-nano-time build.created}}</td>
+          </tr>
+          <tr>
+            <td class="two wide">Finished:</td>
+            <td>{{unix-nano-time build.finished}}</td>
           </tr>
         {{/if}}
-      {{/each-in}}
-    {{/each}}
-
-    {{#if build}}
-      <tr>
-        <td class="two wide">Build:</td>
-        <td>{{build.number}}</td>
-      </tr>
-      <tr>
-        <td class="two wide">Status:</td>
-        <td>{{build.status}}</td>
-      </tr>
-      <tr>
-        <td class="two wide">Branch:</td>
-        <td>{{build.branch}}</td>
-      </tr>
-      <tr>
-        <td class="two wide">Commit:</td>
-        <td>{{build.commit}}</td>
-      </tr>
-      <tr>
-        <td class="two wide">Author:</td>
-        <td>{{build.author}}</td>
-      </tr>
-      <tr>
-        <td class="two wide">Event:</td>
-        <td>{{build.event}}</td>
-      </tr>
-      <tr>
-        <td class="two wide">Clone URL:</td>
-        <td><a href={{build.clone_url}} target="_blank">{{build.clone_url}}</a></td>
-      </tr>
-      <tr>
-        <td class="two wide">Created:</td>
-        <td>{{unix-nano-time build.created}}</td>
-      </tr>
-      <tr>
-        <td class="two wide">Finished:</td>
-        <td>{{unix-nano-time build.finished}}</td>
-      </tr>
-    {{/if}}
-
-  </table>
+      </table>
+    </div>
+  </div>
 </div>
