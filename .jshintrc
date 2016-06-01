@@ -5,7 +5,8 @@
     "-Promise",
     "moment",
     "ace",
-    "ansi_up"
+    "ansi_up",
+    "Base64"
   ],
   "browser": true,
   "boss": true,

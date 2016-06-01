@@ -30,29 +30,33 @@
   </div>
 </div>
 
-<div class="body row">
-  <div class="column pipeline-build">
-    {{#if model}}
-      {{#if model.stages}}
-        <ul class="stages">
-        {{#each model.stages as |stage|}}
-          {{build-stage model=stage build=model pipeline=pipeline selectStage=(action 'selectStage')}}
-        {{/each}}
-        </ul>
-        {{#if selectedStage}}
-          {{stage-details model=selectedStage build=model pipeline=pipeline close=(action 'unselectStage') }}
+<div class="body tablet computer only row">
+  <div class="{{if infoBoxVisible 'seven' 'sixteen'}} wide column">
+    <div class="pipeline-build">
+      {{#if model}}
+        {{#if model.stages}}
+          <ul class="stages">
+          {{#each model.stages as |stage|}}
+            {{build-stage model=stage build=model pipeline=pipeline selectStage=(action 'selectStage')}}
+          {{/each}}
+          </ul>
+        {{else}}
+          <div class="ui center aligned segment">No stages found for build.</div>
         {{/if}}
       {{else}}
-        <div class="ui center aligned segment">No stages found for build.</div>
+        {{#if buildFetcher.isRunning}}
+          {{ui-spinkit-3}}
+        {{else}}
+          <div class="ui center aligned segment">No builds yet.</div>
+        {{/if}}
       {{/if}}
-    {{else}}
-      {{#if buildFetcher.isRunning}}
-        {{ui-spinkit-3}}
-      {{else}}
-        <div class="ui center aligned segment">No builds yet.</div>
-      {{/if}}
+    </div>
+  </div>
+  {{#if infoBoxVisible}}
+  <div class="nine wide column">
+    {{#if selectedStage}}
+      {{stage-details model=selectedStage build=model pipeline=pipeline close=(action 'unselectStage') }}
     {{/if}}
-
     {{#if isViewingPipelineDetails}}
       {{pipeline-details model=pipeline build=model close=(action 'closePipelineDetails') }}
     {{/if}}
@@ -60,7 +64,46 @@
       {{pipeline-editor model=pipeline close=(action 'closePipelineEditor') }}
     {{/if}}
   </div>
+  {{/if}}
 </div>
+
+<!-- for mobile -->
+<div class="mobile only row">
+  <div class="column">
+    <div class="pipeline-build">
+      {{#if model}}
+        {{#if model.stages}}
+          <ul class="stages">
+          {{#each model.stages as |stage|}}
+            {{build-stage model=stage build=model pipeline=pipeline selectStage=(action 'selectStage')}}
+          {{/each}}
+          </ul>
+        {{else}}
+          <div class="ui center aligned segment">No stages found for build.</div>
+        {{/if}}
+      {{else}}
+        {{#if buildFetcher.isRunning}}
+          {{ui-spinkit-3}}
+        {{else}}
+          <div class="ui center aligned segment">No builds yet.</div>
+        {{/if}}
+      {{/if}}
+    </div>
+  </div>
+</div>
+{{#if infoBoxVisible}}
+<div class="mobile only body row">
+  {{#if selectedStage}}
+    {{stage-details model=selectedStage build=model pipeline=pipeline close=(action 'unselectStage') }}
+  {{/if}}
+  {{#if isViewingPipelineDetails}}
+    {{pipeline-details model=pipeline build=model close=(action 'closePipelineDetails') }}
+  {{/if}}
+  {{#if isEditingPipeline}}
+    {{pipeline-editor model=pipeline close=(action 'closePipelineEditor') }}
+  {{/if}}
+</div>
+{{/if}}
 
 {{#ui-modal name="create-build-confirmation" class="small create-build-confirmation" closable=false onApprove=(action "createBuild") }}
   <div class="header">Create Build</div>
