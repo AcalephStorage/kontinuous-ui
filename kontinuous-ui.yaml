@@ -19,6 +19,16 @@ spec:
 
 ---
 apiVersion: v1
+kind: Secret
+metadata:
+  name: ssl-secret
+  namespace: acaleph
+data:
+  cert:
+  key:
+
+---
+apiVersion: v1
 kind: ReplicationController
 metadata:
   labels:
@@ -38,6 +48,10 @@ spec:
         type: dashboard
       name: kontinuous-ui
       namespace: acaleph
+    volumes:
+    - name: ssl
+      secret:
+          secretName: ssl-secret
     spec:
       containers:
       - env:
@@ -54,3 +68,8 @@ spec:
         - containerPort: 5000
           name: dashboard
           protocol: TCP
+        volumeMounts:
+        - name: ssl
+          readOnly: true
+          mountPath: /secrets/ssl
+
