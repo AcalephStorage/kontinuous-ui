@@ -3,7 +3,7 @@ import SemanticDropdown from 'semantic-ui-ember/components/ui-dropdown';
 export default SemanticDropdown.extend({
 
   firstShow: true,
-  classNameBindings: ['waitList.isPending:loading'],
+  classNameBindings: ['waitList.isPending:loading', 'disabled:disabled'],
 
   didInsertElement() {
     this._super();

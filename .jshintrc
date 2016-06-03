@@ -3,7 +3,10 @@
     "document",
     "window",
     "-Promise",
-    "moment"
+    "moment",
+    "ace",
+    "ansi_up",
+    "Base64"
   ],
   "browser": true,
   "boss": true,

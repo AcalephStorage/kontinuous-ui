@@ -3,7 +3,7 @@ import {task,timeout} from 'ember-concurrency';
 
 export default Ember.Component.extend({
 
-  classNames: Ember.String.w('ui right internal rail stage-details'),
+  classNames: Ember.String.w('ui right internal rail info-box'),
 
   isRunning: Ember.computed.equal('model.status', 'RUNNING'),
   isDone: Ember.computed.match('model.status', /^(SUCCESS|FAIL)$/),
@@ -12,11 +12,9 @@ export default Ember.Component.extend({
     let tabs = this.$(".stage-tabs .item");
     let activeTab = this.$(".stage-tabs .active.item");
     if (tabs.length && !activeTab.length) {
-      let log = this.get('model.logFiles.firstObject');
-      this.send('showLogs', log);
+      this.changeTab('details');
     }
   },
-
   actions: {
     showLogs(log) {
       this.get('logsPoller').cancelAll();

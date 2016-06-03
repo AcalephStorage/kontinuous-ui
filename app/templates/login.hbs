@@ -1,15 +1,19 @@
 {{#unless session.isAuthenticated}}
-<div class="ui middle aligned center aligned grid text container full-height">
-  <div class="ten wide column">
-    <div class="ui negative small {{if session.errorMessage 'visible' 'hidden'}} message">
-      <div class="content">
-        <p>{{session.errorMessage}}</p>
+  <div class="ui middle aligned center aligned full grid">
+    <div id="login" class="centered column">
+      <div class="ui raised padded segment">
+        <img class="ui centered image" src="assets/images/logo-avatar.png" style="" id="brand">
+        <div class="ui basic segment">
+          <button class="ui large fluid github labeled icon button {{if loginTask.isIdle 'disabled'}}" {{action "login"}}>
+            <i class="large github icon"></i>LOGIN WITH GITHUB
+          </button>
+          <div class="ui negative {{if session.errorMessage 'visible' 'hidden'}} message">
+            <div class="content">
+              <p>{{session.errorMessage}}</p>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-
-    <button class="ui huge grey circular github icon button" {{action "login"}}>
-      <i class="github icon"></i>
-    </button>
   </div>
-</div>
 {{/unless}}
