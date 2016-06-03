@@ -20,6 +20,10 @@
   margin-top: 1em;
 }
 .pipeline-build ul {
+  display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;      /* TWEENER - IE 10 */
+  display: -webkit-flex;     /* NEW - Chrome */
   display: flex;
   overflow-x: scroll;
   overflow-y: hidden;
@@ -36,6 +40,7 @@
   margin: 0 @stageSideGutter;
   position: relative;
   text-align: center;
+  min-width: @stageWidth;
   width: @stageWidth;
 }
 .pipeline-build ul .stage:first-child {
@@ -110,7 +115,7 @@
   75%  {border-color: #AFDEEE; background: #AFDEEE;}
   100% {border-color: @colorRunning; background: @colorRunning;}
 }
-.pipeline-build ul .stage > .pulse {
+.pipeline-build ul .stage.RUNNING > .pulse {
   -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
   animation: sk-scaleout 1.0s infinite ease-in-out;
   background-color: @colorRunningGlow;
