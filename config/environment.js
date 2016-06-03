@@ -70,8 +70,8 @@ module.exports = function(environment) {
     'font-src': "'self' data: fonts.gstatic.com",
     'style-src': "'self' 'unsafe-inline' https://fonts.googleapis.com",
     'script-src': "'self' 'unsafe-eval'",
-    'connect-src': "'self' http://localhost:*",
-    'img-src': "'self' *.gravatar.com https://avatars.githubusercontent.com"
+    'connect-src': "'self' http://localhost:* " + ENV.APP.kontinuousAPI.host,
+    'img-src': "'self' data: *.gravatar.com https://avatars.githubusercontent.com"
   };
 
   return ENV;

@@ -3,7 +3,7 @@ import Transform from 'ember-data/transform';
 export default Transform.extend({
   deserialize(serialized) {
     try {
-      return atob(serialized);
+      return Base64.decode(serialized);
     } catch (e) {
       return "";
     }
@@ -11,7 +11,7 @@ export default Transform.extend({
 
   serialize(deserialized) {
     try {
-      return btoa(deserialized);
+      return Base64.encode(deserialized);
     } catch (e) {
       return "";
     }

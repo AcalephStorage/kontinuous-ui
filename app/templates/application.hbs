@@ -1,7 +1,14 @@
 {{#if session.isAuthenticated}}
-  {{main-menu}}
-  {{outlet}}
-  {{ember-notify messageStyle='semantic-ui' closeAfter=5000 classPrefix="notifier"}}
+  <div class="ui full columned grid">
+    <div id="main-header" class="head row">
+      <div class="column">{{main-menu}}</div>
+    </div>
+
+    <div id="main-content" class="body row">
+      <div class="stretched column">{{outlet}}</div>
+    </div>
+  </div>
+  {{ember-notify messageStyle='semantic-ui' closeAfter=3000 classPrefix="notifier"}}
 {{else}}
   {{outlet 'login'}}
 {{/if}}

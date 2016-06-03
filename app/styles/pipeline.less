@@ -10,13 +10,25 @@
 @stageLabelWidth: @stageWidth + (@stageSideGutter * 2);
 @stageLineMargin: 1em;
 
+.pipeline-build {
+  height: @stagesHeight;
+  overflow: hidden;
+  padding-right: 2em;
+  margin-top: @stageHeight;
+}
+.mobile.only.row .pipeline-build {
+  margin-top: 1em;
+}
 .pipeline-build ul {
+  display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;      /* TWEENER - IE 10 */
+  display: -webkit-flex;     /* NEW - Chrome */
   display: flex;
   overflow-x: scroll;
   overflow-y: hidden;
   height: @stagesHeight;
-  margin: 3em 0em;
-  padding: 0.5em 0;
+  padding: 0em;
 }
 .pipeline-build ul .stage {
   border: @stageBorder solid @colorPending;
@@ -28,7 +40,11 @@
   margin: 0 @stageSideGutter;
   position: relative;
   text-align: center;
+  min-width: @stageWidth;
   width: @stageWidth;
+}
+.pipeline-build ul .stage:first-child {
+  margin-left: @stageSideGutter - @stageLineMargin - @stageBorder;
 }
 .pipeline-build ul .stage::before {
   border: (@stageBorder/2) solid @colorPending;
@@ -45,7 +61,7 @@
 }
 .pipeline-build ul .stage.selected,
 .pipeline-build .stage:hover {
-  box-shadow: 1px 2px 2px 0px #BCBCBC;
+  box-shadow: 0px 2px 4px 0px rgba(34, 36, 38, 0.12), 0px 2px 10px 0px rgba(34, 36, 38, 0.08);
   color: #5D5D5D;
 }
 .pipeline-build ul .stage > .label {
@@ -99,7 +115,7 @@
   75%  {border-color: #AFDEEE; background: #AFDEEE;}
   100% {border-color: @colorRunning; background: @colorRunning;}
 }
-.pipeline-build ul .stage > .pulse {
+.pipeline-build ul .stage.RUNNING > .pulse {
   -webkit-animation: sk-scaleout 1.0s infinite ease-in-out;
   animation: sk-scaleout 1.0s infinite ease-in-out;
   background-color: @colorRunningGlow;
@@ -111,36 +127,97 @@
   width: 100%;
 }
 
+.ui.FAIL.label {
+  background-color: @colorFail;
+  border-color: @colorFail;
+}
+.ui.SUCCESS.label {
+  background-color: @colorSuccess;
+  border-color: @colorSuccess;
+}
+.ui.PENDING.label {
+  background-color: @colorPending;
+  border-color: @colorPending;
+}
+.ui.RUNNING.label {
+  background-color: @colorRunning;
+  border-color: @colorRunning;
+}
+
 /*******************
-** stage-details
+** info-box
 *******************/
 
-.stage-details.ui.right.internal.rail {
-  width: 60%;
-  height: inherit;
+@infoBoxHeadHeight: 4em;
+@infoBoxBodyHeight: calc(~'100% - @{infoBoxHeadHeight}');
+
+@infoBoxHeadWithMenuHeight: @infoBoxHeadHeight + 3em;
+@infoBoxBodyWithMenuHeight: calc(~'100% - @{infoBoxHeadWithMenuHeight}');
+
+.info-box.ui.right.internal.rail {
+  width: 100%;
+  height: 100%;
   padding: 0em 0.5em 0em 0em;
   margin: 0em 0.5em 0em 0em;
   z-index: 10000;
 }
-.stage-details > .segment {
+.mobile.only.row > .info-box.ui.right.internal.rail {
+  padding: 0 1em !important;
+  margin: 0 !important;
+}
+.info-box > .segment {
   height: inherit;
+  overflow-x: hidden !important;
   overflow-y: scroll;
+  padding: 0;
 }
-.stage-details .segment >.close.icon {
-  cursor: pointer;
-  position: absolute;
+.info-box > .segment > .head {
+  background-color: #E6E6E6;
+  height: @infoBoxHeadHeight;
+}
+.info-box > .segment > .head.with-menu {
+  height: @infoBoxHeadWithMenuHeight;
+}
+.info-box > .segment > .head h3 {
   margin: 0;
-  top: 1em;
-  right: 1em;
-  opacity: .7;
-  -webkit-transition: opacity .1s ease;
-  transition: opacity .1s ease;
+  padding: 0.8em;
+  padding-right: 1.5em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
-.stage-details > .segment  > .menu {
-  border-radius: 0;
-  border-width: 1px 0 1px 0;
-  box-shadow: none;
+.info-box > .segment > .head .close.icon {
+  position: absolute;
+  top: 0.3em;
+  right: 0.3em;
+  opacity: 0.3;
 }
-.stage-details > .segment > .segment.tab {
-  border-width: 0;
+.info-box > .segment > .head .menu {
+  background-color: #EFEFEF;
+  border-width: 0.1em 0 0 0 !important;
+}
+
+.info-box > .segment > .body {
+  height: @infoBoxBodyHeight;
+  position: absolute;
+  overflow: hidden;
+  width: 100%;
+}
+.info-box > .segment > .body.with-menu {
+  height: @infoBoxBodyWithMenuHeight;
+}
+.info-box > .segment > .body > .segment {
+  border: none;
+  height: 100%;
+  overflow: scroll;
+}
+
+/*******************
+** pipeline-editor
+*******************/
+
+.editor {
+  position: relative;
+  height: 250px;
+  width: 100%;
 }
