@@ -12,7 +12,8 @@
     "loader.js": "ember-cli/loader.js#3.2.1",
     "qunit": "~1.18.0",
     "semantic-ui": "~2.1.8",
-    "node-uuid": "1.4.1"
+    "node-uuid": "1.4.1",
+    "ace-builds": "^1.2.3"
   },
   "resolutions": {
     "ember": "v2.5.0"

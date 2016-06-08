@@ -7,57 +7,136 @@
 ** Variables
 ******************/
 
-@colorSuccess:      #93C47D;
-@colorFail:         #EA9999;
-@colorPending:      #D9D9D9;
-@colorRunning:      #99D6EA;
-@colorRunningDark:  #AAE3F7;
-@colorRunningGlow:  #D8F5FF;
+@colorSuccess     : #93C47D;
+@colorFail        : #EA9999;
+@colorPending     : #D9D9D9;
+@colorRunning     : #99D6EA;
+@colorRunningDark : #AAE3F7;
+@colorRunningGlow : #D8F5FF;
 
-@menuMaxHeight: 5em;
-@menuBottomMargin: 2em;
-@mainBoxHeight: (@menuMaxHeight + @menuBottomMargin) * 2;
-
+@lrMargin: 2em;
 
 /******************
 ** Definitions
 ******************/
 
 body > div {
-  height: 95%;
-  padding-bottom: 5%;
+  height: 100%;
 }
 
-.main-menu.ui {
+.full.grid {
+  min-height: 100%;
+}
+
+#login {
+  max-width: 450px;
+}
+
+#login .github.labeled.icon.button {
+  background: #EDEDED;
+}
+
+#login .github.labeled.icon.button > i.icon {
+  background: #A5A5A5;
+}
+
+.columned.ui.grid {
+  -webkit-flex-direction: column;
+  flex-direction: column;
+}
+
+.columned.ui.grid > .body.row {
+  -webkit-box-flex: 4 0 95%;      /* OLD - iOS 6-, Safari 3.1-6 */
+  -moz-box-flex: 4 0 95%;         /* OLD - Firefox 19- */
+  height: 95%;                    /* For old syntax, otherwise collapses. */
+  -webkit-flex: 4 0 95%;          /* Chrome */
+  -ms-flex: 4 0 95%;              /* IE 10 */
+  flex: 4 0 95%;
+}
+
+#main-header .menu {
   background: #EFEFEF;
   border: none !important;
-  box-shadow: none;
-  height: @menuMaxHeight;
-  max-height: @menuMaxHeight;
-  margin-bottom: @menuBottomMargin !important;
+  box-shadow: 0px 2px 4px #D4D4D5;
 }
 
-.main-content.ui {
-  padding: 0 2rem;
-  height: inherit;
+#brand {
+  height: 4em;
+  width: auto;
 }
 
-
-.full-height {
-  height: inherit;
+#main-content {
+  padding: @lrMargin;
 }
 
-.notifier{
+#main-content .actions > .ui.button {
+  margin-bottom: 1em;
+}
+
+.notifier {
   position: fixed;
   z-index: 5000;
   top: 7em;
-  right: 0px;
+  right: 2em;
 }
 
-textarea.pre {
-  font-family: monospace !important;
+.notifier > .message > a.close {
+  float: right;
+  font-size: 1.2rem;
+  font-weight: bolder;
+  margin-left: 1rem;
 }
 
 [data-ember-action] {
   cursor: pointer;
+}
+
+
+/******************
+** http://tobiasahlin.com/spinkit/
+******************/
+
+.spinner {
+  margin: 6em auto;
+  width: 6em;
+  height: 4em;
+  text-align: center;
+  font-size: 10px;
+}
+.spinner > div {
+  background-color: #02677A;
+  height: 100%;
+  width: 6px;
+  display: inline-block;
+  -webkit-animation: sk-stretchdelay 1.2s infinite ease-in-out;
+  animation: sk-stretchdelay 1.2s infinite ease-in-out;
+}
+.spinner .rect2 {
+  -webkit-animation-delay: -1.1s;
+  animation-delay: -1.1s;
+}
+.spinner .rect3 {
+  -webkit-animation-delay: -1.0s;
+  animation-delay: -1.0s;
+}
+.spinner .rect4 {
+  -webkit-animation-delay: -0.9s;
+  animation-delay: -0.9s;
+}
+.spinner .rect5 {
+  -webkit-animation-delay: -0.8s;
+  animation-delay: -0.8s;
+}
+@-webkit-keyframes sk-stretchdelay {
+  0%, 40%, 100% { -webkit-transform: scaleY(0.4) }
+  20% { -webkit-transform: scaleY(1.0) }
+}
+@keyframes sk-stretchdelay {
+  0%, 40%, 100% {
+    transform: scaleY(0.4);
+    -webkit-transform: scaleY(0.4);
+  }  20% {
+    transform: scaleY(1.0);
+    -webkit-transform: scaleY(1.0);
+  }
 }

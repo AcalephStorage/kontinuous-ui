@@ -2,7 +2,7 @@ import Ember from 'ember';
 
 export default Ember.Component.extend({
 
-  classNames: Ember.String.w('ui right internal rail stage-details'),
+  classNames: Ember.String.w('ui right internal rail info-box'),
 
   actions: {
     close() {

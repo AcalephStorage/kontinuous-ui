@@ -34,7 +34,8 @@ export default GithubOauth2Provider.extend({
             Ember.run(() => {
               resolve({
                 jwt: response.jwt,
-                user_id: response.user_id
+                user_id: response.user_id,
+                user_name: response.user_name,
               });
             });
           }, (xhr) => {

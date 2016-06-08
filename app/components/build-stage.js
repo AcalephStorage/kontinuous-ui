@@ -26,6 +26,11 @@ export default Ember.Component.extend({
     this.sendAction('selectStage', this.get('model'));
   },
 
+  willDestroyElement() {
+    this._super(...arguments);
+    this.removeObserver('model.status', this, this.fetchLogs);
+  },
+
   fetchLogs() {
     let stage = this.get('model');
 
@@ -35,6 +40,12 @@ export default Ember.Component.extend({
       logFetcher.then((logFiles) => {
         stage.set('logFiles', logFiles);
       });
+
+      if (stage.get('status') === 'PENDING') {
+        this.addObserver('model.status', this, this.fetchLogs);
+      } else {
+        this.removeObserver('model.status', this, this.fetchLogs);
+      }
     }
   },
 

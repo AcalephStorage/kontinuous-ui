@@ -1,5 +1,23 @@
-<div class="two column row">
-  <div class="left floated column">
+<div class="head row">
+  <div class="column">
+    <div class="actions">
+      <button class="right floated ui in-header icon button" data-content="Trigger Pipeline" {{action "confirmCreateBuild"}}><i class="plus icon"></i></button>
+      <button class="right floated ui in-header {{if isEditingPipeline 'lightgrey'}} icon button" data-content="Edit Pipeline" {{action "editPipeline"}}><i class="edit icon"></i></button>
+      <button class="right floated ui in-header {{if isViewingPipelineDetails 'lightgrey'}} icon button" data-content="View Details" {{action "viewPipelineDetails"}}><i class="unhide icon"></i></button>
+      {{#if model}}
+        {{#ui-promise-dropdown class="right floated ui right pointing scrolling icon button" onHide=(action "historyHide") disabled=infoBoxVisible waitList=pipeline.builds onChange=(action "selectBuild") selected=buildNumber forceSelection=false}}
+          <i class="history icon"></i>
+          <div class="menu">
+          {{#each all as |b|}}
+            <div class="item" data-value={{b.number}}>
+              <div class="ui {{b.status}} empty circular label"></div>
+              Build #{{b.number}}
+            </div>
+          {{/each}}
+          </div>
+        {{/ui-promise-dropdown}}
+      {{/if}}
+    </div>
     <div class="ui large header breadcrumb">
       {{#link-to 'pipelines' class="section"}}<h1>Pipelines</h1>{{/link-to}}
       <i class="right chevron icon divider"></i>
@@ -10,53 +28,82 @@
       {{/if}}
     </div>
   </div>
-  <div class="right floated column">
-    <button class="right floated ui in-header icon button" data-content="Trigger Pipeline" {{action "confirmCreateBuild"}}><i class="plus icon"></i></button>
-    <button class="right floated ui in-header {{if isEditingPipeline 'disabled grey'}} icon button" data-content="Edit Pipeline" {{action "editPipeline"}}><i class="edit icon"></i></button>
-    <button class="right floated ui in-header {{if isViewingPipelineDetails 'disabled grey'}} icon button" data-content="Pipeline Details" {{action "viewPipelineDetails"}}><i class="unhide icon"></i></button>
-    {{#if model}}
-      {{#ui-promise-dropdown class="right floated ui right pointing icon button" waitList=pipeline.builds onChange=(action "selectBuild") selected=buildNumber}}
-        <i class="history icon"></i>
-        <div class="menu">
-        {{#each all as |b|}}
-          <div class="item" data-value={{b.number}}>Build #{{b.number}}</div>
-        {{/each}}
-        </div>
-      {{/ui-promise-dropdown}}
-    {{/if}}
-  </div>
 </div>
 
-<div class="sixteen wide column pipeline-build full-height">
-  {{#if model}}
-    {{#if model.stages}}
-      <ul class="stages">
-      {{#each model.stages as |stage|}}
-        {{build-stage model=stage build=model pipeline=pipeline selectStage=(action 'selectStage')}}
-      {{/each}}
-      </ul>
-      {{#if selectedStage}}
-        {{stage-details model=selectedStage build=model pipeline=pipeline close=(action 'unselectStage') }}
+<div class="body tablet computer only row">
+  <div class="{{if infoBoxVisible 'seven' 'sixteen'}} wide column">
+    <div class="pipeline-build">
+      {{#if model}}
+        {{#if model.stages}}
+          <ul class="stages">
+          {{#each model.stages as |stage|}}
+            {{build-stage model=stage build=model pipeline=pipeline selectStage=(action 'selectStage')}}
+          {{/each}}
+          </ul>
+        {{else}}
+          <div class="ui center aligned segment">No stages found for build.</div>
+        {{/if}}
+      {{else}}
+        {{#if buildFetcher.isRunning}}
+          {{ui-spinkit-3}}
+        {{else}}
+          <div class="ui center aligned segment">No builds yet.</div>
+        {{/if}}
       {{/if}}
-    {{else}}
-      <div class="ui center aligned segment">No stages found for build.</div>
+    </div>
+  </div>
+  {{#if infoBoxVisible}}
+  <div class="nine wide column">
+    {{#if selectedStage}}
+      {{stage-details model=selectedStage build=model pipeline=pipeline close=(action 'unselectStage') }}
     {{/if}}
-  {{else}}
-    {{#if buildFetcher.isRunning}}
-      <div class="ui center aligned very padded basic segment">
-        <div class="ui tiny text active inline loader">Loading</div>
-      </div>
-    {{else}}
-      <div class="ui center aligned segment">No builds yet.</div>
+    {{#if isViewingPipelineDetails}}
+      {{pipeline-details model=pipeline build=model close=(action 'closePipelineDetails') }}
     {{/if}}
+    {{#if isEditingPipeline}}
+      {{pipeline-editor model=pipeline close=(action 'closePipelineEditor') }}
+    {{/if}}
+  </div>
   {{/if}}
+</div>
 
+<!-- for mobile -->
+<div class="mobile only row">
+  <div class="column">
+    <div class="pipeline-build">
+      {{#if model}}
+        {{#if model.stages}}
+          <ul class="stages">
+          {{#each model.stages as |stage|}}
+            {{build-stage model=stage build=model pipeline=pipeline selectStage=(action 'selectStage')}}
+          {{/each}}
+          </ul>
+        {{else}}
+          <div class="ui center aligned segment">No stages found for build.</div>
+        {{/if}}
+      {{else}}
+        {{#if buildFetcher.isRunning}}
+          {{ui-spinkit-3}}
+        {{else}}
+          <div class="ui center aligned segment">No builds yet.</div>
+        {{/if}}
+      {{/if}}
+    </div>
+  </div>
+</div>
+{{#if infoBoxVisible}}
+<div class="mobile only body row">
+  {{#if selectedStage}}
+    {{stage-details model=selectedStage build=model pipeline=pipeline close=(action 'unselectStage') }}
+  {{/if}}
   {{#if isViewingPipelineDetails}}
     {{pipeline-details model=pipeline build=model close=(action 'closePipelineDetails') }}
-  {{else if isEditingPipeline}}
+  {{/if}}
+  {{#if isEditingPipeline}}
     {{pipeline-editor model=pipeline close=(action 'closePipelineEditor') }}
   {{/if}}
 </div>
+{{/if}}
 
 {{#ui-modal name="create-build-confirmation" class="small create-build-confirmation" closable=false onApprove=(action "createBuild") }}
   <div class="header">Create Build</div>

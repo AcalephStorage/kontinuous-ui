@@ -4,12 +4,14 @@ import Configuration from '../config/environment';
 
 export default Ember.Component.extend({
 
-  classNames: Ember.String.w('ui right internal rail stage-details'),
+  classNames: Ember.String.w('ui right internal rail info-box'),
 
   pipeline: Ember.inject.service(),
   store: Ember.inject.service(),
   session: Ember.inject.service(),
   notify: Ember.inject.service(),
+
+  aceEditor: null,
 
   willPullRequest: Ember.computed.equal('commitOption.option', 'pull_request'),
   editorAction: Ember.computed('definition', function() {
@@ -27,9 +29,43 @@ export default Ember.Component.extend({
   },
 
   didRender() {
-    if (this.$('input[name="commitOption"][checked="checked"]').length === 0) {
+    if (this.$('input[name="commit-option"][checked="checked"]').length === 0) {
       let commitOption = this.get('commitOption.option');
-      this.$(`input[name="commitOption"][value="${commitOption}"]`).attr("checked", "checked")
+      this.$(`input[name="commit-option"][value="${commitOption}"]`).attr("checked", "checked");
+    }
+    this.aceEditorInit();
+  },
+
+  willDestroyElement() {
+    this.removeObserver('definition.content', this, this.aceEditorContentChange);
+    if (this.aceEditor) {
+      this.aceEditor.destroy();
+      this.aceEditor.container.remove();
+    }
+  },
+
+  aceEditorInit() {
+    let textEditor = this.$("div#definition-content");
+    if (textEditor.length && !textEditor.hasClass('ace_editor')) {
+      let editorID = textEditor.attr('id');
+      this.aceEditor = ace.edit(editorID);
+      this.aceEditor.getSession().setTabSize(2);
+      this.aceEditor.getSession().setMode("ace/mode/yaml");
+      this.aceEditor.on('change', () => {
+        this.set('definition.content', this.aceEditor.getSession().getValue());
+      });
+      this.aceEditor.$blockScrolling = Infinity;
+      this.addObserver('definition.content', this, this.aceEditorContentChange);
+      this.notifyPropertyChange('definition.content');
+    }
+  },
+
+  aceEditorContentChange() {
+    if (!this.get('definition.content')) {
+      this.aceEditor.getSession().setValue('');
+    }
+    else if (this.aceEditor.getSession().getValue() !== this.get('definition.content')) {
+      this.aceEditor.getSession().setValue(this.get('definition.content'));
     }
   },
 
@@ -85,10 +121,8 @@ export default Ember.Component.extend({
   },
 
   definitionFetcher: task(function*(ajaxOptions) {
-    yield Ember.$.ajax(ajaxOptions)
-      .then((definition) => {
-        this.serializeDefinition(definition);
-      });
+    let definition = yield Ember.$.ajax(ajaxOptions);
+    this.serializeDefinition(definition);
   }).drop(),
 
   definitionUpdater: task(function*(ajaxOptions) {
@@ -107,6 +141,7 @@ export default Ember.Component.extend({
     let action = this.get('editorAction').toLowerCase();
     yield Ember.$.ajax(ajaxOptions)
       .then((definition) => {
+        this.get('model').reload();
         this.get('notify').success(`Successfully ${action}d the definition file for the pipeline`);
         this.serializeDefinition(definition);
       }, (res) => {
