@@ -1,5 +1,6 @@
 import Model from 'ember-data/model';
 import attr from 'ember-data/attr';
+import {belongsTo} from 'ember-data/relationships';
 
 export default Model.extend({
   name: attr('string'),
@@ -12,5 +13,6 @@ export default Model.extend({
   status: attr('string'),
   pod_namespace: attr('string'),
   job_name: attr('string'),
-  pod_name: attr('string')
+  pod_name: attr('string'),
+  build: belongsTo('build')
 });

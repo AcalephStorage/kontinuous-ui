@@ -91,6 +91,16 @@ export default Ember.Component.extend({
       });
   }).drop(),
 
+  stageStatusUpdater: task(function * (stage) {
+    let b = this.get('model');
+    Ember.assign(stage, { build: b });
+    stage.save()
+      .finally(() => {
+        this.get('buildFetcher').cancelAll();
+        this.get('buildFetcher').perform();
+      });
+  }).drop(),
+
   buildsPoller: task(function*() {
     while(true) {
       yield this.get('pipeline.builds').reload();
@@ -101,23 +111,25 @@ export default Ember.Component.extend({
   stagesPoller: task(function*() {
     while(true) {
       this.get('buildFetcher').perform();
-      yield timeout(5000); // 5-second interval
+      yield timeout(3000); // 3-second interval
     }
   }).drop(),
+
+  closeInfoBox() {
+    this.send('unselectStage');
+    this.send('closePipelineDetails');
+    this.send('closePipelineEditor');
+  },
 
   actions: {
     historyHide() {
       return Ember.isPresent(this.get('model'));
     },
     selectBuild() {
-      this.send('unselectStage');
-      this.send('closePipelineDetails');
-      this.send('closePipelineEditor');
+      this.closeInfoBox();
     },
     confirmCreateBuild() {
-      this.send('unselectStage');
-      this.send('closePipelineDetails');
-      this.send('closePipelineEditor');
+      this.closeInfoBox();
       this.$('.ui.modal.create-build-confirmation').modal('show');
     },
     createBuild() {
@@ -130,6 +142,15 @@ export default Ember.Component.extend({
     },
     unselectStage() {
       this.set('selectedStage', null);
+    },
+    promptWaitStageMessage(stage) {
+      this.closeInfoBox();
+      this.set('selectedWaitStage', stage);
+      this.$('.ui.modal.wait-stage-prompt').modal('show');
+    },
+    startWaitStage() {
+      let stage = this.get('selectedWaitStage');
+      this.get('stageStatusUpdater').perform(stage);
     },
     viewPipelineDetails() {
       this.send('unselectStage');

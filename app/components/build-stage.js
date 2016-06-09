@@ -14,16 +14,28 @@ export default Ember.Component.extend({
     'command': 'terminal',
     'docker_build': 'legal',
     'docker_publish': 'upload',
+    'wait': 'pause',
+    'wait_done': 'right arrow',
   },
   statusIcon: Ember.computed('model.type', function() {
     let type = this.get('model.type');
+    let status = this.get('model.status');
+
+    if (type === 'wait' && status === 'SUCCESS') {
+      type = 'wait_done';
+    }
     return this.iconClassMap[type] || this.defaultStatusIcon;
   }),
   isRunning: Ember.computed.equal('model.status', 'RUNNING'),
 
   click() {
-    this.fetchLogs();
-    this.sendAction('selectStage', this.get('model'));
+    let stage = this.get('model');
+    if (stage.get('type') === 'wait' && stage.get('status') === 'WAITING') {
+      this.sendAction('promptWaitStageMessage', stage);
+    } else {
+      this.fetchLogs();
+      this.sendAction('selectStage', stage);
+    }
   },
 
   willDestroyElement() {
@@ -50,7 +62,7 @@ export default Ember.Component.extend({
   },
 
   logFetcher: task(function*(stage) {
-    if (stage.get('status') !== 'PENDING') {
+    if (stage.get('status') !== 'PENDING' && stage.get('type') != 'wait') {
       let logFiles = yield this.getStageLogs(stage);
       return logFiles;
     }
