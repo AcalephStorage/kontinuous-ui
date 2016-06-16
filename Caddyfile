@@ -5,6 +5,7 @@
     regexp .*
     ext    /
     to     /index.html
-}
+  }
   log stdout
+  tls /secrets/ssl/cert /secrets/ssl/key
 }
