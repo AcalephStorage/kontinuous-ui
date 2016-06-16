@@ -37,7 +37,7 @@
         {{#if model.stages}}
           <ul class="stages">
           {{#each model.stages as |stage|}}
-            {{build-stage model=stage build=model pipeline=pipeline selectStage=(action 'selectStage')}}
+            {{build-stage model=stage build=model pipeline=pipeline selectStage=(action 'selectStage') promptWaitStageMessage=(action 'promptWaitStageMessage')}}
           {{/each}}
           </ul>
         {{else}}
@@ -113,3 +113,14 @@
     <div class="ui positive right labeled icon small button">Yes<i class="checkmark icon"></i></div>
   </div>
 {{/ui-modal}}
+
+{{#ui-modal name="wait-stage-prompt" class="small wait-stage-prompt" closable=false onApprove=(action "startWaitStage") }}
+  <div class="header">Wait</div>
+  <div class="content">{{selectedWaitStage.params.message}}</div>
+  <div class="actions">
+    <div class="ui negative small button">No</div>
+    <div class="ui positive right labeled icon small button">Yes<i class="right arrow icon"></i></div>
+  </div>
+{{/ui-modal}}
+
+
